@@ -46,13 +46,13 @@ func (inv *Inventory) GetEC2() *ec2.EC2 {
 
 // FetchInventories gather instance and volume data from all AWS regions.
 func FetchInventories() string {
-	names := Regions()
-	if names == nil {
+	regions := Regions()
+	if regions == nil {
 		log.Fatalf("regions should not be nil %+v", regions)
 	}
-
-	for _, name := range names {
-		if inv := GetInventory(name); inv != nil {
+	for _, region := range regions {
+		inv := inventories.Get(region)
+		if inv != nil {
 			inv.FetchInstances()
 			inv.FetchVolumes()
 		}

@@ -17,11 +17,13 @@ import (
 // original provider structure.
 type Inventory struct {
 	Name      string
-	Instances map[string]ec2.Instance           // straight from the source
-	Volumes   map[string]ec2.CreateVolumeOutput // from the source
+	Instances map[string]Host // straight from the source
+	Volumes   map[string]Disk // from the source
 	IV        map[string]string
 	VI        map[string]string
 
+	ec2InsList []ec2.Instance
+	ec2VolList []ec2.CreateVolumeOutput
 	*ec2.EC2
 	err error
 }
@@ -30,8 +32,8 @@ type Inventory struct {
 func NewInventory(name string) Inventory {
 	return Inventory{
 		Name:      name,
-		Instances: make(map[string]ec2.Instance),
-		Volumes:   make(map[string]ec2.CreateVolumeOutput),
+		Instances: make(map[string]Host),
+		Volumes:   make(map[string]Disk),
 		VI:        make(map[string]string),
 		IV:        make(map[string]string),
 	}
@@ -86,7 +88,7 @@ func (inv *Inventory) indexInstances(rlist []ec2.RunInstancesOutput) {
 	for _, ilist := range rlist {
 		for _, inst := range ilist.Instances {
 			iid := *inst.InstanceId
-			inv.Instances[iid] = inst
+			inv.Instances[iid] = HostFromInstance(&inst)
 			if inst.BlockDeviceMappings != nil {
 				bm0 := inst.BlockDeviceMappings[0]
 				ebs := bm0.Ebs
@@ -103,7 +105,7 @@ func (inv *Inventory) indexVolumes(vols []ec2.CreateVolumeOutput) {
 	// Index teh volmes and volume to image map
 	for _, vol := range vols {
 		vid := *vol.VolumeId
-		inv.Volumes[vid] = vol
+		inv.Volumes[vid] = DiskFromVolume(&vol)
 		if vol.Attachments != nil {
 			a := vol.Attachments[0]
 			inv.VI[vid] = *a.InstanceId

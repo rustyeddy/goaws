@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
+	"path/filepath"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
@@ -13,6 +14,18 @@ import (
   files.  In otherwords we will read JSON encode files in an AWS
   API format.
 */
+
+// FindFiles will gather up files, determine the region they are from
+// Then process and index the files.
+func FindFiles(pattern string) []string {
+	paths, err := filepath.Glob(pattern)
+	if err != nil {
+		log.Error("failed to glob ", pattern, err)
+		return nil
+	}
+	return paths
+}
+
 // ReadFiles will recieve the specified files into the inventory
 func (inv *Inventory) ReadFiles(paths []string) {
 	for _, p := range paths {
@@ -54,7 +67,7 @@ func (inv *Inventory) unmarshalInstances(buf []byte) {
 	// index these instances
 	for _, rl := range rlist {
 		for _, inst := range rl.Instances {
-			inv.Instances[*inst.ImageId] = inst
+			inv.Instances[*inst.ImageId] = HostFromInstance(&inst)
 		}
 	}
 }
@@ -71,7 +84,7 @@ func (inv *Inventory) unmarshalVolumes(buf []byte) []ec2.CreateVolumeOutput {
 
 	// index the volumes we have read
 	for _, vol := range vols {
-		inv.Volumes[*vol.VolumeId] = vol
+		inv.Volumes[*vol.VolumeId] = DiskFromVolume(&vol)
 	}
 	return vols
 }

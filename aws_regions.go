@@ -10,14 +10,6 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
-var (
-	regions []string
-)
-
-func init() {
-	regions = nil
-}
-
 // Regions returns the list of regions, it will first check an
 // in memory copy, it will then check for cached file copy, finally
 // we'll head to AWS got this info.
@@ -28,6 +20,12 @@ func Regions() []string {
 		}
 	}
 	return regions
+}
+
+// String will print regions
+func String() string {
+	rs := Regions()
+	return strings.Join(rs, "\n")
 }
 
 // fetchRegionNames from AWS
@@ -76,10 +74,4 @@ func readRegions(path string) (names []string) {
 	}
 	log.Error("failed to read ", path, err)
 	return nil
-}
-
-// PrintRegions will print regions
-func PrintRegions() string {
-	rs := Regions()
-	return strings.Join(rs, "\n")
 }
