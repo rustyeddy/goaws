@@ -1,0 +1,2482 @@
+[
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:32:56Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-00ae5af23b65f65e6"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 36,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-07a1accc548bb5cb8",
+                "InstanceLifecycle": "",
+                "InstanceType": "c5.18xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:32:55Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:32:55Z",
+                            "AttachmentId": "eni-attach-af3085c1",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:9b:26:96:6f:52",
+                        "NetworkInterfaceId": "eni-0dd83b52",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-32-113.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.32.113",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-32-113.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.32.113"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-32-113.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.32.113",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-02e24de35c5cfdf23"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:32:55Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-00d6f05a0079a4f35"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 36,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0e552d6c18ffc9bcf",
+                "InstanceLifecycle": "",
+                "InstanceType": "c5.18xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:32:54Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:32:54Z",
+                            "AttachmentId": "eni-attach-ae3085c0",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:77:74:c6:fa:e0",
+                        "NetworkInterfaceId": "eni-41da391e",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-46-219.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.46.219",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-46-219.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.46.219"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-46-219.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.46.219",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0d5f6993f5481bd84"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:14Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-07a44886ed09ac692"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 20,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0b6fd9be78622b7eb",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.10xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:13Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:13Z",
+                            "AttachmentId": "eni-attach-017d3a63",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "0a:06:19:09:06:7a",
+                        "NetworkInterfaceId": "eni-067e682d",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-18-155.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.18.155",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-18-155.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.18.155"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-0584a84f",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2b",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-18-155.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.18.155",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-0584a84f",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0c32a0d93787316a7"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:15Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0167edd7f45f2615a"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 20,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0d79dcf3d4bccddfe",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.10xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:14Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:14Z",
+                            "AttachmentId": "eni-attach-6a7d3a08",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "0a:97:a4:9d:ac:70",
+                        "NetworkInterfaceId": "eni-5b716770",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-28-12.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.28.12",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-28-12.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.28.12"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-0584a84f",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2b",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-28-12.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.28.12",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-0584a84f",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-003d0bc54eb601997"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:19Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0e582eef81ec85d34"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 18,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0f7cc75b4a5304834",
+                "InstanceLifecycle": "",
+                "InstanceType": "c5.9xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:18Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:18Z",
+                            "AttachmentId": "eni-attach-77308519",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:dc:a8:82:81:b8",
+                        "NetworkInterfaceId": "eni-deda3981",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-36-176.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.36.176",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-36-176.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.36.176"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-36-176.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.36.176",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-054306e6fe9a0ab5d"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:10Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0e70f5bea413da91a"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 20,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-08d015899017e8be4",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.10xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:10Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:10Z",
+                            "AttachmentId": "eni-attach-f97e399b",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "0a:60:24:17:55:96",
+                        "NetworkInterfaceId": "eni-947066bf",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-29-153.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.29.153",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-29-153.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.29.153"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-0584a84f",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2b",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-29-153.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.29.153",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-0584a84f",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0a7b1b2530fb25c6a"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:32:59Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0751244bcb0d88e42"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 32,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-031d85e6a35bd7544",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.16xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:32:58Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:32:58Z",
+                            "AttachmentId": "eni-attach-893782e7",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:79:eb:88:ba:a6",
+                        "NetworkInterfaceId": "eni-68d93a37",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-39-18.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.39.18",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-39-18.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.39.18"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-39-18.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.39.18",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0c18f778a635516c7"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:01Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0c5e29b57c7133361"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 32,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0326d267ee2026e42",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.16xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:00Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:00Z",
+                            "AttachmentId": "eni-attach-4231842c",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:81:75:4d:c8:52",
+                        "NetworkInterfaceId": "eni-9fdb38c0",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-43-253.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.43.253",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-43-253.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.43.253"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-43-253.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.43.253",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0f0c7fb829e44c599"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:03Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0b8580c437c0c296f"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 32,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-05ac68c9c3bc38722",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.16xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:03Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:03Z",
+                            "AttachmentId": "eni-attach-f336839d",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:96:ec:fe:b3:ec",
+                        "NetworkInterfaceId": "eni-bcd93ae3",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-39-32.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.39.32",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-39-32.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.39.32"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-39-32.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.39.32",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0543e5d5621f6f9f8"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:00Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0821e6f95fd3cea77"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 32,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0be9d57b49d53d623",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.16xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:32:59Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:32:59Z",
+                            "AttachmentId": "eni-attach-f536839b",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:dd:b8:40:61:16",
+                        "NetworkInterfaceId": "eni-ccd83b93",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-35-200.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.35.200",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-35-200.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.35.200"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-35-200.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.35.200",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0731e0a7886520010"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:32:54Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0555c83f99c841204"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 36,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0ad250df877c157be",
+                "InstanceLifecycle": "",
+                "InstanceType": "c5.18xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:32:53Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:32:53Z",
+                            "AttachmentId": "eni-attach-883782e6",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:76:0c:e6:07:f0",
+                        "NetworkInterfaceId": "eni-add83bf2",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-35-68.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.35.68",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-35-68.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.35.68"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-35-68.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.35.68",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0d87ee722fc15a0f3"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:18Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-000c152304905a467"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 18,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-05e7e04cf05300f97",
+                "InstanceLifecycle": "",
+                "InstanceType": "c5.9xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:17Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:17Z",
+                            "AttachmentId": "eni-attach-76308518",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:a4:d7:41:b9:7e",
+                        "NetworkInterfaceId": "eni-dfda3980",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-43-46.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.43.46",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-43-46.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.43.46"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-43-46.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.43.46",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-008cce19ea5db4797"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:13Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0f97dad3de537de5b"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 20,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0d38e62fc1a1b81c2",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.10xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:12Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:12Z",
+                            "AttachmentId": "eni-attach-567c3b34",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "0a:91:10:34:18:3a",
+                        "NetworkInterfaceId": "eni-22706609",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-31-191.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.31.191",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-31-191.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.31.191"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-0584a84f",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2b",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-31-191.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.31.191",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-0584a84f",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0e06d38ee9ffabd5f"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:11Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-06f7965e8bc81a6d8"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 20,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-00bfbe273145ea397",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.10xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:11Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:11Z",
+                            "AttachmentId": "eni-attach-687d3a0a",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "0a:de:08:1d:ae:c8",
+                        "NetworkInterfaceId": "eni-c27264e9",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-20-201.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.20.201",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-20-201.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.20.201"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-0584a84f",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2b",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-20-201.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.20.201",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-0584a84f",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-09c0d4bc861db66c2"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:32:52Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-03257b03745f60d79"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 36,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-01a0fe724d0c384ca",
+                "InstanceLifecycle": "",
+                "InstanceType": "c5.18xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:32:52Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:32:52Z",
+                            "AttachmentId": "eni-attach-8b3782e5",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:55:c4:f7:98:1a",
+                        "NetworkInterfaceId": "eni-ced83b91",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-32-224.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.32.224",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-32-224.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.32.224"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-32-224.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.32.224",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0bf254ece27923378"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:32:48Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-075cb53b76ed3a92c"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 48,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0475d077f7957de6f",
+                "InstanceLifecycle": "",
+                "InstanceType": "m5.24xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:32:48Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:32:48Z",
+                            "AttachmentId": "eni-attach-8a3782e4",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:6c:a1:01:15:4c",
+                        "NetworkInterfaceId": "eni-69d93a36",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-34-110.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.34.110",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-34-110.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.34.110"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-34-110.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.34.110",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0a0ad78a93844c645"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:06Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-02d64608ef975f891"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 24,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0b4183aed9205be05",
+                "InstanceLifecycle": "",
+                "InstanceType": "m5.12xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:05Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:05Z",
+                            "AttachmentId": "eni-attach-9f3683f1",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:36:2d:22:ec:1a",
+                        "NetworkInterfaceId": "eni-20da397f",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-38-208.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.38.208",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-38-208.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.38.208"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-38-208.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.38.208",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-073420e7552286f39"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:02Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0633f2e21e5cf4f02"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 32,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0a436e6a12c9a314d",
+                "InstanceLifecycle": "",
+                "InstanceType": "m4.16xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:01Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:01Z",
+                            "AttachmentId": "eni-attach-f236839c",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:3c:13:f9:3f:60",
+                        "NetworkInterfaceId": "eni-ccd93a93",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-39-61.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.39.61",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-39-61.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.39.61"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-39-61.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.39.61",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-0bea3bf8d11f36ae8"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:33:07Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0c78af320f58cc041"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 24,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-0c9e3b8edb6667648",
+                "InstanceLifecycle": "",
+                "InstanceType": "m5.12xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:33:07Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:33:07Z",
+                            "AttachmentId": "eni-attach-9c3683f2",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:ef:5b:6e:5b:52",
+                        "NetworkInterfaceId": "eni-cbd93a94",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-35-20.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.35.20",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-35-20.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.35.20"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-35-20.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.35.20",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-00ca43821c993c43e"
+    },
+    {
+        "Groups": null,
+        "Instances": [
+            {
+                "AmiLaunchIndex": 0,
+                "Architecture": "x86_64",
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "AttachTime": "2018-06-03T18:32:51Z",
+                            "DeleteOnTermination": true,
+                            "Status": "attached",
+                            "VolumeId": "vol-0a57d547dfc7b878b"
+                        }
+                    }
+                ],
+                "ClientToken": "",
+                "CpuOptions": {
+                    "CoreCount": 36,
+                    "ThreadsPerCore": 2
+                },
+                "EbsOptimized": false,
+                "ElasticGpuAssociations": null,
+                "EnaSupport": true,
+                "Hypervisor": "xen",
+                "IamInstanceProfile": null,
+                "ImageId": "ami-00fda4f55bf86e65f",
+                "InstanceId": "i-051d308c275c84f2a",
+                "InstanceLifecycle": "",
+                "InstanceType": "c5.18xlarge",
+                "KernelId": null,
+                "KeyName": "ZRYXN0",
+                "LaunchTime": "2018-06-03T18:32:50Z",
+                "Monitoring": {
+                    "State": "disabled"
+                },
+                "NetworkInterfaces": [
+                    {
+                        "Association": null,
+                        "Attachment": {
+                            "AttachTime": "2018-06-03T18:32:50Z",
+                            "AttachmentId": "eni-attach-4431842a",
+                            "DeleteOnTermination": true,
+                            "DeviceIndex": 0,
+                            "Status": "attached"
+                        },
+                        "Description": "",
+                        "Groups": [
+                            {
+                                "GroupId": "sg-b729c7de",
+                                "GroupName": "default"
+                            }
+                        ],
+                        "Ipv6Addresses": null,
+                        "MacAddress": "02:fa:b6:0f:5c:64",
+                        "NetworkInterfaceId": "eni-e0db38bf",
+                        "OwnerId": "108522272788",
+                        "PrivateDnsName": "ip-172-31-42-30.eu-west-2.compute.internal",
+                        "PrivateIpAddress": "172.31.42.30",
+                        "PrivateIpAddresses": [
+                            {
+                                "Association": null,
+                                "Primary": true,
+                                "PrivateDnsName": "ip-172-31-42-30.eu-west-2.compute.internal",
+                                "PrivateIpAddress": "172.31.42.30"
+                            }
+                        ],
+                        "SourceDestCheck": true,
+                        "Status": "in-use",
+                        "SubnetId": "subnet-3401f25d",
+                        "VpcId": "vpc-5cbe5c35"
+                    }
+                ],
+                "Placement": {
+                    "Affinity": null,
+                    "AvailabilityZone": "eu-west-2c",
+                    "GroupName": "",
+                    "HostId": null,
+                    "SpreadDomain": null,
+                    "Tenancy": "default"
+                },
+                "Platform": "",
+                "PrivateDnsName": "ip-172-31-42-30.eu-west-2.compute.internal",
+                "PrivateIpAddress": "172.31.42.30",
+                "ProductCodes": null,
+                "PublicDnsName": "",
+                "PublicIpAddress": null,
+                "RamdiskId": null,
+                "RootDeviceName": "/dev/sda1",
+                "RootDeviceType": "ebs",
+                "SecurityGroups": [
+                    {
+                        "GroupId": "sg-b729c7de",
+                        "GroupName": "default"
+                    }
+                ],
+                "SourceDestCheck": true,
+                "SpotInstanceRequestId": null,
+                "SriovNetSupport": null,
+                "State": {
+                    "Code": 80,
+                    "Name": "stopped"
+                },
+                "StateReason": {
+                    "Code": "Client.UserInitiatedShutdown",
+                    "Message": "Client.UserInitiatedShutdown: User initiated shutdown"
+                },
+                "StateTransitionReason": "User initiated",
+                "SubnetId": "subnet-3401f25d",
+                "Tags": [
+                    {
+                        "Key": "my_key",
+                        "Value": "my_value"
+                    }
+                ],
+                "VirtualizationType": "hvm",
+                "VpcId": "vpc-5cbe5c35"
+            }
+        ],
+        "OwnerId": "108522272788",
+        "RequesterId": null,
+        "ReservationId": "r-07cec879699aad6eb"
+    }
+]
