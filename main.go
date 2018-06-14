@@ -7,8 +7,6 @@ package main
 
 import (
 	"flag"
-
-	log "github.com/rustyeddy/logrus"
 )
 
 // ======================================================================
@@ -25,18 +23,9 @@ func init() {
 	flag.BoolVar(&verbose, "verbose", false, "tobble verbosity")
 }
 
-type output struct {
-	buf string
-	fmt string
-	err error
-}
-
 func main() {
 	flag.Parse()
-
-	out := ""
 	if fetch {
-		out = FetchInventories()
+		FetchInventories()
 	}
-	log.Println(out)
 }

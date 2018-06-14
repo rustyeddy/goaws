@@ -39,22 +39,6 @@ func NewInventory(name string) Inventory {
 	}
 }
 
-// Save (some of) the inventory
-func (inv *Inventory) Save() {
-
-	// Save the entire inventory file!
-	jbytes, err := json.Marshal(inv)
-	if err != nil {
-		log.Fatalf("Failed to json ify my inventory")
-	}
-
-	fname := "inventory-" + inv.Region + ".json"
-	err = ioutil.WriteFile(fname, jbytes, 0644)
-	if err != nil {
-		log.Fatalf("failed to write the inventory")
-	}
-}
-
 // String print summary of the inventory
 func (inv *Inventory) String() string {
 	return fmt.Sprintf("%s instances %d - volumes %d ",
@@ -64,6 +48,34 @@ func (inv *Inventory) String() string {
 // Sizes returns the size of Instances and Volumes
 func (inv *Inventory) Sizes() (int, int) {
 	return len(inv.Instances), len(inv.Volumes)
+}
+
+// Save (some of) the inventory
+func (inv *Inventory) Save() {
+
+	// Save the entire inventory file!
+	jbytes, err := json.Marshal(inv)
+	if err != nil {
+		log.Fatalf("Failed to json ify my inventory")
+	}
+	fname := "run/inventory-" + inv.Region + ".json"
+	err = ioutil.WriteFile(fname, jbytes, 0644)
+	if err != nil {
+		log.Fatalf("failed to write the inventory")
+	}
+}
+
+// Read the inventory from file
+func (inv *Inventory) Read(path string) {
+	jbytes, err := ioutil.ReadFile(path)
+	if err != nil {
+		log.Error("failed to marshal JSON")
+		return
+	}
+	err = ioutil.WriteFile(path, jbytes, 0644)
+	if err != nil {
+		log.Error("failed to write inventory to file")
+	}
 }
 
 // Index the inventory
@@ -84,6 +96,7 @@ func (inv *Inventory) Index() {
 	}
 }
 
+// indexInstances
 func (inv *Inventory) indexInstances(rlist []ec2.RunInstancesOutput) {
 	for _, ilist := range rlist {
 		for _, inst := range ilist.Instances {
@@ -101,6 +114,7 @@ func (inv *Inventory) indexInstances(rlist []ec2.RunInstancesOutput) {
 	}
 }
 
+// indexVolumes
 func (inv *Inventory) indexVolumes(vols []ec2.CreateVolumeOutput) {
 	// Index teh volmes and volume to image map
 	for _, vol := range vols {

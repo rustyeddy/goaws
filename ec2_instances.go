@@ -24,7 +24,7 @@ func (inv *Inventory) FetchInstances() {
 	}
 }
 
-// SaveInstances will save Instances from AWS to json file.
+// saveInstances will save Instances from AWS to json file.
 func (inv *Inventory) saveInstances(res []ec2.RunInstancesOutput) {
 	// Cache the results in a local file
 	jbytes, err := json.Marshal(res)

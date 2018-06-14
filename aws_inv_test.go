@@ -18,7 +18,6 @@ func TestInventory(t *testing.T) {
 	if invs == nil {
 		t.Error("expected inventories got nil")
 	}
-
 	if len(invs) != 0 {
 		t.Errorf("expected inventory len (0) got (%d) ", len(invs))
 	}
@@ -30,10 +29,12 @@ func TestNotExist(t *testing.T) {
 	if invs.Exists("us") {
 		t.Errorf("expected no inventory for us found some")
 	}
+
 	inv := invs.Get("us")
 	if inv != nil {
 		t.Errorf("expected us inventory (nil) got (%v) ", inv)
 	}
+
 	inv = invs.Create("us")
 	if inv == nil {
 		t.Error("failed to create a new inventory for the us")
@@ -57,4 +58,9 @@ func TestNotExist(t *testing.T) {
 
 	inv = invs.Get("us")
 	failNotEqual(t, inv.Name, "Moon")
+
+	// Finally the inventory should have a single entry
+	if len(invs) != 1 {
+		t.Errorf("expected inventory to equal 1")
+	}
 }
