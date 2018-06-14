@@ -16,13 +16,10 @@ func TestVolFile(t *testing.T) {
 	if len(tinv.Volumes) < 2 {
 		t.Fatalf("expected lots of volumes got (%d) ", len(tinv.Volumes))
 	}
-
-	// See what we have for inventory
 	sc, vc := tinv.Sizes()
 	if sc < 1 && vc < 1 {
 		t.Error("We have nothing for inventory")
 	}
-
 	log.Printf("%+v", tinv)
 }
 

@@ -15,6 +15,59 @@ import (
   API format.
 */
 
+// ReadInventories reads inventory files from files.  The region
+// will be extracted by the filename.
+func ReadInventories() {
+
+	// First we need to locate the files we are going to read
+	paths := FindFiles("tests/*/*.json")
+	if paths == nil {
+		log.Error("failed to read inventory files")
+	}
+
+	// Now we need to extract the region from the filename, then get
+	// (or create) the inventory struct.  We'll append the path of
+	// the inventory file to the inventories readQueue.
+	for _, p := range paths {
+		var inv *Inventory
+		if inv = InventoryFromPath(p); inv == nil {
+			log.Error("path failed to produce inventory ", p)
+			continue
+		}
+		inv.addPath(p)
+	}
+}
+
+// InventoryFromPath extracts the region from the filename, then
+// returns the corresponding *Inventory.  If the inventory did
+// not exist, it will be created.
+// ===================================================================
+func InventoryFromPath(path string) *Inventory {
+	_, fname := filepath.Split(path)
+	if fname == "" {
+		log.Error("failed to split path ", path)
+		return nil
+	}
+
+	// extract the region name and file type from path name
+	flen, extlen := len(fname), len(filepath.Ext(path))
+	otype := fname[0:3] // type is first 4 chars "vols" or "inst"
+	region := fname[4 : flen-extlen]
+	if region == "" || otype == "" {
+		log.Errorf("expected a region and type got region (%s) and type (%s) ",
+			region, otype)
+		return nil
+	}
+
+	inv := inventories.GetOrCreate(region)
+	if inv == nil {
+		log.Error("GetOrCreate region failed to create an Inventory ", region)
+		return nil
+	}
+	inv.addPath(path)
+	return inv
+}
+
 // FindFiles will gather up files, determine the region they are from
 // Then process and index the files.
 func FindFiles(pattern string) []string {
@@ -26,6 +79,13 @@ func FindFiles(pattern string) []string {
 	return paths
 }
 
+// addPath appends another string to the paths that need to be
+// searched.
+func (inv *Inventory) addPath(path string) {
+	// A mutex is needed for concurency
+	inv.pathQueue = append(inv.pathQueue, path)
+}
+
 // ReadFiles will recieve the specified files into the inventory
 func (inv *Inventory) ReadFiles(paths []string) {
 	for _, p := range paths {
@@ -35,6 +95,7 @@ func (inv *Inventory) ReadFiles(paths []string) {
 
 // ReadFile will injest the given file into the inventory
 func (inv *Inventory) ReadFile(path string) {
+
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatal("failed reading ", path)

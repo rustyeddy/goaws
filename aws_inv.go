@@ -1,6 +1,10 @@
 package main
 
-import log "github.com/rustyeddy/logrus"
+import (
+	"strings"
+
+	log "github.com/rustyeddy/logrus"
+)
 
 /*
    AWS Inventories.  The AWS Inventories are separated by Region and maintain indexes
@@ -47,10 +51,23 @@ func (im IMap) Set(region string, inv *Inventory) {
 // will NOT be returned if it already exits.
 func (im IMap) Create(region string) (inv *Inventory) {
 	var e bool
-
 	if *inv, e = im[region]; e {
 		log.Errorf("expected no inventory in region (%s) got (%v) ", region, inv)
 		return nil
+	}
+	return inv
+}
+
+// GetOrCreate will get the entry if it exists, if not it will be
+// created and indexed before being return to calller.
+func (im IMap) GetOrCreate(region string) (inv *Inventory) {
+	var e bool
+	if *inv, e = im[region]; !e {
+		if inv := NewInventory(region); strings.Compare(inv.Name, region) != 0 {
+			log.Error("GetOrCreate inventory is wrong ...")
+
+		}
+		im[region] = *inv // index this inventory
 	}
 	return inv
 }

@@ -27,5 +27,7 @@ func main() {
 	flag.Parse()
 	if fetch {
 		FetchInventories()
+	} else {
+		ReadInventories()
 	}
 }

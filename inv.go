@@ -22,8 +22,9 @@ type Inventory struct {
 	IV        map[string]string
 	VI        map[string]string
 
-	ec2InsList []ec2.Instance
-	ec2VolList []ec2.CreateVolumeOutput
+	pathQueue  []string                 // inventory files to be scanned
+	ec2InsList []ec2.Instance           // from ec2.DescribeInstances
+	ec2VolList []ec2.CreateVolumeOutput // from ec2.DescribeVolumes
 	*ec2.EC2
 	err error
 }
