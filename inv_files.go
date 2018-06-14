@@ -20,7 +20,11 @@ import (
 func ReadInventories() {
 
 	// First we need to locate the files we are going to read
-	paths := FindFiles("tests/*/*.json")
+	pattern := "tests/*/*.json"
+	if region != nil {
+		pattern = "tests/" + *region + ".json"
+	}
+	paths := FindFiles(pattern)
 	if paths == nil {
 		log.Error("failed to read inventory files")
 	}

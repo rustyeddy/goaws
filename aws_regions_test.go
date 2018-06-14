@@ -63,8 +63,10 @@ func TestSaveReadRegions(t *testing.T) {
 	fname := "tests/regions.json"
 	saveRegions(fname, regs)
 
+	//log.
+
 	if golib.FileNotExists(fname) {
-		t.Errorf("expected file")
+		t.Errorf("expected %s to exist, it does not", fname)
 	}
 
 	// Reset the regions and reread
@@ -74,7 +76,7 @@ func TestSaveReadRegions(t *testing.T) {
 	}
 
 	if len(regs) < 1 {
-		t.Errorf("expected regions to be greater than 1, it is %d", len(regs))
+		t.Errorf("expected many regions got (%d)", len(regs))
 	}
 }
 

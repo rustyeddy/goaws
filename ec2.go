@@ -58,3 +58,10 @@ func FetchInventories() {
 		}
 	}
 }
+
+// FetchInventory is specific to a region
+func (inv *Inventory) FetchInventory() *Inventory {
+	inv.FetchInstances()
+	inv.FetchVolumes()
+	return inv
+}

@@ -66,14 +66,18 @@ func saveRegions(path string, names []string) {
 
 // readRegions
 func readRegions(path string) (names []string) {
+
+	log.Debugf("readRegions path %s", path)
+	defer log.Debugf("leaving with names %+v", names)
 	var buf []byte
 	var err error
-
 	if buf, err = ioutil.ReadFile(path); err == nil {
 		if err = json.Unmarshal(buf, names); err == nil {
 			return names
 		}
 	}
-	log.Error("failed to read ", path, err)
+	if err != nil {
+		log.Errorf("failed to read %s err %v", path, err)
+	}
 	return nil
 }

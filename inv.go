@@ -40,6 +40,14 @@ func NewInventory(name string) Inventory {
 	}
 }
 
+// GetInventory will return the specified inventory if it exists, nil if not
+func GetInventory(name string) *Inventory {
+	if inv, ex := inventories[name]; ex {
+		return &inv
+	}
+	return nil
+}
+
 // String print summary of the inventory
 func (inv *Inventory) String() string {
 	return fmt.Sprintf("%s instances %d - volumes %d ",
