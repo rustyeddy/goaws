@@ -1,8 +1,6 @@
 package main
 
 import (
-	"strings"
-
 	log "github.com/rustyeddy/logrus"
 )
 
@@ -61,13 +59,10 @@ func (im IMap) Create(region string) (inv *Inventory) {
 // GetOrCreate will get the entry if it exists, if not it will be
 // created and indexed before being return to calller.
 func (im IMap) GetOrCreate(region string) (inv *Inventory) {
-	var e bool
-	if *inv, e = im[region]; !e {
-		if inv := NewInventory(region); strings.Compare(inv.Name, region) != 0 {
-			log.Error("GetOrCreate inventory is wrong ...")
-
-		}
-		im[region] = *inv // index this inventory
+	if i, e := im[region]; !e {
+		i = NewInventory(region)
+		inv = &i
+		im[region] = i
 	}
 	return inv
 }

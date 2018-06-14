@@ -18,6 +18,7 @@ func Regions() []string {
 		if regions = readRegions("regions.json"); regions == nil {
 			regions = fetchRegions()
 		}
+		saveRegions("run/regions.json", regions)
 	}
 	return regions
 }
@@ -30,6 +31,8 @@ func String() string {
 
 // fetchRegionNames from AWS
 func fetchRegions() []string {
+
+	regions = nil // reset and fetch if not already nil
 	cfg, err := external.LoadDefaultAWSConfig()
 	if err != nil {
 		log.Errorf("failed to load config, %v", err)
@@ -43,11 +46,10 @@ func fetchRegions() []string {
 		return nil
 	}
 
-	regions := make([]string, 0, len(awsRegions.Regions))
+	regions = make([]string, 0, len(awsRegions.Regions))
 	for _, region := range awsRegions.Regions {
 		regions = append(regions, *region.RegionName)
 	}
-	saveRegions("regions.json", regions)
 	return regions
 }
 

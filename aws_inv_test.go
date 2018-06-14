@@ -5,6 +5,13 @@ import (
 	"testing"
 )
 
+var (
+	tstinv IMap
+)
+
+func init() {
+}
+
 // failNotEqual will do just that
 func failNotEqual(t *testing.T, s1, s2 string) {
 	if strings.Compare(s1, s2) != 0 {
@@ -12,7 +19,7 @@ func failNotEqual(t *testing.T, s1, s2 string) {
 	}
 }
 
-func TestInventory(t *testing.T) {
+func TestInventoryInit(t *testing.T) {
 	// Expect inventories to be empty
 	invs := Inventories()
 	if invs == nil {
@@ -23,7 +30,29 @@ func TestInventory(t *testing.T) {
 	}
 }
 
-func TestNotExist(t *testing.T) {
+func TestInventoryCreate(t *testing.T) {
+	// make sure that our entry does not already exist
+	tests := []struct {
+		have string
+		want *Inventory
+	}{
+		{"test-west-1", &Inventory{Name: "test-west-1"}},
+		{"test-west-2", &Inventory{Name: "test-west-2"}},
+	}
+
+	for _, tt := range tests {
+		if got := Inventories().Get(tt.have); got != nil {
+			failNotEqual(t, tt.have, got.Name)
+		}
+	}
+
+	// We should have two entries in our inventories database
+	if len(Inventories()) != 2 {
+		t.Errorf("inventories expected (%d) got (%d)", 2, len(inventories))
+	}
+}
+
+func TestExist(t *testing.T) {
 	invs := Inventories()
 
 	if invs.Exists("us") {

@@ -5,3 +5,6 @@ build:
 
 test:
 		go test -v 
+
+run: 
+		go run -v main.go
