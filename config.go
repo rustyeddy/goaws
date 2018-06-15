@@ -1,5 +1,7 @@
 package goaws
 
+import log "github.com/rustyeddy/logrus"
+
 type Configuration struct {
 	Basedir   string   // basedir specifically for store
 	Regions   []string // regions we care about
@@ -23,6 +25,7 @@ func init() {
 		Logformat: "json",      // json, text
 		Logfile:   "goaws.log", // hopefully set in aws
 	}
+	log.Debugln("leaving config init")
 }
 
 func InitConfig() {
