@@ -64,7 +64,7 @@ func setFormatString(fstr string) {
 func setLogFilename(fname string) {
 	f, err := os.Open(fname)
 	if err != nil {
-		log.Error("failed to create logfile")
+		log.Error("open logfile: %s -> %v", fname, err)
 		return
 	}
 	log.SetOutput(f)

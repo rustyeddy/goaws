@@ -3,15 +3,15 @@ cmd = goaws
 dirs = cmd srv
 
 build:
-		go build -o $(cmd) -v .
+		go build -o $(cmd) 
 
 test:
-		go test -v 
+		go test 
 
 run: 
-		go run -v *.go
+		go run *.go
 
 install:
-		go install -v -o $(cmd)
+		go install -o $(cmd)
 
 .PHONY: build test run install

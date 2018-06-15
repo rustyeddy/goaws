@@ -31,10 +31,9 @@ func init() {
 
 func regionDo(cmd *cobra.Command, args []string) {
 	log.Debug("Fetching regions")
-
 	regs := goaws.Regions()
 	if regs != nil {
-		log.Error("failed to get regions")
+		log.Error("  failed to get regions")
 		return
 	}
 	fmt.Println(regs)
@@ -46,4 +45,5 @@ func regionListDo(cmd *cobra.Command, args []string) {
 	if regions == nil {
 		log.Error("failed get AWS regions")
 	}
+	log.Println(regions)
 }
