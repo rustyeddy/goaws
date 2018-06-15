@@ -1,4 +1,4 @@
-package aws
+package goaws
 
 import (
 	"encoding/json"
@@ -21,8 +21,8 @@ func ReadInventories() {
 
 	// First we need to locate the files we are going to read
 	pattern := "tests/*/*.json"
-	if region != nil {
-		pattern = "tests/" + *region + ".json"
+	if C.Region != "" {
+		pattern = "tests/" + C.Region + ".json"
 	}
 	paths := FindFiles(pattern)
 	if paths == nil {

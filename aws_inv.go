@@ -1,13 +1,15 @@
-package aws
+package goaws
+
+/*
+
+AWS Inventories.  The AWS Inventories are separated by Region and
+maintain indexes of Volumes, Instances.  TODO: Snapshots.
+
+*/
 
 import (
 	log "github.com/rustyeddy/logrus"
 )
-
-/*
-   AWS Inventories.  The AWS Inventories are separated by Region and maintain indexes
-   of Volumes, Instances.  TODO: Snapshots.
-*/
 
 // IMap is a map of *Inventory indexed by Region Name.
 type IMap map[string]Inventory
