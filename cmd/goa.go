@@ -52,8 +52,9 @@ func Execute() {
 
 // RunRoot runs the root command
 func GoaDo(cmd *cobra.Command, args []string) {
-	fmt.Println(" Goa for a show")
-	fmt.Printf("     args -- %s\n", strings.Join(os.Args[1:], ", "))
+	fmt.Println(" Goa for a show: ")
+	fmt.Printf("     goa %s\n", strings.Join(os.Args[1:], " "))
+
 	log.Error("This is an error message")
 	log.Warn("This is a warning")
 	log.Info("THis is info")
