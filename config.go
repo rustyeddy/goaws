@@ -15,15 +15,15 @@ var (
 
 func init() {
 	DefaultConfig = Configuration{
-		Basedir:   C.Basedir, // were we live on the filesystem
-		Regions:   nil,       // regions we care about
-		Region:    "",        // Current region
-		Loglevel:  "debug",   // debug, info, warn, error, fatal, panic
-		Logformat: "json",    // json, text
+		Basedir: C.Basedir, // were we live on the filesystem
+		Regions: nil,       // regions we care about
+		Region:  "",        // Current region
+
+		Loglevel:  "debug",     // debug, info, warn, error, fatal, panic
+		Logformat: "json",      // json, text
+		Logfile:   "goaws.log", // hopefully set in aws
 	}
 }
 
 func InitConfig() {
-	// Probably need to read some command line arguments to
-	// see what needs to be done
 }

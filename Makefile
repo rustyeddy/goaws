@@ -9,4 +9,9 @@ test:
 		go test -v 
 
 run: 
-		go run -v main.go
+		go run -v *.go
+
+install:
+		go install -v -o $(cmd)
+
+.PHONY: build test run install
