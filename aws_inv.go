@@ -1,4 +1,4 @@
-package main
+package aws
 
 import (
 	log "github.com/rustyeddy/logrus"

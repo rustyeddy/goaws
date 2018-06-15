@@ -1,7 +1,9 @@
+cmd = goaws
+
 dirs = cmd srv
 
 build:
-		go build -v .
+		go build -o $(cmd) -v .
 
 test:
 		go test -v 

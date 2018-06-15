@@ -1,4 +1,4 @@
-package main
+package aws
 
 import (
 	"os"
@@ -7,7 +7,8 @@ import (
 )
 
 // Setup the logger to log JSON to goaws.log at LevelDebug
-func logInit() {
+func initLog() {
+
 	// Setup the logger (logrus). Set JSON as the output format
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetLevel(log.DebugLevel)
