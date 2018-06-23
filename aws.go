@@ -8,11 +8,18 @@ state.
 */
 
 var (
-	C *Configuration
+	C Configuration
 	S *store.Store
 )
 
 func init() {
-	C = &DefaultConfig
-	S = store.New(C.Basedir)
+	C = DefaultConfig
+}
+
+func SetStore(st *store.Store) {
+	S = st
+}
+
+func SetConfig(cfg *Configuration) {
+	C = *cfg
 }

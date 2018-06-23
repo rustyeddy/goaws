@@ -1,14 +1,11 @@
 package goaws
 
 import (
-	"encoding/json"
-	"io/ioutil"
-
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
 )
 
-// FetchInstances will retrieve instances from aws
+// FetchInstances will retrieve instances from AWS
 func (inv *Inventory) FetchInstances() {
 	log.Println("GetInstances for region ", inv.Region)
 	defer log.Println("  return GetInstances ", inv.Region)
@@ -26,20 +23,15 @@ func (inv *Inventory) FetchInstances() {
 
 // saveInstances will save Instances from AWS to json file.
 func (inv *Inventory) saveInstances(res []ec2.RunInstancesOutput) {
-	// Cache the results in a local file
-	jbytes, err := json.Marshal(res)
-	if err != nil {
-		log.Errorf("describe instances request %v", err)
-		return
-	}
-	// Cache a local copy of the string
-	fname := "run/inst-" + inv.Region + ".json"
-	if err = ioutil.WriteFile(fname, jbytes, 0644); err != nil {
-		log.Error("failed to save ", fname, err)
+	if _, err := S.StoreObject("instances", res); err != nil {
+		log.Errorf("StoreObject failed ", err)
 	}
 }
 
 // DeleteInstance
 func (inv *Inventory) deleteInstance(iid string) {
-	panic("TODO")
+	if err := S.RemoveObject(iid); err != nil {
+		log.Errorf("failed to remove object %s -> %v", iid, err)
+	}
+	log.Debugf("removed object %s ", iid)
 }

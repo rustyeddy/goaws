@@ -15,8 +15,7 @@ import (
 type IMap map[string]Inventory
 
 var (
-	regions     []string // region names
-	inventories IMap     // map from region name to Inventory
+	inventories IMap // map from region name to Inventory
 )
 
 func init() {

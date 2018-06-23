@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/rustyeddy/goaws"
-	log "github.com/rustyeddy/logrus"
 	"github.com/spf13/cobra"
+
+	log "github.com/rustyeddy/logrus"
 )
 
 var (
@@ -25,7 +27,7 @@ var (
 )
 
 func init() {
-	GoaCmd.AddCommand(&regionCmd)
+	RootCmd.AddCommand(&regionCmd)
 	regionCmd.AddCommand(&regionListCmd)
 }
 
@@ -40,10 +42,10 @@ func regionDo(cmd *cobra.Command, args []string) {
 }
 
 func regionListDo(cmd *cobra.Command, args []string) {
-	log.Debug("Region list")
-	regions := goaws.Regions()
-	if regions == nil {
-		log.Error("failed get AWS regions")
+
+	var regions []string
+	if regions = goaws.Regions(); regions == nil {
+		// I got nothing to say, no regions have been found
 	}
-	log.Println(regions)
+	log.Println(strings.Join(regions, "\n"))
 }

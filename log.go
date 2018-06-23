@@ -7,9 +7,6 @@ import (
 )
 
 func init() {
-	log.Debugln("log init")
-	defer log.Debugln("  leaving log init")
-
 	// Set some resonable defaults
 	log.SetFormatter(&log.TextFormatter{}) // JSON formatted output
 	log.SetLevel(log.DebugLevel)           // High default log level
@@ -20,7 +17,6 @@ func init() {
 // optionally set logging level, format and output.
 func LogConfig(cfg map[string]string) {
 	for n, v := range cfg {
-		log.Debugln("  ")
 		switch n {
 		case "level":
 			setLevelString(v)
@@ -29,7 +25,7 @@ func LogConfig(cfg map[string]string) {
 		case "log":
 			setLogFilename(v)
 		default:
-			log.Warn("don't know what to do with ", n)
+			log.Warn("LogConfig bad cmd ", n)
 		}
 	}
 }
@@ -64,8 +60,8 @@ func setFormatString(fstr string) {
 func setLogFilename(fname string) {
 	f, err := os.Open(fname)
 	if err != nil {
-		log.Error("open logfile: %s -> %v", fname, err)
-		return
+		log.Errorf("setLogFname: %s -> %v", fname, err)
+	} else {
+		log.SetOutput(f)
 	}
-	log.SetOutput(f)
 }

@@ -2,8 +2,6 @@ package goaws
 
 import (
 	"testing"
-
-	"github.com/rustyeddy/golib"
 )
 
 var (
@@ -15,30 +13,9 @@ func init() {
 	tstRegions = []string{"us-west-1", "us-west-2", "us-central-1"}
 }
 
-func tErrorNil(t *testing.T, obj interface{}) {
-	if obj == nil {
-		t.Error("failed object is nil")
-	}
-}
-
-// Perhaps create a interface and call prod or test
-func tRegions() []string {
-	regions = tstRegions
-	return regions
-}
-
-// TestRegionsInit will ensure that the regions are nil before
-// a call to acquire the regions.
-func TestRegionsInit(t *testing.T) {
-	if regions != nil || len(regions) > 0 {
-		t.Errorf("expected len (0) got (%d) for regions ", len(regions))
-	}
-}
-
 // TestSaveReadRegions this file actualy calls AWS, should read from
 // mock response to avoid call overhead.
 func TestFetchRegions(t *testing.T) {
-
 	regions = nil // reset regions
 	regs := fetchRegions()
 	if regs == nil {
@@ -52,31 +29,16 @@ func TestFetchRegions(t *testing.T) {
 	if lregions != lregs {
 		t.Errorf("expected len (%d) got (%d)", lregs, lregions)
 	}
-
 }
 
 // TestSaveReadRegions will make sure our regions are being saved
 // and read to and from the disk as expected.
-func TestSaveReadRegions(t *testing.T) {
+func TestSaveRegions(t *testing.T) {
 
 	regs := Regions()
-	fname := "tests/regions.json"
-	saveRegions(fname, regs)
-
-	//log.
-
-	if golib.FileNotExists(fname) {
-		t.Errorf("expected %s to exist, it does not", fname)
-	}
-
-	// Reset the regions and reread
-	regs, regions = nil, nil
-	if regs = readRegions(fname); regs == nil {
-		t.Errorf("expected read %s but failed", fname)
-	}
-
-	if len(regs) < 1 {
-		t.Errorf("expected many regions got (%d)", len(regs))
+	_, err := S.StoreObject("regions", regs)
+	if err != nil {
+		t.Error("failed to store regions ", err)
 	}
 }
 

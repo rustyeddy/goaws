@@ -3,10 +3,10 @@ cmd = goaws
 dirs = cmd srv
 
 build:
-		go build -o $(cmd) -v .
+		go build -o $(cmd) .
 
 test:
-		go test -v 
+		go test
 
 run: 
 		go run -v *.go

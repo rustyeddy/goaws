@@ -7,15 +7,16 @@ import (
 )
 
 /*
-   These functions handles all communication with aws. Xlate files between JSON & Go.
-   This file also handles caching aws data in local files system.
+   These functions handle all communication with aws. Xlate files
+   between JSON & Go.  This file also handles caching aws data in
+   local files system.
 
-   Caching is simple.  Get requested data (regions, volumes or instances),
-   the get function checks local filesystem, then heads to provider (aws)
-   for real data.
+   Caching is simple.  Get requested data (regions, volumes or
+   instances), the get function checks local filesystem, then heads to
+   provider (aws) for real data.
 
-   Once data has been read, it is written to local filesystem as JSON for
-   future reference.
+   Once data has been read, it is written to local filesystem as JSON
+   for future reference.
 
    To Renew data simply delete cached JSON files.
 */

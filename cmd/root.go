@@ -7,17 +7,18 @@ Goa commands aws management utilities.
 package cmd
 
 import (
-	"os"
-	"strings"
+	"fmt"
 
 	"github.com/rustyeddy/goaws"
 	log "github.com/rustyeddy/logrus"
+	"github.com/rustyeddy/store"
 	"github.com/spf13/cobra"
 )
 
 var (
-	C      = goaws.C
-	GoaCmd = cobra.Command{
+	S       *store.Store
+	C       = goaws.C
+	RootCmd = cobra.Command{
 		Use:   "goa --help",
 		Short: "Manage AWS Instances and Volumes",
 		Long:  `Gather AWS Volume and Image information, do stuff with it`,
@@ -28,7 +29,7 @@ var (
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	pflags := GoaCmd.PersistentFlags()
+	pflags := RootCmd.PersistentFlags()
 	pflags.StringVarP(&C.Basedir, "dir", "d", "/srv/goaws/", "base project directory")
 	pflags.StringVarP(&C.Region, "region", "r", "", "Select region defaults to all")
 
@@ -40,6 +41,11 @@ func init() {
 
 // initConfig run everytime the subcmcd Execute() is run
 func initConfig() {
+
+	if S == nil {
+		S = store.UseStore("/srv/store")
+	}
+
 	goaws.LogConfig(map[string]string{
 		"level":  C.Loglevel,
 		"format": C.Logformat,
@@ -49,18 +55,14 @@ func initConfig() {
 
 // Execute from the RootCommand
 func Execute() {
-	if err := GoaCmd.Execute(); err != nil {
+	if err := RootCmd.Execute(); err != nil {
 		log.Fatal(err)
 	}
 }
 
 // RunRoot runs the root command
 func GoaDo(cmd *cobra.Command, args []string) {
-	log.Infoln(" Goa for a show: ")
-	log.Infof("     goa %s\n", strings.Join(os.Args[1:], " "))
-
-	log.Error("This is an error message")
-	log.Warn("This is a warning")
-	log.Info("THis is info")
-	log.Debug("This is debugging at its best")
+	fmt.Println("Welcome to Goa! ")
+	fmt.Println("  basedir  ", C.Basedir)
+	fmt.Printf("  store %s\n", S.String())
 }
