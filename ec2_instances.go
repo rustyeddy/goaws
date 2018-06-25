@@ -23,14 +23,14 @@ func (inv *Inventory) FetchInstances() {
 
 // saveInstances will save Instances from AWS to json file.
 func (inv *Inventory) saveInstances(res []ec2.RunInstancesOutput) {
-	if _, err := S.StoreObject("instances", res); err != nil {
+	if _, err := cache.StoreObject("instances", res); err != nil {
 		log.Errorf("StoreObject failed ", err)
 	}
 }
 
 // DeleteInstance
 func (inv *Inventory) deleteInstance(iid string) {
-	if err := S.RemoveObject(iid); err != nil {
+	if err := cache.RemoveObject(iid); err != nil {
 		log.Errorf("failed to remove object %s -> %v", iid, err)
 	}
 	log.Debugf("removed object %s ", iid)

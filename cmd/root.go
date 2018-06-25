@@ -1,23 +1,17 @@
 /*
 Goa commands aws management utilities.
-
-- Goa
-
 */
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/rustyeddy/goaws"
 	log "github.com/rustyeddy/logrus"
 	"github.com/rustyeddy/store"
+
 	"github.com/spf13/cobra"
 )
 
 var (
-	S       *store.Store
-	C       = goaws.C
 	RootCmd = cobra.Command{
 		Use:   "goa --help",
 		Short: "Manage AWS Instances and Volumes",
@@ -26,35 +20,13 @@ var (
 	}
 )
 
-func init() {
-	cobra.OnInitialize(initConfig)
-
-	pflags := RootCmd.PersistentFlags()
-	pflags.StringVarP(&C.Basedir, "dir", "d", "/srv/goaws/", "base project directory")
-	pflags.StringVarP(&C.Region, "region", "r", "", "Select region defaults to all")
-
-	// Log related flags
-	pflags.StringVarP(&C.Loglevel, "level", "L", "debug", "Select level of logging")
-	pflags.StringVarP(&C.Logformat, "format", "f", "json", "Select level of logging")
-	pflags.StringVarP(&C.Logfile, "logfile", "l", "stdout", "Set the logging output")
-}
-
-// initConfig run everytime the subcmcd Execute() is run
-func initConfig() {
-
-	if S == nil {
-		S = store.UseStore("/srv/store")
-	}
-
-	goaws.LogConfig(map[string]string{
-		"level":  C.Loglevel,
-		"format": C.Logformat,
-		"log":    C.Logfile,
-	})
-}
-
-// Execute from the RootCommand
+// Execute the RootCommand
 func Execute() {
+	cache := goaws.Cache()
+	if cache == nil {
+		log.Info("Root initConfig = calling UseStore ", config.Basedir)
+		cache = store.UseStore(config.Basedir)
+	}
 	if err := RootCmd.Execute(); err != nil {
 		log.Fatal(err)
 	}
@@ -62,7 +34,14 @@ func Execute() {
 
 // RunRoot runs the root command
 func GoaDo(cmd *cobra.Command, args []string) {
-	fmt.Println("Welcome to Goa! ")
-	fmt.Println("  basedir  ", C.Basedir)
-	fmt.Printf("  store %s\n", S.String())
+	cache := goaws.Cache()
+
+	log.Println("Welcome to Goa! ")
+	log.Println("  basedir  ", config.Basedir)
+	if cache == nil {
+		log.Println("  store .. no cache ")
+	} else {
+		log.Printf("  store %s ", cache.String())
+	}
+	log.Println(".. Aog! ")
 }

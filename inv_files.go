@@ -17,12 +17,11 @@ import (
 
 // ReadInventories reads inventory files from files.  The region
 // will be extracted by the filename.
-func ReadInventories() {
-
+func OldReadInventories() {
 	// First we need to locate the files we are going to read
-	pattern := "tests/*/*.json"
-	if C.Region != "" {
-		pattern = "tests/" + C.Region + ".json"
+	pattern := "cache/*/*.json"
+	if currentRegion != "" {
+		pattern = "cache/" + currentRegion + ".json"
 	}
 	paths := FindFiles(pattern)
 	if paths == nil {

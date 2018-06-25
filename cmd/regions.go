@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/rustyeddy/goaws"
@@ -11,6 +10,7 @@ import (
 )
 
 var (
+	regions   []string
 	regionCmd = cobra.Command{
 		Use:   "region cmd ...",
 		Short: "manage regions with this wonderful cli",
@@ -32,20 +32,23 @@ func init() {
 }
 
 func regionDo(cmd *cobra.Command, args []string) {
-	log.Debug("Fetching regions")
-	regs := goaws.Regions()
-	if regs != nil {
-		log.Error("  failed to get regions")
-		return
+
+	log.Debugln("region do ..")
+	log.Debugln("  --> check cache for region list ")
+	defer log.Debugln("Regions[%d]: %+v", len(regions), regions)
+
+	regions := goaws.Regions()
+	if regions == nil {
+		log.Error("Unable to file any regions, dieing ")
 	}
-	fmt.Println(regs)
 }
 
 func regionListDo(cmd *cobra.Command, args []string) {
-
 	var regions []string
+	log.Debugln("  region LIST Do ..")
 	if regions = goaws.Regions(); regions == nil {
 		// I got nothing to say, no regions have been found
+		log.Println("  store empty of objects ")
 	}
 	log.Println(strings.Join(regions, "\n"))
 }

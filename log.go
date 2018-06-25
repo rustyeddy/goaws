@@ -15,7 +15,7 @@ func init() {
 
 // LogConfig will accept a map of key value strings that can
 // optionally set logging level, format and output.
-func LogConfig(cfg map[string]string) {
+func SetLogConfig(cfg map[string]string) {
 	for n, v := range cfg {
 		switch n {
 		case "level":
@@ -25,7 +25,7 @@ func LogConfig(cfg map[string]string) {
 		case "log":
 			setLogFilename(v)
 		default:
-			log.Warn("LogConfig bad cmd ", n)
+			log.Warn("LogConfig unknown command ", n)
 		}
 	}
 }
@@ -40,7 +40,6 @@ func setLevelString(lstr string) {
 	lvl["error"] = log.ErrorLevel
 	lvl["fatal"] = log.FatalLevel
 	lvl["panic"] = log.PanicLevel
-
 	if l, e := lvl[lstr]; e {
 		log.SetLevel(l)
 	}
@@ -53,15 +52,27 @@ func setFormatString(fstr string) {
 	case "text":
 		log.SetFormatter(&log.TextFormatter{})
 	default:
-		log.Warning("unknown format string: ", fstr)
+		log.Warning("Unknown format string: ", fstr)
 	}
 }
 
+// logfile name or the string "stdout" for os.Stdout
 func setLogFilename(fname string) {
-	f, err := os.Open(fname)
-	if err != nil {
-		log.Errorf("setLogFname: %s -> %v", fname, err)
-	} else {
-		log.SetOutput(f)
+	f := os.Stdout
+	switch fname {
+	case "stdout":
+		f = os.Stdout
+	case "stderr":
+		f = os.Stderr
+	default:
+		var err error
+		if f, err = os.Open(fname); err != nil {
+			log.WithFields(log.Fields{
+				"error": err,
+				"file":  fname,
+			}).Fatalf("failed to set log file, will not contine")
+		} else {
+			log.SetOutput(f)
+		}
 	}
 }

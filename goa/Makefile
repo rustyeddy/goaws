@@ -1,4 +1,4 @@
-cmd = goaws
+cmd = goa
 
 dirs = cmd srv
 

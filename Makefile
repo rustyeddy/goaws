@@ -1,9 +1,11 @@
-cmd = goaws
+cmd = goa
 
-dirs = cmd srv
+dirs = cmd
 
 build:
 		go build -o $(cmd) .
+		make -C cmd build
+		make -C goa build
 
 test:
 		go test
