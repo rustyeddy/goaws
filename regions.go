@@ -27,38 +27,41 @@ func CurrentRegion() string {
 // check the store, finaly make the client request if and when
 // necessary.
 func Regions() []string {
-	log.Debug("~~> Getting AWS Regions ")
+	log.Debug("~~> AWS Regions ")
 	defer log.Debugf("<~~ Returning AWS Regions %d", len(regions))
 
-	if regions == nil {
+	if regions != nil {
+		log.Debug("  regions in-memory cache hit ")
+		return regions
+	}
 
-		log.Debug("  regions are nil, checking local store ... ")
-
-		// Check for a local cache of regions
-		if !cache.Exists("regions") {
-			log.Infoln("  ## regions list is NOT cached, going AWS ")
-		} else {
-			if err := cache.FetchObject("regions", &regions); err != nil {
-				log.Debugf("  ## error fetching object ")
-				return nil
-			}
+	log.Debug("  No copy of Regions in memory: checking the cache... ")
+	// Check for a local cache of regions
+	if !cache.Exists("regions") {
+		log.Infoln("  -- cache entry was not found ... ")
+	} else {
+		log.Infoln("  ~~> cache object found! Fetching it ...")
+		err := cache.FetchObject("regions", &regions)
+		if err != nil {
+			log.Debugf("  ## error fetching regions %v ..", err)
+		} else if regions != nil {
+			log.Debugf("  We have regions! %d of em", len(regions))
+			return regions
 		}
+	}
 
-		// go to the source for regions
-		log.Debugln("  ~> Nothing local, fetch from AWS ...")
-		if regions = fetchRegions(); regions == nil {
-			log.Error("  ## failed to get regions from AWS, host is lost ...")
-			return nil
-		}
+	// go to the source for regions
+	log.Debugln("  ~> Nothing local, fetch from AWS ...")
+	if regions = fetchRegions(); regions == nil {
+		log.Error("  ## failed to get regions from AWS, host is lost ...")
+		return nil
+	}
 
-		// we have some regions, we'll store them
-		log.Debugf("  <~ got %d regions", len(regions))
-		log.Fatalf("%+v", regions)
-
-		log.Debugln("  Store regions list locally ... ")
-		if _, err := cache.StoreObject("regions", regions); err != nil {
-			log.WithField("error", err).Error("  !! failed to StoreObject regions ", err)
-		}
+	// we have some regions, we'll store them
+	log.Debugf("  <~ got %d regions", len(regions))
+	log.Debugln("  Store regions list locally ... ")
+	if _, err := cache.StoreObject("regions", regions); err != nil {
+		log.WithField("error", err).Error("  !! failed to StoreObject regions ", err)
 	}
 	return regions
 }
@@ -97,7 +100,13 @@ func fetchRegions() []string {
 	for _, region := range awsRegions.Regions {
 		regions = append(regions, *region.RegionName)
 	}
-	log.Debugf("  ")
+	if regions == nil {
+		log.Debugf(" No regions saved ")
+	} else {
+		log.Debugf(" returning with %d regions ", len(regions))
+		return regions
+	}
+	SaveRegions(regions)
 	return regions
 }
 

@@ -26,20 +26,21 @@ var (
 func init() {
 	configDebug = Config{
 		Name:      "debug",
-		Basedir:   "test/",
-		Region:    "us-west-2b",
+		Basedir:   "/srv/goaws/cache/",
+		Region:    "us-west-2",
 		LogConfig: LogConfig{Level: "debug", Logfile: "stdout", Format: "text"},
 	}
 	configTest = Config{
 		Name:      "test",
 		Basedir:   "test/",
-		Region:    "us-west-2b",
+		Region:    "us-west-2",
 		LogConfig: LogConfig{Level: "info", Logfile: "goa-test", Format: "json"},
 	}
 	configProd = Config{
 		Name:      "test",
 		Basedir:   "test/",
-		Region:    "us-west-2b",
+		Region:    "us-west-2",
 		LogConfig: LogConfig{Level: "warn", Logfile: "goa-prod", Format: "json"},
 	}
+	config = configDebug
 }
