@@ -46,7 +46,6 @@ func Regions() []string {
 			log.Debugf("  ## error fetching regions %v ..", err)
 		} else if regions != nil {
 			log.Debugf("  We have regions! %d of em", len(regions))
-			return regions
 		}
 	}
 
