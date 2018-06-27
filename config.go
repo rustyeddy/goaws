@@ -1,13 +1,13 @@
 package goaws
 
-// LogConfigurations
+// LogConfig holds configuration for Logging
 type LogConfig struct {
 	Level   string
 	Logfile string
 	Format  string
 }
 
-// Configuration stuff
+// Config holds variables that may be configured
 type Config struct {
 	Name       string
 	Basedir    string

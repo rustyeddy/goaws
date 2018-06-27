@@ -109,17 +109,15 @@ func fetchRegions() []string {
 	return regions
 }
 
-// saveRegions
-// =======================================================
+// SaveRegions will store the regions list in our local cache
 func SaveRegions(names []string) {
 	_, err := cache.StoreObject("regions", names)
 	if err != nil {
-		log.Error("failed saving %v -> %v", names, err)
+		log.Errorf("failed saving %v -> %v", names, err)
 	}
 }
 
-// readRegions
-// =======================================================
+// ReadRegions will read the regions list from the stored object.
 func ReadRegions() []string {
 	var regs []string
 	err := cache.FetchObject("regions", &regs)

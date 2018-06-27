@@ -26,7 +26,6 @@ type Config struct {
 	Regions []string
 
 	ConfigFile string
-
 	ConfigLogger
 }
 
@@ -60,9 +59,10 @@ func init() {
 	pflags.StringVarP(&config.Level, "level", "L", "debug", "Select level of logging")
 	pflags.StringVarP(&config.Format, "format", "f", "json", "Select level of logging")
 	pflags.StringVarP(&config.Logfile, "logfile", "l", "stdout", "Set the logging output")
+
 	viper.BindPFlag("level", RootCmd.PersistentFlags().Lookup("level"))
 	viper.BindPFlag("format", RootCmd.PersistentFlags().Lookup("format"))
-	viper.BindPFlag("out", RootCmd.PersistentFlags().Lookup("out"))
+	viper.BindPFlag("logfile", RootCmd.PersistentFlags().Lookup("logfile"))
 	viper.SetDefault("level", "warn")
 	viper.SetDefault("format", "json")
 	viper.SetDefault("out", "out")

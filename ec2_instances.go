@@ -24,7 +24,7 @@ func (inv *Inventory) FetchInstances() {
 // saveInstances will save Instances from AWS to json file.
 func (inv *Inventory) saveInstances(res []ec2.RunInstancesOutput) {
 	if _, err := cache.StoreObject("instances", res); err != nil {
-		log.Errorf("StoreObject failed ", err)
+		log.Errorf("StoreObject failed %v", err)
 	}
 }
 

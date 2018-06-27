@@ -22,6 +22,8 @@ var (
 
 // Execute the RootCommand
 func Execute() {
+
+	// Best place to set up cache???
 	cache := goaws.Cache()
 	if cache == nil {
 		log.Info("Root initConfig = calling UseStore ", config.Basedir)

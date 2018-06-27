@@ -13,7 +13,7 @@ func init() {
 	log.SetOutput(os.Stdout)               // print to stdout by default
 }
 
-// LogConfig will accept a map of key value strings that can
+// SetLogConfig will accept a map of key value strings that can
 // optionally set logging level, format and output.
 func SetLogConfig(cfg map[string]string) {
 	for n, v := range cfg {

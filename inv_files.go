@@ -15,7 +15,7 @@ import (
   API format.
 */
 
-// ReadInventories reads inventory files from files.  The region
+// OldReadInventories reads inventory files from files.  The region
 // will be extracted by the filename.
 func OldReadInventories() {
 	// First we need to locate the files we are going to read
