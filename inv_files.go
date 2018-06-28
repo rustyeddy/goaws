@@ -9,15 +9,9 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
-/*
-  files.go: handles reading and writting AWS Specific JSON formatted
-  files.  In otherwords we will read JSON encode files in an AWS
-  API format.
-*/
-
-// OldReadInventories reads inventory files from files.  The region
+// ReadInventories reads inventory files from files.  The region
 // will be extracted by the filename.
-func OldReadInventories() {
+func ReadInventories() {
 	// First we need to locate the files we are going to read
 	pattern := "cache/*/*.json"
 	if currentRegion != "" {
@@ -44,7 +38,6 @@ func OldReadInventories() {
 // InventoryFromPath extracts the region from the filename, then
 // returns the corresponding *Inventory.  If the inventory did
 // not exist, it will be created.
-// ===================================================================
 func InventoryFromPath(path string) *Inventory {
 	_, fname := filepath.Split(path)
 	if fname == "" {

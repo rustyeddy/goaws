@@ -13,13 +13,6 @@ var (
 	currentRegion string
 )
 
-// CurrentRegion is a global convenience to keep track of the
-// Region we are currently working on.
-func CurrentRegion() string {
-	currentRegion = "us-west-2"
-	return currentRegion
-}
-
 // SetCurrentRegion(region string)
 
 // Regions returns a list of region names, this is just a list of
@@ -46,6 +39,7 @@ func Regions() []string {
 			log.Debugf("  ## error fetching regions %v ..", err)
 		} else if regions != nil {
 			log.Debugf("  We have regions! %d of em", len(regions))
+			return regions
 		}
 	}
 

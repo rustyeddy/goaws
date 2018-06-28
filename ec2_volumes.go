@@ -10,7 +10,7 @@ import (
 
 // FetchVolumes will retrieve instances from AWS, convert them to
 // Go structures we can use, it also "caches" a version to the filesystem
-func (inv *Inventory) FetchVolumes() {
+func (inv *Inventory) FetchVolumes() error {
 
 	log.Println("GetVolumes from ", inv.Region)
 	defer log.Println("  return GetVolumes ", inv.Region)
@@ -20,8 +20,11 @@ func (inv *Inventory) FetchVolumes() {
 		if result, err := req.Send(); err == nil {
 			inv.indexVolumes(result.Volumes)
 			inv.saveVolumes(result.Volumes)
+		} else {
+			log.Error("  # failed response to request ")
 		}
 	}
+	return nil
 }
 
 func (inv *Inventory) saveVolumes(res []ec2.CreateVolumeOutput) {

@@ -7,15 +7,21 @@ import (
 
 // FetchInstances will retrieve instances from AWS
 func (inv *Inventory) FetchInstances() {
-	log.Println("GetInstances for region ", inv.Region)
+
+	log.Fatalf("  inventory %+v ", inv)
+	log.Println("   GetInstances for region ", inv.Region)
 	defer log.Println("  return GetInstances ", inv.Region)
 
 	// Fetch the inventory for this region from AWS
 	if e := inv.GetEC2(); e != nil {
 		req := e.DescribeInstancesRequest(&ec2.DescribeInstancesInput{})
 		if result, err := req.Send(); err == nil {
+
 			// Index the Instances we've recieved
+			log.Debugln("  index Instances ... ")
 			inv.indexInstances(result.Reservations)
+
+			log.Debugln("  save Instances ... ")
 			inv.saveInstances(result.Reservations)
 		}
 	}
