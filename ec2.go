@@ -22,7 +22,6 @@ import (
 
 // GetEC2 returns an ec2 service ready for use
 func GetEC2(name string) (ec2Svc *ec2.EC2) {
-	name = "us-west-1"
 	log.Debugln("Get EC2 for region ", region)
 	defer log.Debugln(" leaving EC2 %+v ", ec2Svc)
 
@@ -42,15 +41,6 @@ func GetEC2(name string) (ec2Svc *ec2.EC2) {
 	return ec2Svc
 }
 
-// GetEC2 Inventory specific version of EC2 client
-/*
-func (inv *Inventory) GetEC2() *ec2.EC2 {
-	if inv.EC2 == nil {
-		inv.EC2 = GetEC2(inv.Region)
-	}
-	return inv.EC2
-}
-*/
 // FetchInventories gather instance and volume data from all AWS regions.
 /*
 func FetchInventories() error {

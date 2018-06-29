@@ -1,7 +1,7 @@
 package goaws
 
 import (
-	"log"
+	log "github.com/rustyeddy/logrus"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 )
@@ -14,16 +14,20 @@ func FetchInstances(region string) *ec2.DescribeInstancesOutput {
 	// Fetch the inventory for this region from AWS
 	if e := GetEC2(region); e != nil {
 		req := e.DescribeInstancesRequest(&ec2.DescribeInstancesInput{})
-		if result, err := req.Send(); err == nil {
-			log.Fatalf("result => %+v ", result)
-			// Index the Instances we've recieved
-			// log.Debugln("  index Instances ... ")
-			// inv.indexInstances(result.Reservations)
-
-			// log.Debugln("  save Instances ... ")
-			// inv.saveInstances(result.Reservations)
-			return result
+		result, err := req.Send()
+		if err != nil {
+			log.Errorf("  failed request instances %+v ", err)
+			return nil
 		}
+
+		idxname := region + "-instances"
+		obj, err := cache.StoreObject(idxname, result)
+		if err != nil {
+			log.Errorf("  failed to store object %s -> err ", idxname, err)
+			return nil
+		}
+		log.Debug("  got an object %+v ", obj)
+		return result
 	} else {
 		log.Fatalf("  failed to get EC2 client for region %s ", region)
 	}
