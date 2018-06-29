@@ -72,13 +72,6 @@ func FindFiles(pattern string) []string {
 	return paths
 }
 
-// addPath appends another string to the paths that need to be
-// searched.
-func (inv *Inventory) addPath(path string) {
-	// A mutex is needed for concurency
-	inv.pathQueue = append(inv.pathQueue, path)
-}
-
 // ReadFiles will recieve the specified files into the inventory
 func (inv *Inventory) ReadFiles(paths []string) {
 	for _, p := range paths {

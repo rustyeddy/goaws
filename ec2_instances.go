@@ -7,7 +7,6 @@ import (
 
 // FetchInstances will retrieve instances from AWS
 func (inv *Inventory) FetchInstances() {
-
 	if inv == nil {
 		panic("inv should never by nil")
 	}

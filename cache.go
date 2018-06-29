@@ -6,6 +6,7 @@ import (
 
 var (
 	cache *store.Store
+	path  string
 )
 
 // Cache will return the cache
@@ -14,10 +15,4 @@ func Cache() *store.Store {
 		cache = store.UseStore(config.Basedir)
 	}
 	return cache
-}
-
-// GetInventory from the cache for the given region
-func (c *store.Store) GetInventory(region string) (inv *Inventory) {
-
-	inv = c.Get(region)
 }
