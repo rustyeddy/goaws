@@ -1,13 +1,14 @@
 package goaws
 
 import (
+	"fmt"
+
 	"github.com/aws/aws-sdk-go-v2/aws/external"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
 )
 
-/*
-   These functions handle all communication with aws. Xlate files
+/* These functions handle all communication with aws. Translate files
    between JSON & Go.  This file also handles caching aws data in
    local files system.
 
@@ -23,7 +24,6 @@ import (
 
 // GetEC2 returns an ec2 service ready for use
 func GetEC2(name string) *ec2.EC2 {
-
 	cfg, err := external.LoadDefaultAWSConfig()
 	if err == nil {
 		log.Error("failed to get an EC2 client ", name, err)
@@ -46,18 +46,34 @@ func (inv *Inventory) GetEC2() *ec2.EC2 {
 }
 
 // FetchInventories gather instance and volume data from all AWS regions.
-func FetchInventories() {
+func FetchInventories() error {
+
+	log.Debugf("~~> FetchInventories ")
+	defer log.Debugf("<~~ return FetchInventories .. ")
+
+	log.Debug("  -- Get regions .. ")
 	regions := Regions()
 	if regions == nil {
 		log.Fatalf("regions should not be nil %+v", regions)
 	}
+
+	log.Debugf("  -- walk (%d) regions .. ", len(regions))
 	for _, region := range regions {
-		inv := inventories.Get(region)
-		if inv != nil {
-			inv.FetchInstances()
-			inv.FetchVolumes()
+		inv, e := inventories[region]
+		if !e {
+			if inv = NewInventory(region); inv == nil {
+				log.Fatalf("  ## NewInventory failed .. nil ")
+				continue
+			}
 		}
+		if inv == nil {
+			panic("This should not happen ... ")
+			return fmt.Errorf("failed to find or create an inventory for region ", region)
+		}
+		inv.FetchInventory()
+		return fmt.Errorf("  failed to recieve inventory for %+v ", inv)
 	}
+	return nil
 }
 
 // FetchInventory is specific to a region

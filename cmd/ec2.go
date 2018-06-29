@@ -19,18 +19,11 @@ func init() {
 	RootCmd.AddCommand(&ec2Cmd)
 }
 
+// DoEC2 executes the EC2
 func DoEC2(cmd *cobra.Command, args []string) {
-
-	// Walk the regions getting inventories
-	if regions = goaws.Regions(); regions == nil {
-		log.Warn("Failed to grab a list of regions... ")
-		return
+	inv := goaws.FetchInventories()
+	if inv == nil {
+		log.Fatalf("  inventories %+v ", inv)
 	}
-	var inv *goaws.Inventory
-	for _, n := range regions {
-		if inv = goaws.GetInventory(n); inv == nil {
-			log.Errorf("failed to get inventory (DoEC2) %s ", n)
-		}
-		log.Printf("  got an inventory %+v with no data ", inv)
-	}
+	log.Printf(" inventories %+v ", inv)
 }

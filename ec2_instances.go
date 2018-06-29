@@ -8,7 +8,9 @@ import (
 // FetchInstances will retrieve instances from AWS
 func (inv *Inventory) FetchInstances() {
 
-	log.Fatalf("  inventory %+v ", inv)
+	if inv == nil {
+		panic("inv should never by nil")
+	}
 	log.Println("   GetInstances for region ", inv.Region)
 	defer log.Println("  return GetInstances ", inv.Region)
 

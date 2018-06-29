@@ -17,6 +17,7 @@ func ReadInventories() {
 	if currentRegion != "" {
 		pattern = "cache/" + currentRegion + ".json"
 	}
+
 	paths := FindFiles(pattern)
 	if paths == nil {
 		log.Error("failed to read inventory files")
@@ -55,11 +56,7 @@ func InventoryFromPath(path string) *Inventory {
 		return nil
 	}
 
-	inv := inventories.GetOrCreate(region)
-	if inv == nil {
-		log.Error("GetOrCreate region failed to create an Inventory ", region)
-		return nil
-	}
+	inv := NewInventory(region)
 	inv.addPath(path)
 	return inv
 }
