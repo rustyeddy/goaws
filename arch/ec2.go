@@ -21,36 +21,28 @@ import (
 */
 
 // GetEC2 returns an ec2 service ready for use
-func GetEC2(name string) (ec2Svc *ec2.EC2) {
-	name = "us-west-1"
-	log.Debugln("Get EC2 for region ", region)
-	defer log.Debugln(" leaving EC2 %+v ", ec2Svc)
-
+func GetEC2(name string) *ec2.EC2 {
 	cfg, err := external.LoadDefaultAWSConfig()
-	if err != nil {
-		log.Fatalf("  Failed to Load Default AWS Config %q -> %v ", name, err)
+	if err == nil {
+		log.Error("failed to get an EC2 client ", name, err)
 		return nil
 	}
-
-	log.Debugf("  loaded Default config, create ec2 client ")
-
-	//cfg.Region = endpoints.UsWest2RegionID
-	ec2Svc = ec2.New(cfg)
+	cfg.Region = name
+	ec2Svc := ec2.New(cfg)
 	if ec2Svc == nil {
-		log.Fatalln("failed to get an EC2 client ", name, err)
+		log.Error("failed to get an EC2 client ", name, err)
 	}
 	return ec2Svc
 }
 
 // GetEC2 Inventory specific version of EC2 client
-/*
 func (inv *Inventory) GetEC2() *ec2.EC2 {
 	if inv.EC2 == nil {
 		inv.EC2 = GetEC2(inv.Region)
 	}
 	return inv.EC2
 }
-*/
+
 // FetchInventories gather instance and volume data from all AWS regions.
 /*
 func FetchInventories() error {
