@@ -3,7 +3,7 @@ cmd = goa
 dirs = cmd
 
 build:
-		go build -o $(cmd) .
+		go build 
 		make -C cmd build
 		make -C goa build
 

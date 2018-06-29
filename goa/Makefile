@@ -2,6 +2,9 @@ cmd = goa
 
 dirs = cmd srv
 
+goa: main.go
+	go build -o $@ $<
+
 build:
 		go build -o $(cmd) 
 

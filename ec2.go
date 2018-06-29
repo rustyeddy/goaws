@@ -1,8 +1,6 @@
 package goaws
 
 import (
-	"fmt"
-
 	"github.com/aws/aws-sdk-go-v2/aws/external"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
@@ -38,14 +36,16 @@ func GetEC2(name string) *ec2.EC2 {
 }
 
 // GetEC2 Inventory specific version of EC2 client
+/*
 func (inv *Inventory) GetEC2() *ec2.EC2 {
 	if inv.EC2 == nil {
 		inv.EC2 = GetEC2(inv.Region)
 	}
 	return inv.EC2
 }
-
+*/
 // FetchInventories gather instance and volume data from all AWS regions.
+/*
 func FetchInventories() error {
 
 	log.Debugf("~~> FetchInventories ")
@@ -67,8 +67,7 @@ func FetchInventories() error {
 			}
 		}
 		if inv == nil {
-			panic("This should not happen ... ")
-			return fmt.Errorf("failed to find or create an inventory for region ", region)
+			return fmt.Errorf("failed inventory for region %s", region)
 		}
 		inv.FetchInventory()
 		return fmt.Errorf("  failed to recieve inventory for %+v ", inv)
@@ -82,3 +81,4 @@ func (inv *Inventory) FetchInventory() *Inventory {
 	inv.FetchVolumes()
 	return inv
 }
+*/

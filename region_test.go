@@ -4,13 +4,7 @@ import (
 	"testing"
 )
 
-var (
-	tstBasedir string
-	tstRegions []string
-)
-
-func init() {
-	tstRegions = []string{"us-west-1", "us-west-2", "us-central-1"}
+func TestNoCache(t *testing.T) {
 }
 
 // TestSaveReadRegions this file actualy calls AWS, should read from
@@ -34,9 +28,8 @@ func TestFetchRegions(t *testing.T) {
 // TestSaveReadRegions will make sure our regions are being saved
 // and read to and from the disk as expected.
 func TestSaveRegions(t *testing.T) {
-
 	regs := Regions()
-	_, err := S.StoreObject("regions", regs)
+	_, err := cache.StoreObject("regions", regs)
 	if err != nil {
 		t.Error("failed to store regions ", err)
 	}

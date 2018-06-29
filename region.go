@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	regions       []string
-	currentRegion string
+	regions []string
+	region  string
 )
 
 // SetCurrentRegion(region string)
@@ -37,10 +37,12 @@ func Regions() []string {
 		err := cache.FetchObject("regions", &regions)
 		if err != nil {
 			log.Debugf("  ## error fetching regions %v ..", err)
-		} else if regions != nil {
-			log.Debugf("  We have regions! %d of em", len(regions))
-			return regions
 		}
+	}
+
+	if regions != nil {
+		log.Debugf("  We have regions! %d of em", len(regions))
+		return regions
 	}
 
 	// go to the source for regions

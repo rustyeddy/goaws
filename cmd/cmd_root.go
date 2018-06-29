@@ -7,7 +7,6 @@ import (
 	"github.com/rustyeddy/goaws"
 	log "github.com/rustyeddy/logrus"
 	"github.com/rustyeddy/store"
-
 	"github.com/spf13/cobra"
 )
 
