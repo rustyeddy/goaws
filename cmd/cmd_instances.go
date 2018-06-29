@@ -33,6 +33,7 @@ func DoEC2(cmd *cobra.Command, args []string) {
 			log.Errorf("  no instances for region %s", r)
 			continue
 		}
-		log.Fatalf("%+v", instances)
+		// Print some instances information
+
 	}
 }
