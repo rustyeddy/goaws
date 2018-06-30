@@ -29,7 +29,7 @@ func FetchInstances(region string) (result *ec2.DescribeInstancesOutput) {
 		return result
 	}
 
-	log.Debugf("  fetch instance data from AWS  ", region)
+	log.Debugf("  fetch instance data from AWS %s ", region)
 	req := e.DescribeInstancesRequest(&ec2.DescribeInstancesInput{})
 	result, err = req.Send()
 	if err != nil {
@@ -43,6 +43,6 @@ func FetchInstances(region string) (result *ec2.DescribeInstancesOutput) {
 		log.Errorf("  failed to store object %s -> err ", idxname, err)
 		return nil
 	}
-	log.Debug("  object cached at path %s ", obj.Path)
+	log.Debugf("  object cached at path %s ", obj.Path)
 	return result
 }

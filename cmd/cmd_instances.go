@@ -20,6 +20,7 @@ var (
 )
 
 func init() {
+
 	RootCmd.AddCommand(&ec2Cmd)
 	instances = make(map[string]*ec2.DescribeInstancesOutput)
 	volumes = make(map[string]*ec2.CreateVolumeOutput)
@@ -30,7 +31,7 @@ func DoEC2(cmd *cobra.Command, args []string) {
 
 	regions := goaws.Regions()
 	if regions == nil {
-		log.Fatalf("  expected list of regions got ()")
+		log.Fatal("  expected list of regions got ()")
 	}
 
 	for _, region := range regions {
@@ -47,15 +48,14 @@ func DoEC2(cmd *cobra.Command, args []string) {
 		// Print some instances information
 		nextToken := results.NextToken
 		resvs := results.Reservations
-		for i, resv := range resvs {
-			log.Debugf("  %d - resv %v ", i, resv)
+		for _, resv := range resvs {
 			for j, inst := range resv.Instances {
-				log.Debugf("  %d instance %v ", j, inst)
+				log.Debugf("  %d instance %s ", j, *inst.InstanceId)
 			}
 		}
-		if *nextToken != "" {
+		if nextToken != nil {
 			log.Debugf("  nextToken %s -> cnt instances %d ",
-				nextToken, len(instances))
+				*nextToken, len(instances))
 		} else {
 			log.Debugf("  instances %d ", len(instances))
 		}

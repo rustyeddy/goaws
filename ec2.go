@@ -23,7 +23,7 @@ import (
 // GetEC2 returns an ec2 service ready for use
 func GetEC2(name string) (ec2Svc *ec2.EC2) {
 	log.Debugln("Get EC2 for region ", region)
-	defer log.Debugln(" leaving EC2 %+v ", ec2Svc)
+	defer log.Debugln(" leaving EC2 %v ", ec2Svc)
 
 	cfg, err := external.LoadDefaultAWSConfig()
 	if err != nil {
@@ -40,42 +40,3 @@ func GetEC2(name string) (ec2Svc *ec2.EC2) {
 	}
 	return ec2Svc
 }
-
-// FetchInventories gather instance and volume data from all AWS regions.
-/*
-func FetchInventories() error {
-
-	log.Debugf("~~> FetchInventories ")
-	defer log.Debugf("<~~ return FetchInventories .. ")
-
-	log.Debug("  -- Get regions .. ")
-	regions := Regions()
-	if regions == nil {
-		log.Fatalf("regions should not be nil %+v", regions)
-	}
-
-	log.Debugf("  -- walk (%d) regions .. ", len(regions))
-	for _, region := range regions {
-		inv, e := inventories[region]
-		if !e {
-			if inv = NewInventory(region); inv == nil {
-				log.Fatalf("  ## NewInventory failed .. nil ")
-				continue
-			}
-		}
-		if inv == nil {
-			return fmt.Errorf("failed inventory for region %s", region)
-		}
-		inv.FetchInventory()
-		return fmt.Errorf("  failed to recieve inventory for %+v ", inv)
-	}
-	return nil
-}
-
-// FetchInventory is specific to a region
-func (inv *Inventory) FetchInventory() *Inventory {
-	inv.FetchInstances()
-	inv.FetchVolumes()
-	return inv
-}
-*/
