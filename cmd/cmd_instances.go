@@ -8,26 +8,22 @@ import (
 )
 
 var (
-	regions   []string
-	instances map[string]*ec2.DescribeInstancesOutput
-	volumes   map[string]*ec2.CreateVolumeOutput
-
-	ec2Cmd = cobra.Command{
+	regions     []string
+	instances   map[string]*ec2.DescribeInstancesOutput
+	instanceCmd = cobra.Command{
 		Use:   "instances",
-		Short: "list EC2 instances",
-		Run:   DoEC2,
+		Short: "list instances",
+		Run:   doInstances,
 	}
 )
 
 func init() {
-
-	RootCmd.AddCommand(&ec2Cmd)
+	RootCmd.AddCommand(&instanceCmd)
 	instances = make(map[string]*ec2.DescribeInstancesOutput)
-	volumes = make(map[string]*ec2.CreateVolumeOutput)
 }
 
 // DoEC2 executes the EC2
-func DoEC2(cmd *cobra.Command, args []string) {
+func doInstances(cmd *cobra.Command, args []string) {
 
 	regions := goaws.Regions()
 	if regions == nil {
