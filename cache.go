@@ -16,5 +16,3 @@ func Cache() *store.Store {
 	}
 	return cache
 }
-
-// Inventory will return the cached version of the inventory

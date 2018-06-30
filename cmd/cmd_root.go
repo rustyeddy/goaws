@@ -35,7 +35,7 @@ func Execute() {
 
 // RunRoot runs the root command
 func GoaDo(cmd *cobra.Command, args []string) {
-	cache := goaws.Cache()
+	cache := goaws.Cache() // ???
 
 	log.Println("Welcome to Goa! ")
 	log.Println("  basedir  ", config.Basedir)
