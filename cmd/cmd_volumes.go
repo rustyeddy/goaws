@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/rustyeddy/goaws"
@@ -11,7 +10,7 @@ import (
 )
 
 var (
-	volumes       map[string]*ec2.CreateVolumeOutput
+	volmap        map[string]*ec2.CreateVolumeOutput
 	volumeCommand = cobra.Command{
 		Use:   "volumes",
 		Short: "list volumes",
@@ -21,7 +20,7 @@ var (
 
 func init() {
 	RootCmd.AddCommand(&volumeCommand)
-	volumes = make(map[string]*ec2.CreateVolumeOutput)
+	volmap = make(map[string]*ec2.CreateVolumeOutput)
 }
 
 func doVolumes(cmd *cobra.Command, args []string) {
@@ -30,22 +29,19 @@ func doVolumes(cmd *cobra.Command, args []string) {
 		log.Fatal("  failed to get the regions, can't continue ")
 	}
 
+	cache := goaws.Cache()
 	for _, region := range regions {
-		results, volmap := goaws.FetchVolumes(region)
-		if results == nil {
+		volmap := goaws.FetchVolumes(region)
+		if volmap == nil {
 			log.Errorf("  no volumes for region %s ", region)
 			continue
 		}
-		if volmap == nil {
-			log.Errorf("  no volume map for region %s ", region)
-			continue
-		}
-		volmap[region] = results
+		log.Fatalf(" volmap %+v ", volmap)
 		log.Debugln("  save the result to volumes map for ", region)
-
 	}
+
 	if volmap != nil && len(volmap) > 0 {
-		cache := goaws.Cache()
+		cache = goaws.Cache()
 		if cache == nil {
 			log.Error("  failed to get cache for goaws ")
 			return
@@ -55,16 +51,11 @@ func doVolumes(cmd *cobra.Command, args []string) {
 			log.Errorf("  failed to store in cache %v ", err)
 			return
 		}
+		log.Debugf("  store volume %s", obj.Path)
 	}
 
-	if (volumes != nil) && (len(volumes) > 0) {
-		fname := egion + "-volumes"
-		obj, err := cache.StoreObject(fname, volumes)
-		if err != nil {
-			log.Errorf("  failed store a cache version of %s volumes %v", fname, err)
-			return
-		}
-		log.Debugf("  stashed object at path %s ", obj.Path)
+	for n, vol := range volmap {
+		fmt.Printf(" volumes %s -> %v", n, vol)
 	}
-	fmt.Printf(" volumes %s ", strings.Join(volumes, "\n\t"))
+
 }
