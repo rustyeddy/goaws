@@ -38,11 +38,9 @@ func doInstances(cmd *cobra.Command, args []string) {
 			fmt.Println("Failed to fetch instances ... ")
 			continue
 		}
-		log.Fatal("foo")
 		instances[region] = results
 		nextToken := results.NextToken
 		resvs := results.Reservations
-
 		for _, resv := range resvs {
 			for _, inst := range resv.Instances {
 				fmt.Printf("%s %s\n", *inst.InstanceId, *inst.KeyName)
