@@ -26,40 +26,35 @@ func init() {
 
 // DoEC2 executes the EC2
 func doInstances(cmd *cobra.Command, args []string) {
-
 	regions := goaws.Regions()
 	if regions == nil {
 		log.Fatal("  expected list of regions got ()")
 	}
 
 	for _, region := range regions {
-
-		fmt.Println("Fetching instances for region ", region)
+		fmt.Printf("\nFetching instances for region %s \n", region)
 		results := goaws.FetchInstances(region)
 		if results == nil {
-			log.Errorf("  no instances for region %s", region)
+			fmt.Println("Failed to fetch instances ... ")
 			continue
 		}
-
-		// Stick this thing on the Instances map
-		log.Debugln("  stick the result on the instances map for ", region)
+		log.Fatal("foo")
 		instances[region] = results
-
-		// Print some instances information
 		nextToken := results.NextToken
 		resvs := results.Reservations
+
 		for _, resv := range resvs {
-			for j, inst := range resv.Instances {
-				fmt.Printf("  %d instance %s ", j, *inst.InstanceId)
+			for _, inst := range resv.Instances {
+				fmt.Printf("%s %s\n", *inst.InstanceId, *inst.KeyName)
 			}
 		}
 
 		if nextToken != nil {
-			log.Debugf("  nextToken %s -> cnt instances %d ",
+			fmt.Printf("\tnextToken %s -> cnt instances %d\n ",
 				*nextToken, len(instances))
 		} else {
-			log.Debugf("  instances %d ", len(instances))
+			fmt.Printf("\tinstances %d\n", len(instances))
 		}
 	}
-	log.Infof("  cached stored %s ", o.Path)
+	fmt.Println("done...")
 }

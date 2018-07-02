@@ -19,7 +19,7 @@ func getEC2(name string) (ec2Svc *ec2.EC2) {
 
 	log.Debugf("  loaded Default config, create ec2 client ")
 
-	//cfg.Region = endpoints.UsWest2RegionID
+	cfg.Region = name
 	ec2Svc = ec2.New(cfg)
 	if ec2Svc == nil {
 		log.Fatalln("failed to get an EC2 client ", name, err)
