@@ -13,7 +13,7 @@ func FetchInstances(region string) (result *ec2.DescribeInstancesOutput) {
 	defer log.Println("  <~~ return GetInstances ", region)
 
 	// Fetch the inventory for this region from AWS
-	e := GetEC2(region)
+	e := getEC2(region)
 	if e == nil {
 		log.Errorf("  failed to get an EC2 client for ", region)
 		return nil

@@ -1,16 +1,22 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/rustyeddy/goaws"
 	log "github.com/rustyeddy/logrus"
 	"github.com/spf13/cobra"
 )
 
+type Disk struct {
+	VolumeId   string
+	InstanceId string
+	CreateTime string
+	AZ         string
+	Size       int
+}
+
 var (
-	volmap        map[string]*ec2.CreateVolumeOutput
+	volmap        map[string]*ec2.DescribeVolumesOutput
 	volumeCommand = cobra.Command{
 		Use:   "volumes",
 		Short: "list volumes",
@@ -20,7 +26,7 @@ var (
 
 func init() {
 	RootCmd.AddCommand(&volumeCommand)
-	volmap = make(map[string]*ec2.CreateVolumeOutput)
+	volmap = make(map[string]*ec2.DescribeVolumesOutput)
 }
 
 func doVolumes(cmd *cobra.Command, args []string) {
@@ -28,34 +34,33 @@ func doVolumes(cmd *cobra.Command, args []string) {
 	if regions == nil {
 		log.Fatal("  failed to get the regions, can't continue ")
 	}
-
-	cache := goaws.Cache()
 	for _, region := range regions {
 		volmap := goaws.FetchVolumes(region)
 		if volmap == nil {
 			log.Errorf("  no volumes for region %s ", region)
 			continue
 		}
-		log.Fatalf(" volmap %+v ", volmap)
 		log.Debugln("  save the result to volumes map for ", region)
-	}
 
-	if volmap != nil && len(volmap) > 0 {
-		cache = goaws.Cache()
-		if cache == nil {
-			log.Error("  failed to get cache for goaws ")
-			return
-		}
-		obj, err := cache.StoreObject("volume-map", &volmap)
-		if err != nil {
-			log.Errorf("  failed to store in cache %v ", err)
-			return
-		}
-		log.Debugf("  store volume %s", obj.Path)
-	}
+		//log.Fatalf(" %+v", volmap)
 
-	for n, vol := range volmap {
-		fmt.Printf(" volumes %s -> %v", n, vol)
+		//DisksFromVolume(volmap)
 	}
+}
 
+// Return a map of disks
+func DisksFromVolume(vout map[string]*ec2.CreateVolumeOutput) {
+
+	/*
+		mdisk := make(map[string]*Disk, 100)
+		log.Fatalf(" %T ", vout)
+
+			for region, volumes := range vout {
+				for _, vol := range volumes {
+					log.Fatalf(" vol: %T ", vol)
+					mdisk[vol.VolumeId] = vol
+				}
+			}
+	*/
+	//return mdisk
 }
