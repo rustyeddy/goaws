@@ -7,10 +7,7 @@ import (
 
 // FetchVolumes will retrieve instances from AWS, convert them to
 // Go structures we can use, it also "caches" a version to the filesystem
-func FetchVolumes(region string) *ec2.DescribeVolumesOutput {
-	// Check our local cache first
-	var volumes *ec2.DescribeVolumesOutput
-
+func FetchVolumes(region string) (volumes *ec2.DescribeVolumesOutput) {
 	log.Println("GetVolumes from ", region)
 	defer log.Printf("  return GetVolumes region %s ", region)
 
@@ -45,11 +42,11 @@ func FetchVolumes(region string) *ec2.DescribeVolumesOutput {
 	log.Debugf("  got result %v from region %s ", result, region)
 
 	// Save the results in the storage cache
-	obj, err := cache.StoreObject(idxname, &volumes)
+	obj, err := cache.StoreObject(idxname, result)
 	if err != nil || obj == nil {
 		log.Errorf("  failed to cache object %s", idxname)
 		return nil
 	}
-	log.Debugf("  retrieved %T", volumes)
-	return volumes
+	log.Debugf("  retrieved %T", result)
+	return result
 }

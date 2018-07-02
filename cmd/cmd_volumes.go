@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/rustyeddy/goaws"
 	log "github.com/rustyeddy/logrus"
@@ -35,16 +37,26 @@ func doVolumes(cmd *cobra.Command, args []string) {
 		log.Fatal("  failed to get the regions, can't continue ")
 	}
 	for _, region := range regions {
-		volmap := goaws.FetchVolumes(region)
-		if volmap == nil {
+		fmt.Println("Fetching volumes from ", region)
+		volout := goaws.FetchVolumes(region)
+		if volout == nil {
 			log.Errorf("  no volumes for region %s ", region)
 			continue
 		}
-		log.Debugln("  save the result to volumes map for ", region)
 
-		//log.Fatalf(" %+v", volmap)
+		for _, vol := range volout.Volumes {
+			fmt.Printf("  vol %s\n", *vol.VolumeId)
+			fmt.Printf(" snap %s\n", *vol.SnapshotId)
 
-		//DisksFromVolume(volmap)
+			fmt.Printf("   az %s\n", *vol.AvailabilityZone)
+			fmt.Printf(" size %d\n", *vol.Size)
+			//log.Fatalf(" %+v ", vol)
+			for _, att := range vol.Attachments {
+				fmt.Printf("   vol: %s\n", *att.VolumeId)
+				fmt.Printf("  inst: %s\n", *att.InstanceId)
+				fmt.Printf(" state: %s\n", att.State)
+			}
+		}
 	}
 }
 
