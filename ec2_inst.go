@@ -1,6 +1,8 @@
 package goaws
 
 import (
+	"fmt"
+
 	log "github.com/rustyeddy/logrus"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -19,20 +21,12 @@ func FetchInstances(region string) (result *ec2.DescribeInstancesOutput) {
 		return nil
 	}
 
-	var err error
-	var idxname string
-
-	caching := false
-	if caching {
-		idxname = region + "-instances"
-		log.Debugf("  instances idx %s", idxname)
-
-		// Check our local cache first
-		err := cache.FetchObject(idxname, result)
-		if err == nil && result != nil {
-			log.Debugf("  found cached version of %s .. ", idxname)
-			return result
-		}
+	// Look for a cached version of the object
+	idxname := region + "-instances"
+	err := cache.FetchObject(idxname, result)
+	if err == nil && result != nil {
+		log.Debugf("  found cached version of %s .. ", idxname)
+		return result
 	}
 
 	log.Debugf("  fetch instance data from AWS %s ", region)
@@ -43,14 +37,20 @@ func FetchInstances(region string) (result *ec2.DescribeInstancesOutput) {
 		return nil
 	}
 
-	if caching {
-		log.Debug("  AWS fetch successful, store object in cache .. ")
+	// Store the object for later cache usage
+	go func() {
 		obj, err := cache.StoreObject(idxname, result)
 		if err != nil {
 			log.Errorf("  failed to store object %s -> err ", idxname, err)
-			return nil
+			return
 		}
 		log.Debugf("  object cached at path %s ", obj.Path)
-	}
+	}()
+
+	fmt.Printf(" %+v ", result)
+
+	// Parse the json and see what we got
+	// vms := ParseInstances()
+
 	return result
 }

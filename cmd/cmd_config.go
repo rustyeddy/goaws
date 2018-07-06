@@ -1,6 +1,10 @@
 package cmd
 
 import (
+	"encoding/json"
+	"io/ioutil"
+
+	homedir "github.com/mitchellh/go-homedir"
 	log "github.com/rustyeddy/logrus"
 
 	"github.com/spf13/cobra"
@@ -32,26 +36,23 @@ func init() {
 func initConfig() {
 	log.Debug("~~> initConfig entered")
 	defer log.Debug("<~~ initConfig existing ...")
-	//store.SetLogger(log.GetLogger())
+
 	// TODO get the config file in there ...
-	/*
+	// Find home directory.
+	home, err := homedir.Dir()
+	if err != nil {
+		log.Fatalf("Can not find homedir")
+	}
 
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			log.Fatalf("Can not find homedir")
-		}
+	cfgfile := home + "/.config/goa.json"
+	jbuf, err := ioutil.ReadFile(cfgfile)
+	if err != nil {
+		log.Fatalf(cfgfile, " ", err)
+	}
+	log.Fatalf("%v", string(jbuf[0:90]))
 
-		cfgfile := home + "/.config/goa.json"
-		jbuf, err := ioutil.ReadFile(cfgfile)
-		if err != nil {
-			log.Fatalf("Failed to read config file %s ", cfgfile)
-		}
-
-		var configFile map[string]string
-		if err = json.Unmarshal(jbuf, &config); err != nil {
-			log.Fatalf("config file failure %v", err)
-		}
-	*/
-
+	var config map[string]string
+	if err = json.Unmarshal(jbuf, &config); err != nil {
+		log.Fatal(cfgfile, " ", err)
+	}
 }

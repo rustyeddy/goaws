@@ -7,19 +7,15 @@ import (
 
 // FetchVolumes will retrieve instances from AWS, convert them to
 // Go structures we can use, it also "caches" a version to the filesystem
-func FetchVolumes(region string) (volumes *ec2.DescribeVolumesOutput) {
+func GetVolumes(region string) []VDisk {
 	log.Println("GetVolumes from ", region)
 	defer log.Printf("  return GetVolumes region %s ", region)
-
-	// First, check local cache ...
-	if cache == nil {
-		log.Debug("  did not find volumes in cache ")
-	}
 
 	idxname := region + "-volumes"
 	log.Debugf("  looking in local cache for %s ", idxname)
 
-	err := cache.FetchObject(idxname, volumes)
+	var volumes []VDisk
+	err := cache.FetchObject(idxname, &volumes)
 	if err == nil && volumes != nil {
 		log.Debugf("  Found cached version of %s .. ", idxname)
 		return volumes
@@ -41,12 +37,43 @@ func FetchVolumes(region string) (volumes *ec2.DescribeVolumesOutput) {
 	}
 	log.Debugf("  got result %v from region %s ", result, region)
 
-	// Save the results in the storage cache
-	obj, err := cache.StoreObject(idxname, result)
-	if err != nil || obj == nil {
-		log.Errorf("  failed to cache object %s", idxname)
+	vdisks := vdisksFromAWS(result)
+	if vdisks == nil {
+		log.Errorf("failed to get vdisks from aws ")
 		return nil
 	}
-	log.Debugf("  retrieved %T", result)
-	return result
+
+	go func() {
+		// Save the results in the storage cache
+		obj, err := cache.StoreObject(idxname, volumes)
+		if err != nil || obj == nil {
+			log.Errorf("  failed to cache object %s", idxname)
+			return
+		}
+	}()
+	return vdisks
+}
+
+func vdisksFromAWS(result *ec2.DescribeVolumesOutput) (vd []VDisk) {
+	//volumes = ec2.DescribeVolumesOutput
+
+	log.Fatal(" %+v ", result)
+
+	/*
+		for _, vol := range results {
+			vinfo = map[string]string{
+				"VolumeId":         *vol.VolumeId,
+				"SnapshotId":       *vol.SnapshotId,
+				"AvailabilityZone": *vol.AvailabilityZone,
+				"State":            string(vol.State),
+			}
+			for _, att := range vol.Attachments {
+				vinfo["AttachVolumeId"] = *att.VolumeId
+				vinfo["InstanceId"] = *att.InstanceId
+				//vinfo["AttachState"] = aws.String(*att.State)
+				mdisk[vol.VolumeId] = vol
+			}
+		}
+	*/
+	return vd
 }
