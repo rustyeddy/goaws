@@ -5,16 +5,18 @@ import (
 )
 
 var (
-	cache   *store.Store
-	basedir string
+	defaultBasedir string = "/srv/www/goaws"
+	cache          *store.Store
 )
 
-func init() {
-	basedir = "/srv/goaws/cache"
-	cache = store.UseStore(basedir)
+func NewCache(dir string) *store.Store {
+	return store.UseStore(dir)
 }
 
 // Cache will return the cache
 func Cache() *store.Store {
+	if cache == nil {
+		cache = NewCache(defaultBasedir)
+	}
 	return cache
 }

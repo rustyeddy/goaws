@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/rustyeddy/goaws"
 	log "github.com/rustyeddy/logrus"
 	"github.com/spf13/cobra"
@@ -24,12 +26,14 @@ func doVolumes(cmd *cobra.Command, args []string) {
 		log.Fatal("  failed to get the regions, can't continue ")
 	}
 
-	var volumes []goaws.VDisk
+	var volumes map[string]*goaws.VDisk
 	for _, region := range regions {
 		// See if the cache is working
 		if volumes = goaws.GetVolumes(region); volumes == nil {
 			log.Fatal("  failed to get volumes from AWS")
 		}
-		log.Fatalf("  volumes %+v \n\n")
+		for _, vol := range volumes {
+			fmt.Println(vol)
+		}
 	}
 }

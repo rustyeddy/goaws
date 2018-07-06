@@ -25,8 +25,8 @@ func Execute() {
 	// Best place to set up cache???
 	cache := goaws.Cache()
 	if cache == nil {
-		log.Info("Root initConfig = calling UseStore ", Basedir)
-		cache = store.UseStore(Basedir)
+		log.Info("Root initConfig = calling UseStore ", Config.Basedir)
+		cache = store.UseStore(Config.Basedir)
 	}
 	if err := RootCmd.Execute(); err != nil {
 		log.Fatal(err)
@@ -38,7 +38,7 @@ func GoaDo(cmd *cobra.Command, args []string) {
 	cache := goaws.Cache() // ???
 
 	log.Println("Welcome to Goa! ")
-	log.Println("  basedir  ", Basedir)
+	log.Println("  basedir  ", Config.Basedir)
 	if cache == nil {
 		log.Println("  store .. no cache ")
 	} else {

@@ -10,7 +10,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
+// Configuration global to the goa command
+type Configuration struct {
 	Basedir string   // basedir for cache
 	Region  string   // current region
 	Regions []string // available regions
@@ -18,18 +19,24 @@ var (
 	Logfile   string
 	Logformat string
 	Loglevel  string
+}
+
+var (
+	Config Configuration
 )
 
 func init() {
 	cobra.OnInitialize(initConfig)
 	pflags := RootCmd.PersistentFlags()
-	pflags.StringVarP(&Basedir, "dir", "d", "/srv/goaws/", "base project directory")
-	pflags.StringVarP(&Region, "region", "r", "", "Select region defaults to all")
+	pflags.StringVarP(&Config.Basedir, "dir", "d", "/srv/goaws/", "base project directory")
+	pflags.StringVarP(&Config.Region, "region", "r", "", "Select region defaults to all")
 
 	// Log related flags
-	pflags.StringVarP(&Loglevel, "level", "L", "debug", "Select level of logging")
-	pflags.StringVarP(&Logformat, "format", "f", "json", "Select level of logging")
-	pflags.StringVarP(&Logfile, "logfile", "l", "stdout", "Set the logging output")
+	pflags.StringVarP(&Config.Loglevel, "level", "L", "debug", "Select level of logging")
+	pflags.StringVarP(&Config.Logformat, "format", "f", "json", "Select level of logging")
+	pflags.StringVarP(&Config.Logfile, "logfile", "l", "stdout", "Set the logging output")
+
+	//log.SetFlags(0)
 }
 
 // initConfig run everytime the subcmcd Execute() is run
@@ -49,10 +56,8 @@ func initConfig() {
 	if err != nil {
 		log.Fatalf(cfgfile, " ", err)
 	}
-	log.Fatalf("%v", string(jbuf[0:90]))
 
-	var config map[string]string
-	if err = json.Unmarshal(jbuf, &config); err != nil {
+	if err = json.Unmarshal(jbuf, &Config); err != nil {
 		log.Fatal(cfgfile, " ", err)
 	}
 }

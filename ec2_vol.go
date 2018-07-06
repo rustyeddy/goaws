@@ -7,18 +7,17 @@ import (
 
 // FetchVolumes will retrieve instances from AWS, convert them to
 // Go structures we can use, it also "caches" a version to the filesystem
-func GetVolumes(region string) []VDisk {
+func GetVolumes(region string) (vdisks map[string]*VDisk) {
 	log.Println("GetVolumes from ", region)
 	defer log.Printf("  return GetVolumes region %s ", region)
 
 	idxname := region + "-volumes"
 	log.Debugf("  looking in local cache for %s ", idxname)
 
-	var volumes []VDisk
-	err := cache.FetchObject(idxname, &volumes)
-	if err == nil && volumes != nil {
+	err := cache.FetchObject(idxname, &vdisks)
+	if err == nil && vdisks != nil {
 		log.Debugf("  Found cached version of %s .. ", idxname)
-		return volumes
+		return vdisks
 	}
 
 	log.Debugf("  Fetch Volumes from AWS for %s", region)
@@ -37,7 +36,7 @@ func GetVolumes(region string) []VDisk {
 	}
 	log.Debugf("  got result %v from region %s ", result, region)
 
-	vdisks := vdisksFromAWS(result)
+	vdisks = vdisksFromAWS(result)
 	if vdisks == nil {
 		log.Errorf("failed to get vdisks from aws ")
 		return nil
@@ -45,35 +44,33 @@ func GetVolumes(region string) []VDisk {
 
 	go func() {
 		// Save the results in the storage cache
-		obj, err := cache.StoreObject(idxname, volumes)
+		obj, err := cache.StoreObject(idxname, vdisks)
+		log.Infoln("  cache store object idx %s -> %v ", idxname, obj)
 		if err != nil || obj == nil {
-			log.Errorf("  failed to cache object %s", idxname)
+			log.Errorf("  failed to cache object idx %s -> %v ", idxname, obj)
 			return
 		}
 	}()
 	return vdisks
 }
 
-func vdisksFromAWS(result *ec2.DescribeVolumesOutput) (vd []VDisk) {
-	//volumes = ec2.DescribeVolumesOutput
-
-	log.Fatal(" %+v ", result)
-
-	/*
-		for _, vol := range results {
-			vinfo = map[string]string{
-				"VolumeId":         *vol.VolumeId,
-				"SnapshotId":       *vol.SnapshotId,
-				"AvailabilityZone": *vol.AvailabilityZone,
-				"State":            string(vol.State),
+func vdisksFromAWS(result *ec2.DescribeVolumesOutput) (vdisks map[string]*VDisk) {
+	vdisks = make(map[string]*VDisk, 10)
+	volumes := result.Volumes
+	for _, vol := range volumes {
+		for _, att := range vol.Attachments {
+			vd := &VDisk{
+				raw:         &vol,
+				VolumeId:    *vol.VolumeId,
+				SnapshotId:  *vol.SnapshotId,
+				Size:        *vol.Size,
+				State:       vol.State,
+				InstanceId:  *att.InstanceId,
+				AttachState: att.State,
+				AvailZone:   *vol.AvailabilityZone,
 			}
-			for _, att := range vol.Attachments {
-				vinfo["AttachVolumeId"] = *att.VolumeId
-				vinfo["InstanceId"] = *att.InstanceId
-				//vinfo["AttachState"] = aws.String(*att.State)
-				mdisk[vol.VolumeId] = vol
-			}
+			vdisks[vd.VolumeId] = vd
 		}
-	*/
-	return vd
+	}
+	return vdisks
 }
