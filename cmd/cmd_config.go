@@ -41,8 +41,8 @@ func init() {
 
 // initConfig run everytime the subcmcd Execute() is run
 func initConfig() {
-	log.Debug("~~> initConfig entered")
-	defer log.Debug("<~~ initConfig existing ...")
+	log.Debugln("~~> initConfig entered")
+	defer log.Debugln("<~~ initConfig existing ...")
 
 	// TODO get the config file in there ...
 	// Find home directory.

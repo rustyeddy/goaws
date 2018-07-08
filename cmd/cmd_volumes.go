@@ -9,10 +9,15 @@ import (
 )
 
 var (
-	volumeCommand = cobra.Command{
+	cmdVolumes = cobra.Command{
 		Use:   "volumes",
 		Short: "list volumes",
 		Run:   doVolumes,
+	}
+	cmdVolume = cobra.Command{
+		Use:   "vol",
+		Short: "Get information or content of a volume",
+		Run:   doVol,
 	}
 )
 
@@ -29,6 +34,7 @@ func doVolumes(cmd *cobra.Command, args []string) {
 	var volumes map[string]*goaws.VDisk
 	for _, region := range regions {
 		// See if the cache is working
+		fmt.Println("doVolumes is calling get volumes ")
 		if volumes = goaws.GetVolumes(region); volumes == nil {
 			log.Fatal("  failed to get volumes from AWS")
 		}

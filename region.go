@@ -10,7 +10,6 @@ import (
 
 var (
 	regions []string
-	region  string
 )
 
 // SetCurrentRegion(region string)

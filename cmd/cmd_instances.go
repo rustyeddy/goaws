@@ -12,16 +12,23 @@ import (
 var (
 	regions     []string
 	instances   map[string]*ec2.DescribeInstancesOutput
-	instanceCmd = cobra.Command{
+	cmdInstance = cobra.Command{
 		Use:   "instances",
 		Short: "list instances",
 		Run:   doInstances,
 	}
+
+	cmdDeleteInstance = cobra.Command{
+		Use:   "rminst",
+		Short: "Remove an instance and associated volume(s) if any",
+		Run:   doDeleteInstance,
+	}
 )
 
 func init() {
-	RootCmd.AddCommand(&instanceCmd)
 	instances = make(map[string]*ec2.DescribeInstancesOutput)
+	RootCmd.AddCommand(&cmdInstance)
+	RootCmd.AddCommand(&cmdDeleteInstance)
 }
 
 // DoEC2 executes the EC2
@@ -32,27 +39,33 @@ func doInstances(cmd *cobra.Command, args []string) {
 	}
 
 	for _, region := range regions {
-		fmt.Printf("\nFetching instances for region %s \n", region)
-		results := goaws.FetchInstances(region)
-		if results == nil {
-			fmt.Println("Failed to fetch instances ... ")
+		// fmt.Printf("\nFetching instances for region %s \n", region)
+		instances := goaws.GetInstances(region)
+		if instances == nil {
+			// fmt.Println("Failed to fetch instances ... ")
 			continue
 		}
-		instances[region] = results
-		nextToken := results.NextToken
-		resvs := results.Reservations
-		for _, resv := range resvs {
-			for _, inst := range resv.Instances {
-				fmt.Printf("%s %s\n", *inst.InstanceId, *inst.KeyName)
-			}
-		}
-
-		if nextToken != nil {
-			fmt.Printf("\tnextToken %s -> cnt instances %d\n ",
-				*nextToken, len(instances))
-		} else {
-			fmt.Printf("\tinstances %d\n", len(instances))
+		for _, inst := range instances {
+			fmt.Println(inst)
 		}
 	}
-	fmt.Println("done...")
+}
+
+func doDeleteInstance(cmd *cobra.Command, args []string) {
+	// Find an instance and try to delete it..
+	regions := goaws.Regions()
+	for _, region := range regions {
+		fmt.Printf("Try to delete something from %s\n ", region)
+		vols := goaws.GetVolumes(region)
+		if vols == nil {
+			log.Fatalf("Expected Volumes got NOTHING")
+		}
+
+		for _, vol := range vols {
+			if err := goaws.DeleteVolume(region, vol.VolumeId); err != nil {
+				log.Fatalf("  failed to send DeleteVolume request %v", err)
+			}
+			log.Fatalf("VOL:  %+v ", vol)
+		}
+	}
 }

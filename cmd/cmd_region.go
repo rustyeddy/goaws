@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/rustyeddy/goaws"
@@ -24,12 +25,13 @@ func init() {
 
 func regionDo(cmd *cobra.Command, args []string) {
 
-	log.Debugln("list all regions ..")
+	fmt.Println("list all regions ..")
 	regions := goaws.Regions()
 	if regions == nil {
 		log.Error("  # Unable to file any regions, dieing ")
 	}
 
-	log.Printf("Regions[%d]: ", len(regions))
-	log.Printf("  %s", strings.Join(regions, "\n\t"))
+	fmt.Printf("Regions[%d]: \n", len(regions))
+	fmt.Printf("%s", strings.Join(regions, "\n"))
+	fmt.Printf("\n")
 }
