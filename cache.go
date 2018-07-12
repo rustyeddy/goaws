@@ -9,14 +9,17 @@ var (
 	cache          *store.Store
 )
 
-func NewCache(dir string) *store.Store {
-	return store.UseStore(dir)
+func init() {
+	cache = SetCache(defaultBasedir) // set a resonable default
 }
 
-// Cache will return the cache
+// SetCache to whatever dir you want
+func SetCache(dir string) *store.Store {
+	cache = store.UseStore(dir)
+	return cache
+}
+
+// Cache returns the goaws cache
 func Cache() *store.Store {
-	if cache == nil {
-		cache = NewCache(defaultBasedir)
-	}
 	return cache
 }

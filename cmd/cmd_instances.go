@@ -11,7 +11,6 @@ import (
 
 var (
 	regions     []string
-	instances   map[string]*ec2.DescribeInstancesOutput
 	cmdInstance = cobra.Command{
 		Use:   "instances",
 		Short: "list instances",
@@ -39,14 +38,11 @@ func doInstances(cmd *cobra.Command, args []string) {
 	}
 
 	for _, region := range regions {
+		cl := goaws.GetCloud(region)
 		// fmt.Printf("\nFetching instances for region %s \n", region)
-		instances := goaws.GetInstances(region)
-		if instances == nil {
-			// fmt.Println("Failed to fetch instances ... ")
-			continue
-		}
-		for _, inst := range instances {
-			fmt.Println(inst)
+		cl.Instaces = goaws.GetInstances(region)
+		for iid, inst := range cl.Instances {
+			fmt.Println(inst.InstanceId)
 		}
 	}
 }
@@ -55,17 +51,16 @@ func doDeleteInstance(cmd *cobra.Command, args []string) {
 	// Find an instance and try to delete it..
 	regions := goaws.Regions()
 	for _, region := range regions {
-		fmt.Printf("Try to delete something from %s\n ", region)
-		vols := goaws.GetVolumes(region)
-		if vols == nil {
-			log.Fatalf("Expected Volumes got NOTHING")
-		}
 
-		for _, vol := range vols {
-			if err := goaws.DeleteVolume(region, vol.VolumeId); err != nil {
+		fmt.Printf("Try to delete something from %s\n ", region)
+
+		cl.Instances = goasw.GetInstances(region)
+		for iid, inst := range cl.Instances {
+			volid := inst.VolumeId
+			if err := goaws.DeleteVolume(region, volid); err != nil {
 				log.Fatalf("  failed to send DeleteVolume request %v", err)
 			}
-			log.Fatalf("VOL:  %+v ", vol)
+			//log.Fatalf("VOL:  %+v ", vol)
 		}
 	}
 }

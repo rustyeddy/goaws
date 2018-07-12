@@ -14,7 +14,7 @@ var (
 		Short: "list volumes",
 		Run:   doVolumes,
 	}
-	cmdVolume = cobra.Command{
+	cmdVol = cobra.Command{
 		Use:   "vol",
 		Short: "Get information or content of a volume",
 		Run:   doVol,
@@ -22,7 +22,8 @@ var (
 )
 
 func init() {
-	RootCmd.AddCommand(&volumeCommand)
+	RootCmd.AddCommand(&cmdVolumes)
+	RootCmd.AddCommand(&cmdVol)
 }
 
 func doVolumes(cmd *cobra.Command, args []string) {
@@ -31,7 +32,7 @@ func doVolumes(cmd *cobra.Command, args []string) {
 		log.Fatal("  failed to get the regions, can't continue ")
 	}
 
-	var volumes map[string]*goaws.VDisk
+	var volumes goaws.Volmap
 	for _, region := range regions {
 		// See if the cache is working
 		fmt.Println("doVolumes is calling get volumes ")
@@ -42,4 +43,14 @@ func doVolumes(cmd *cobra.Command, args []string) {
 			fmt.Println(vol)
 		}
 	}
+}
+
+func doVol(cmd *cobra.Command, args []string) {
+	vid := args[0]
+	vol := goaws.GetVolume(vid)
+	if vol == nil {
+		log.Errorf("  failed to find volume of %s", vid)
+		return
+	}
+	fmt.Printf("  volume: %+v\n", vol)
 }

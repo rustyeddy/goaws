@@ -21,7 +21,6 @@ var (
 
 // Execute the RootCommand
 func Execute() {
-
 	// Best place to set up cache???
 	cache := goaws.Cache()
 	if cache == nil {
@@ -33,9 +32,9 @@ func Execute() {
 	}
 }
 
-// RunRoot runs the root command
+// GoaDo runs the root command
 func GoaDo(cmd *cobra.Command, args []string) {
-	cache := goaws.Cache() // ???
+	cache := goaws.Cache()
 
 	log.Println("Welcome to Goa! ")
 	log.Println("  basedir  ", Config.Basedir)

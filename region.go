@@ -8,10 +8,6 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
-var (
-	regions []string
-)
-
 // SetCurrentRegion(region string)
 
 // Regions returns a list of region names, this is just a list of
