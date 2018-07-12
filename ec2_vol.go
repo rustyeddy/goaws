@@ -19,8 +19,6 @@ type Volume struct {
 	raw         *ec2.CreateVolumeOutput
 }
 
-type Volmap map[string]*Volume
-
 func (v *Volume) String() string {
 	return fmt.Sprintf("%s %s %s %dGb", v.VolumeId, v.InstanceId, v.AvailZone, v.Size)
 }
@@ -88,6 +86,7 @@ func vdisksFromAWS(result *ec2.DescribeVolumesOutput) (vmap Volmap) {
 				AvailZone:   *vol.AvailabilityZone,
 			}
 			vmap[vol.VolumeId] = vol
+			awsGlobal.Volmap[vol.VolumeId] = vol
 		}
 	}
 	return vmap

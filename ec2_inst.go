@@ -8,9 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 )
 
-// Some fundamental types
-type Instmap map[string]*Instance
-
 // Host is an entity connected to a network
 type Instance struct {
 	InstanceId string
@@ -32,6 +29,7 @@ func GetInstances(region string) (imap Instmap) {
 	log.Debugln("~~> GetInstances for region ", region)
 	defer log.Debugln("  <~~ return GetInstances ", region)
 
+	// 0. Get the index name from region
 	// 1. Look for a cached version of the object, return if found
 	idxname := region + "-inst"
 	err := cache.FetchObject(idxname, &imap)
@@ -92,6 +90,7 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput) (imap Instmap) {
 				newinst.VolumeId = *bdm.Ebs.VolumeId
 			}
 			imap[newinst.InstanceId] = newinst
+			awsGlobal.Instmap[newinst.InstanceId] = newinst
 		}
 	}
 	if nextToken != nil {
@@ -102,23 +101,19 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput) (imap Instmap) {
 
 // DeleteInstance
 func DeleteInstance(instId string) error {
+	var svc *ec2.EC2
+	if svc = getEC2(region); svc == nil {
+		log.Errorf("  failed to get aws client for %s ", region)
+		return nil
+	}
 
-	/*
-
-		var svc *ec2.EC2
-		if svc = getEC2(region); svc == nil {
-			log.Errorf("  failed to get aws client for %s ", region)
-			return nil
-		}
-
-		log.Debugf("  sending request to delete instance region ", region)
-		req := svc.DeleteInstanceRequest(&ec2.DeleteInstanceInput{VolumeId: aws.String(instId)})
-		result, err := req.Send()
-		if err != nil {
-			return fmt.Errorf("  # failed response to request %v", err)
-		}
-		log.Debugf("  got result %v from region %s ", result, region)
-		log.Fatalf("  result %+v", result)
-	*/
+	log.Debugf("  sending request to delete instance region ", region)
+	req := svc.DeleteInstanceRequest(&ec2.DeleteInstanceInput{VolumeId: aws.String(instId)})
+	result, err := req.Send()
+	if err != nil {
+		return fmt.Errorf("  # failed response to request %v", err)
+	}
+	log.Debugf("  got result %v from region %s ", result, region)
+	log.Fatalf("  result %+v", result)
 	return nil
 }

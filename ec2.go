@@ -7,14 +7,20 @@ import (
 )
 
 type clientMap map[string]*ec2.EC2
+type Instmap map[string]*Instance
+type Volmap map[string]*Volume
+type Snapmap map[string]*Snapshot
+
 
 var (
 	awsClients clientMap
+	awsGlobal  AWSCloud
 	regions    []string
 )
 
 func init() {
 	awsClients = make(clientMap)
+	awsGlobal = GetCloud("global")
 }
 
 // AWSCloud is confined to a single region
