@@ -43,7 +43,12 @@ func GetCloud(region string) (cl *AWSCloud) {
 	if cl, e := awsClouds[region]; e {
 		return cl
 	}
-	return &AWSCloud{region: region}
+	return &AWSCloud{
+		region:  region,
+		Instmap: make(Instmap),
+		Volmap:  make(Volmap),
+		Snapmap: make(Snapmap),
+	}
 }
 
 func (cl *AWSCloud) Volumes() Volmap {
@@ -60,6 +65,7 @@ func (cl *AWSCloud) Instances() Instmap {
 	return cl.Instmap
 }
 
+// Snapshots returns the snapshots from AWS
 func (cl *AWSCloud) Snapshots() Snapmap {
 	if cl.Snapmap == nil {
 		cl.Snapmap = GetSnapshots(cl.region)
