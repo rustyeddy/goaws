@@ -29,6 +29,7 @@ func GetInstances(region string) (imap Instmap) {
 	log.Debugln("~~> GetInstances for region ", region)
 	defer log.Debugln("  <~~ return GetInstances ", region)
 
+	// 0. Get the index name from region
 	// 1. Look for a cached version of the object, return if found
 	idxname := region + "-inst"
 	err := cache.FetchObject(idxname, &imap)
