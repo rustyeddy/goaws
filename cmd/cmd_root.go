@@ -12,7 +12,7 @@ import (
 
 var (
 	RootCmd = cobra.Command{
-		Use:   "goa --help",
+		Use:   "goa",
 		Short: "Manage AWS Instances and Volumes",
 		Long:  `Gather AWS Volume and Image information, do stuff with it`,
 		Run:   GoaDo,

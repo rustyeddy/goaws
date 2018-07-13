@@ -8,9 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 )
 
-// Some fundamental types
-type Instmap map[string]*Instance
-
 // Host is an entity connected to a network
 type Instance struct {
 	InstanceId string
@@ -57,7 +54,7 @@ func GetInstances(region string) (imap Instmap) {
 	}
 
 	// 4. Parse the response into an instance Map
-	if imap = imapFromAWS(result); imap == nil {
+	if imap = imapFromAWS(result, region); imap == nil {
 		log.Errorf("  failed to get imap from AWS %v", err)
 		return nil
 	}
@@ -76,7 +73,7 @@ func GetInstances(region string) (imap Instmap) {
 }
 
 // Create an InstanceMap from the AWS EC2 response
-func imapFromAWS(result *ec2.DescribeInstancesOutput) (imap Instmap) {
+func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instmap) {
 
 	// Nextoken to read more
 	nextToken := result.NextToken
@@ -87,11 +84,13 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput) (imap Instmap) {
 				InstanceId: *inst.InstanceId,
 				State:      *inst.State,
 				KeyName:    *inst.KeyName,
+				Region:     region,
 			}
 			for _, bdm := range inst.BlockDeviceMappings {
 				newinst.VolumeId = *bdm.Ebs.VolumeId
 			}
 			imap[newinst.InstanceId] = newinst
+			allInstances[newinst.InstanceId] = newinst
 		}
 	}
 	if nextToken != nil {
@@ -102,8 +101,17 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput) (imap Instmap) {
 
 // DeleteInstance
 func DeleteInstance(instId string) error {
-
 	/*
+		var (
+			inst   *Instance
+			exists bool
+		)
+
+		if inst, exists := allInstances[instId]; !exists {
+			return store.ErrNotFound
+		}
+
+		region := inst.Region
 
 		var svc *ec2.EC2
 		if svc = getEC2(region); svc == nil {

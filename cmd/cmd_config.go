@@ -23,7 +23,6 @@ type Configuration struct {
 
 var (
 	Config Configuration
-	Clouds map[string]*Cloud = make(map[string]*Cloud)
 )
 
 func init() {

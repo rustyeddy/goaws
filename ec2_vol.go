@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
+	"github.com/rustyeddy/store"
 )
 
 type Volume struct {
@@ -13,13 +14,12 @@ type Volume struct {
 	InstanceId  string
 	SnapshotId  string
 	AvailZone   string
+	Region      string
 	Size        int64
 	State       ec2.VolumeState
 	AttachState ec2.VolumeAttachmentState
 	raw         *ec2.CreateVolumeOutput
 }
-
-type Volmap map[string]*Volume
 
 func (v *Volume) String() string {
 	return fmt.Sprintf("%s %s %s %dGb", v.VolumeId, v.InstanceId, v.AvailZone, v.Size)
@@ -56,12 +56,11 @@ func GetVolumes(region string) (vmap Volmap) {
 	}
 	log.Debugf("  got result %v from region %s ", result, region)
 
-	vmap = vdisksFromAWS(result)
+	vmap = vdisksFromAWS(result, region)
 	if vmap == nil {
 		log.Errorf("failed to get vdisks from aws ")
 		return nil
 	}
-
 	go func() {
 		// Save the results in the storage cache
 		obj, err := cache.StoreObject(idxname, vmap)
@@ -74,7 +73,7 @@ func GetVolumes(region string) (vmap Volmap) {
 	return vmap
 }
 
-func vdisksFromAWS(result *ec2.DescribeVolumesOutput) (vmap Volmap) {
+func vdisksFromAWS(result *ec2.DescribeVolumesOutput, region string) (vmap Volmap) {
 	for _, vol := range result.Volumes {
 		for _, att := range vol.Attachments {
 			vol := &Volume{
@@ -86,8 +85,10 @@ func vdisksFromAWS(result *ec2.DescribeVolumesOutput) (vmap Volmap) {
 				InstanceId:  *att.InstanceId,
 				AttachState: att.State,
 				AvailZone:   *vol.AvailabilityZone,
+				Region:      region,
 			}
 			vmap[vol.VolumeId] = vol
+			allVolumes[vol.VolumeId] = vol
 		}
 	}
 	return vmap
@@ -99,20 +100,23 @@ func GetVolume(volid string) *Volume {
 	log.Printf("GetVolume %s ", volid)
 	defer log.Printf("  return GetVolume %s ", volid)
 
-	if vmap := GetVolumes(region); vmap != nil {
-		if vol, ex := vmap[volid]; ex {
-			log.Infoln("  found vdisk version of disk ")
-			return vol
-		}
-		log.Errorln("  failed to get volume index ")
+	if vol, ex := allVolumes[volid]; ex {
+		return vol
 	}
 	return nil
 }
 
 // DeleteVolume will send a request to AWS to delete the given volume
-func DeleteVolume(region string, vol *Volume) error {
-	log.Debugln("DeleteVolume %s %s ", region, vol.VolumeId)
+func DeleteVolume(volid string) error {
+
+	log.Debugln("DeleteVolume %s", volid)
 	defer log.Debugln("  returning from deleteVolume ")
+
+	vol, ex := allVolumes[volid]
+	if ex {
+		return store.ErrNotFound.Append(string(volid))
+	}
+	region := vol.Region
 
 	var svc *ec2.EC2
 	if svc = getEC2(region); svc == nil {
@@ -179,24 +183,5 @@ func DetachVolume(region string, vol *Volume) error {
 		return fmt.Errorf("detach volume %v: ", err)
 	}
 	log.Infoln("  detached volume %s result %+v \n", vol.VolumeId, result)
-	return nil
-}
-
-// DeleteSnapshot will do that
-func DeleteSnapshot(region, snapid string) error {
-	var svc *ec2.EC2
-	if svc = getEC2(region); svc == nil {
-		return fmt.Errorf("  failed to get aws client for %s ", region)
-	}
-
-	// Create and send request to delete snapshot
-	req := svc.DeleteSnapshotRequest(&ec2.DeleteSnapshotInput{SnapshotId: aws.String(snapid)})
-	result, err := req.Send()
-	if err != nil {
-		log.Errorf("  # failed response to request %v", err)
-		return nil
-	}
-	log.Debugf("  got result %v from region %s ", result, region)
-	log.Fatalf("  result %+v", result)
 	return nil
 }

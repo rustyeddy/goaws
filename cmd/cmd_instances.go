@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/rustyeddy/goaws"
 	log "github.com/rustyeddy/logrus"
 	"github.com/spf13/cobra"
@@ -25,7 +24,6 @@ var (
 )
 
 func init() {
-	instances = make(map[string]*ec2.DescribeInstancesOutput)
 	RootCmd.AddCommand(&cmdInstance)
 	RootCmd.AddCommand(&cmdDeleteInstance)
 }
@@ -39,25 +37,29 @@ func doInstances(cmd *cobra.Command, args []string) {
 
 	for _, region := range regions {
 		cl := goaws.GetCloud(region)
-		// fmt.Printf("\nFetching instances for region %s \n", region)
-		cl.Instaces = goaws.GetInstances(region)
-		for iid, inst := range cl.Instances {
-			fmt.Println(inst.InstanceId)
+		cl.Instmap = goaws.GetInstances(region)
+		for iid, _ := range cl.Instmap {
+			fmt.Println(iid)
 		}
 	}
 }
 
+// doDeleteInstance
 func doDeleteInstance(cmd *cobra.Command, args []string) {
 	// Find an instance and try to delete it..
 	regions := goaws.Regions()
 	for _, region := range regions {
 
 		fmt.Printf("Try to delete something from %s\n ", region)
+		cl := goaws.GetCloud(region)
+		imap := goaws.GetInstances(region)
+		for k, v := range imap {
+			cl.Instmap[k] = v
+		}
 
-		cl.Instances = goasw.GetInstances(region)
-		for iid, inst := range cl.Instances {
+		for _, inst := range cl.Instmap {
 			volid := inst.VolumeId
-			if err := goaws.DeleteVolume(region, volid); err != nil {
+			if err := goaws.DeleteVolume(volid); err != nil {
 				log.Fatalf("  failed to send DeleteVolume request %v", err)
 			}
 			//log.Fatalf("VOL:  %+v ", vol)

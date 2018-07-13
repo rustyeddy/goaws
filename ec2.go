@@ -7,14 +7,27 @@ import (
 )
 
 type clientMap map[string]*ec2.EC2
+type cloudMap map[string]*AWSCloud
+type Instmap map[string]*Instance
+type Volmap map[string]*Volume
+type Snapmap map[string]*Snapshot
 
 var (
-	awsClients clientMap
-	regions    []string
+	regions      []string
+	awsClients   clientMap
+	awsClouds    cloudMap
+	allInstances Instmap
+	allVolumes   Volmap
+	allSnapshots Snapmap
 )
 
 func init() {
 	awsClients = make(clientMap)
+	awsClouds = make(cloudMap)
+
+	allInstances = make(Instmap)
+	allVolumes = make(Volmap)
+	allSnapshots = make(Snapmap)
 }
 
 // AWSCloud is confined to a single region
@@ -27,7 +40,7 @@ type AWSCloud struct {
 
 // GetCloud returns the cloud for the given region
 func GetCloud(region string) (cl *AWSCloud) {
-	if cl, e := awsClients[region]; e {
+	if cl, e := awsClouds[region]; e {
 		return cl
 	}
 	return &AWSCloud{region: region}
