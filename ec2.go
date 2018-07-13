@@ -67,7 +67,7 @@ func (cl *AWSCloud) Snapshots() Snapmap {
 	return cl.Snapmap
 }
 
-// getEC2 returns an ec2 service ready for use
+// getEC2 returns an ec2 service for the given region ready for use
 func getEC2(region string) (ec2Svc *ec2.EC2) {
 	log.Debugln("Get EC2 for region ", region)
 	defer log.Debugln(" leaving EC2 %v ", ec2Svc)

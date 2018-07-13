@@ -35,7 +35,6 @@ func doVolumes(cmd *cobra.Command, args []string) {
 	var volumes goaws.Volmap
 	for _, region := range regions {
 		// See if the cache is working
-		fmt.Println("doVolumes is calling get volumes ")
 		if volumes = goaws.GetVolumes(region); volumes == nil {
 			log.Fatal("  failed to get volumes from AWS")
 		}

@@ -78,6 +78,9 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 	// Nextoken to read more
 	nextToken := result.NextToken
 	resvs := result.Reservations
+	if imap == nil {
+		imap = make(Instmap)
+	}
 	for _, resv := range resvs {
 		for _, inst := range resv.Instances {
 			var newinst = &Instance{
