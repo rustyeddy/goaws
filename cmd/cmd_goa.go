@@ -63,7 +63,7 @@ var (
 func init() {
 
 	cache = goaws.GetCache()
-	log.Fatalf(" cache -> %+v", cache)
+	cache.Debugf(" cache -> %+v", cache)
 
 	// First level goa sub commands
 	GoaCmd.AddCommand(&RegionCmd)
