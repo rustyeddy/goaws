@@ -95,7 +95,7 @@ func vdisksFromAWS(result *ec2.DescribeVolumesOutput, region string) (vmap Volma
 				Region:      region,
 			}
 			vmap[vol.VolumeId] = vol
-			allVolumes[vol.VolumeId] = vol
+			AllVolumes[vol.VolumeId] = vol
 		}
 	}
 	return vmap
@@ -107,7 +107,7 @@ func GetVolume(volid string) *Volume {
 	log.Printf("GetVolume %s ", volid)
 	defer log.Printf("  return GetVolume %s ", volid)
 
-	if vol, ex := allVolumes[volid]; ex {
+	if vol, ex := AllVolumes[volid]; ex {
 		return vol
 	}
 	return nil
@@ -119,7 +119,7 @@ func DeleteVolume(volid string) error {
 	log.Debugln("DeleteVolume %s", volid)
 	defer log.Debugln("  returning from deleteVolume ")
 
-	vol, ex := allVolumes[volid]
+	vol, ex := AllVolumes[volid]
 	if !ex {
 		return store.ErrNotFound.Append(string(volid))
 	}

@@ -97,39 +97,35 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 				newinst.VolumeId = *bdm.Ebs.VolumeId
 			}
 			imap[newinst.InstanceId] = newinst
-			allInstances[newinst.InstanceId] = newinst
+			AllInstances[newinst.InstanceId] = newinst
 		}
 	}
 
 	if nextToken != nil {
 		panic("next token != nil ")
 	}
-	log.Fatalf("%+v", imap)
 	return imap
 }
 
 // TerminateInstance will terminate an instance
-func (cl *AWSCloud) TerminateInstances(iids []string) error {
+func TerminateInstances(region string, iids ...string) error {
 	var (
-		//err error
 		e *ec2.EC2
 	)
-
 	log.Debugln("~~> TerminateInstance instance id %v ", iids)
 	defer log.Debugln("  <~~ return TerminateInstance %v ", iids)
 
 	// 1. Get the ec2 client for the specified region
-	if e = getEC2(cl.region); e == nil {
-		return fmt.Errorf("expected ec2 cli for (%s) got () ", cl.region)
+	if e = getEC2(region); e == nil {
+		return fmt.Errorf("expected ec2 cli for (%s) got () ", region)
 	}
 
-	// 3. Prepare and send the AWS request and wait for a response
-	log.Debugf("  fetch instance data from AWS %s ", cl.region)
+	// 2. Prepare and send the AWS request and wait for a response
+	log.Debugf("  fetch instance data from AWS %s ", region)
 
 	var dryrun *bool
-	dr := true
+	dr := false
 	dryrun = &dr
-
 	req := e.TerminateInstancesRequest(&ec2.TerminateInstancesInput{
 		DryRun:      dryrun,
 		InstanceIds: iids,
@@ -139,7 +135,7 @@ func (cl *AWSCloud) TerminateInstances(iids []string) error {
 	if result, err := req.Send(); err != nil {
 		return fmt.Errorf("  failed request instances %v ", err)
 	} else {
-		cl.Errorf(" %+v ", result)
+		log.Fatalf(" %+v ", result)
 	}
 	return nil
 }

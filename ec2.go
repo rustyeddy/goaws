@@ -29,18 +29,18 @@ var (
 	awsClients clientmap
 	AWSClouds  Cloudmap
 
-	allInstances Instmap
-	allVolumes   Volmap
-	allSnapshots Snapmap
+	AllInstances Instmap
+	AllVolumes   Volmap
+	AllSnapshots Snapmap
 )
 
 func init() {
 	awsClients = make(clientmap)
 	AWSClouds = make(Cloudmap, 20)
 
-	allInstances = make(Instmap)
-	allVolumes = make(Volmap)
-	allSnapshots = make(Snapmap)
+	AllInstances = make(Instmap)
+	AllVolumes = make(Volmap)
+	AllSnapshots = make(Snapmap)
 }
 
 // GetCloud returns the cloud for the given region

@@ -37,6 +37,13 @@ var (
 		Run:   cmdInstances,
 	}
 
+	// InstCmd goa instances
+	TerminateInstancesCmd = cobra.Command{
+		Use:   "terminate",
+		Short: "Manage AWS Instances",
+		Run:   cmdTerminateInstances,
+	}
+
 	// VolCmd list Volumes from all regions (or the -region flag)
 	VolumeCmd = cobra.Command{
 		Use:   "volume",
@@ -71,10 +78,11 @@ func init() {
 	GoaCmd.AddCommand(&SnapshotCmd)
 	GoaCmd.AddCommand(&VolumeCmd)
 
+	// go instance terminate iid iid2 iid3 ...
+	InstanceCmd.AddCommand(&TerminateInstancesCmd)
+
 	// Second level volume commands
 	VolumeCmd.AddCommand(&VolumeDeleteCmd)
-
-	// Now get the AWS Cloud structure ready
 }
 
 // Execute the RootCommand
@@ -118,6 +126,14 @@ func cmdInstances(cmd *cobra.Command, args []string) {
 	}
 }
 
+// List the instances
+func cmdTerminateInstances(cmd *cobra.Command, args []string) {
+	if err := goaws.TerminateInstances(args[0], args[1:]...); err != nil {
+		log.Errorf("  problems with Terminate Instances %v", err)
+		return
+	}
+}
+
 // List volumes - TODO: check the regions argument
 func cmdVolumes(cmd *cobra.Command, args []string) {
 	regions := goaws.Regions()
@@ -129,7 +145,7 @@ func cmdVolumes(cmd *cobra.Command, args []string) {
 	for _, region := range regions {
 		// See if the cache is working
 		if volumes = goaws.GetVolumes(region); volumes == nil {
-			log.Fatal("  failed to get volumes from AWS")
+			log.Warning("  failed to get volumes from AWS ", region)
 		}
 		for _, vol := range volumes {
 			fmt.Println(vol)
