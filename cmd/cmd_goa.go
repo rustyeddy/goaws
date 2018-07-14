@@ -69,6 +69,7 @@ func init() {
 	GoaCmd.AddCommand(&RegionCmd)
 	GoaCmd.AddCommand(&InstanceCmd)
 	GoaCmd.AddCommand(&SnapshotCmd)
+	GoaCmd.AddCommand(&VolumeCmd)
 
 	// Second level volume commands
 	VolumeCmd.AddCommand(&VolumeDeleteCmd)
