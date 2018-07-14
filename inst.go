@@ -2,10 +2,10 @@ package goaws
 
 import (
 	"fmt"
-
-	log "github.com/rustyeddy/logrus"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
+	log "github.com/rustyeddy/logrus"
 )
 
 // Host is an entity connected to a network
@@ -33,6 +33,7 @@ func GetInstances(region string) (imap Instmap) {
 	defer log.Debugln("  <~~ return GetInstances ", region)
 
 	// 0. Get the index name from region
+
 	// 1. Look for a cached version of the object, return if found
 	idxname := region + "-inst"
 	err := cache.FetchObject(idxname, &imap)
@@ -75,6 +76,14 @@ func GetInstances(region string) (imap Instmap) {
 	return imap
 }
 
+// GetInstances will get the instances for this cloud
+func (cl *AWSCloud) GetInstances(iids []string) Instmap {
+	if cl.Instmap == nil {
+		cl.Instmap = GetInstances(cl.region)
+	}
+	return cl.Instmap
+}
+
 // Create an InstanceMap from the AWS EC2 response
 func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instmap) {
 
@@ -107,8 +116,16 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 	return imap
 }
 
+// GetInstance from InstanceId
+func GetInstance(iid string) *Instance {
+	if inst, e := AllInstances[iid]; e {
+		return inst
+	}
+	return nil
+}
+
 // TerminateInstance will terminate an instance
-func TerminateInstances(region string, iids ...string) error {
+func TerminateInstances(region string, iids []string) error {
 	var (
 		e *ec2.EC2
 	)
@@ -126,6 +143,16 @@ func TerminateInstances(region string, iids ...string) error {
 	var dryrun *bool
 	dr := false
 	dryrun = &dr
+
+	if cl := GetCloud(region); cl != nil {
+		cl.Instmap = GetInstances(region)
+		for i, inst := range cl.Instmap {
+			if strings.Compare(string(inst.State.Name), "terminated") != 0 {
+				fmt.Printf("terminating %s -> %s\n", inst.InstanceId, inst.State.Name)
+				iids = append(iids, i)
+			}
+		}
+	}
 	req := e.TerminateInstancesRequest(&ec2.TerminateInstancesInput{
 		DryRun:      dryrun,
 		InstanceIds: iids,
