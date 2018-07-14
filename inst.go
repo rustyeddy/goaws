@@ -14,7 +14,7 @@ type Instance struct {
 	VolumeId   string
 	State      ec2.InstanceState
 	KeyName    string
-	AvaillZone string
+	AvailZone  string
 	Region     string
 }
 
@@ -27,6 +27,8 @@ func (i *Instance) String() string {
 // FetchInstances will retrieve instances from AWS, it will also store
 // the results in the Object cache as a JSON file.
 func GetInstances(region string) (imap Instmap) {
+	var e *ec2.EC2
+
 	log.Debugln("~~> GetInstances for region ", region)
 	defer log.Debugln("  <~~ return GetInstances ", region)
 
@@ -40,8 +42,7 @@ func GetInstances(region string) (imap Instmap) {
 	}
 
 	// 2. Get the ec2 client for the specified region
-	e := getEC2(region)
-	if e == nil {
+	if e = getEC2(region); e == nil {
 		log.Errorf("  failed to get an EC2 client for ", region)
 		return nil
 	}
@@ -83,6 +84,7 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 	if imap == nil {
 		imap = make(Instmap)
 	}
+
 	for _, resv := range resvs {
 		for _, inst := range resv.Instances {
 			var newinst = &Instance{
@@ -98,8 +100,46 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 			allInstances[newinst.InstanceId] = newinst
 		}
 	}
+
 	if nextToken != nil {
 		panic("next token != nil ")
 	}
+	log.Fatalf("%+v", imap)
 	return imap
+}
+
+// TerminateInstance will terminate an instance
+func (cl *AWSCloud) TerminateInstances(iids []string) error {
+	var (
+		//err error
+		e *ec2.EC2
+	)
+
+	log.Debugln("~~> TerminateInstance instance id %v ", iids)
+	defer log.Debugln("  <~~ return TerminateInstance %v ", iids)
+
+	// 1. Get the ec2 client for the specified region
+	if e = getEC2(cl.region); e == nil {
+		return fmt.Errorf("expected ec2 cli for (%s) got () ", cl.region)
+	}
+
+	// 3. Prepare and send the AWS request and wait for a response
+	log.Debugf("  fetch instance data from AWS %s ", cl.region)
+
+	var dryrun *bool
+	dr := true
+	dryrun = &dr
+
+	req := e.TerminateInstancesRequest(&ec2.TerminateInstancesInput{
+		DryRun:      dryrun,
+		InstanceIds: iids,
+	})
+
+	// Send the terminate instance request
+	if result, err := req.Send(); err != nil {
+		return fmt.Errorf("  failed request instances %v ", err)
+	} else {
+		cl.Errorf(" %+v ", result)
+	}
+	return nil
 }

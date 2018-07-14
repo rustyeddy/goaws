@@ -104,15 +104,16 @@ func cmdRegions(cmd *cobra.Command, args []string) {
 // List the instances
 func cmdInstances(cmd *cobra.Command, args []string) {
 	var regions []string
-	if regions := goaws.Regions(); regions == nil {
+	if regions = goaws.Regions(); regions == nil {
 		log.Fatal("  expected (regions) got ()")
 	}
 
 	for _, region := range regions {
+		fmt.Printf(" getting region %s ... \n ", region)
 		cl := goaws.GetCloud(region)
 		cl.Instmap = goaws.GetInstances(region)
 		for _, inst := range cl.Instmap {
-			fmt.Println(inst)
+			fmt.Printf("%s %s %s %s\n", inst.InstanceId, inst.VolumeId, inst.State.Name, inst.Region)
 		}
 	}
 }

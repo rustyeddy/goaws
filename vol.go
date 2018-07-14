@@ -36,10 +36,10 @@ func GetVolumes(region string) (vmap Volmap) {
 
 	err := cache.FetchObject(idxname, &vmap)
 	if err == nil && vmap != nil {
-		fmt.Printf("  Found cached version of %s .. ", idxname)
-		log.Debugf("  Found cached version of %s .. ", idxname)
+		log.Printf("  Found cached version of %s .. ", idxname)
 		return vmap
 	}
+
 	log.Debugf("  Fetch Volumes from AWS for %s", region)
 	var e *ec2.EC2
 	if e = getEC2(region); e == nil {
@@ -47,6 +47,7 @@ func GetVolumes(region string) (vmap Volmap) {
 		return nil
 	}
 
+	// Get the Volumes from AWS
 	log.Debugf("  sending request for volumes region ", region)
 	req := e.DescribeVolumesRequest(&ec2.DescribeVolumesInput{})
 	result, err := req.Send()
@@ -54,12 +55,12 @@ func GetVolumes(region string) (vmap Volmap) {
 		log.Errorf("  # failed response to request %v", err)
 		return nil
 	}
+
 	log.Debugf("  got result %v from region %s ", result, region)
 
 	// Unparse the AWS format for ours
-	vmap = vdisksFromAWS(result, region)
-	if vmap == nil {
-		log.Errorf("failed to get vdisks from aws ")
+	if vmap = vdisksFromAWS(result, region); vmap == nil {
+		log.Error("failed to get vdisks from aws ")
 		return nil
 	}
 
@@ -73,9 +74,12 @@ func GetVolumes(region string) (vmap Volmap) {
 			return
 		}
 	}()
+
+	// VDisk maps
 	return vmap
 }
 
+// parse the response from AWS
 func vdisksFromAWS(result *ec2.DescribeVolumesOutput, region string) (vmap Volmap) {
 	for _, vol := range result.Volumes {
 		for _, att := range vol.Attachments {
@@ -159,8 +163,7 @@ func DeleteVolume(volid string) error {
 	// Send the request, get the results and dump
 	result, err := req.Send()
 	if err != nil {
-		log.Fatalf("  # failed response to request %v \n", err)
-		return err
+		return fmt.Errorf("  # failed response to request %v \n", err)
 	}
 	log.Fatalf("  result %+v \n", result)
 	return nil

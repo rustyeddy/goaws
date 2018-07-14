@@ -12,6 +12,8 @@ type AWSCloud struct {
 	Instmap
 	Volmap
 	Snapmap
+
+	*log.Logger
 }
 
 // TODO - Move ec2.EC2 into AWSCloud ??
