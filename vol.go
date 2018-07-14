@@ -56,11 +56,14 @@ func GetVolumes(region string) (vmap Volmap) {
 	}
 	log.Debugf("  got result %v from region %s ", result, region)
 
+	// Unparse the AWS format for ours
 	vmap = vdisksFromAWS(result, region)
 	if vmap == nil {
 		log.Errorf("failed to get vdisks from aws ")
 		return nil
 	}
+
+	// Store the object in the cache
 	go func() {
 		// Save the results in the storage cache
 		obj, err := cache.StoreObject(idxname, vmap)

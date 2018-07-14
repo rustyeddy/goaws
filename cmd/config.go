@@ -22,11 +22,12 @@ type Configuration struct {
 }
 
 var (
-	Config Configuration
+	Config, FileConfig Configuration
 )
 
 func init() {
 	cobra.OnInitialize(initConfig)
+
 	pflags := GoaCmd.PersistentFlags()
 	pflags.StringVarP(&Config.Basedir, "dir", "d", "/srv/goaws/", "base project directory")
 	pflags.StringVarP(&Config.Region, "region", "r", "", "Select region defaults to all")
@@ -49,13 +50,17 @@ func initConfig() {
 		log.Fatalf("Can not find homedir")
 	}
 
+	// Determine the config file name
 	cfgfile := home + "/.config/goa.json"
+
+	// Read in the config file
 	jbuf, err := ioutil.ReadFile(cfgfile)
 	if err != nil {
 		log.Fatalf(cfgfile, " ", err)
 	}
 
-	if err = json.Unmarshal(jbuf, &Config); err != nil {
+	if err = json.Unmarshal(jbuf, &FileConfig); err != nil {
 		log.Fatal(cfgfile, " ", err)
 	}
+
 }
