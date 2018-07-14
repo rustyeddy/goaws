@@ -32,8 +32,6 @@ func GetInstances(region string) (imap Instmap) {
 	log.Debugln("~~> GetInstances for region ", region)
 	defer log.Debugln("  <~~ return GetInstances ", region)
 
-	// 0. Get the index name from region
-
 	// 1. Look for a cached version of the object, return if found
 	idxname := region + "-inst"
 	err := cache.FetchObject(idxname, &imap)
@@ -50,6 +48,8 @@ func GetInstances(region string) (imap Instmap) {
 
 	// 3. Prepare and send the AWS request and wait for a response
 	log.Debugf("  fetch instance data from AWS %s ", region)
+
+	// 4. Prepare and send a describe request
 	req := e.DescribeInstancesRequest(&ec2.DescribeInstancesInput{})
 	result, err := req.Send()
 	if err != nil {
@@ -78,10 +78,10 @@ func GetInstances(region string) (imap Instmap) {
 
 // GetInstances will get the instances for this cloud
 func (cl *AWSCloud) GetInstances(iids []string) Instmap {
-	if cl.Instmap == nil {
-		cl.Instmap = GetInstances(cl.region)
+	if cl.imap == nil {
+		cl.imap = GetInstances(cl.region)
 	}
-	return cl.Instmap
+	return cl.imap
 }
 
 // Create an InstanceMap from the AWS EC2 response
@@ -89,15 +89,14 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 
 	// Nextoken to read more
 	nextToken := result.NextToken
+	imap = make(Instmap)
 	resvs := result.Reservations
-	if imap == nil {
-		imap = make(Instmap)
-	}
-
 	for _, resv := range resvs {
 		for _, inst := range resv.Instances {
+
+			iid := *inst.InstanceId
 			var newinst = &Instance{
-				InstanceId: *inst.InstanceId,
+				InstanceId: iid,
 				State:      *inst.State,
 				KeyName:    *inst.KeyName,
 				Region:     region,
@@ -105,14 +104,15 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 			for _, bdm := range inst.BlockDeviceMappings {
 				newinst.VolumeId = *bdm.Ebs.VolumeId
 			}
-			imap[newinst.InstanceId] = newinst
-			AllInstances[newinst.InstanceId] = newinst
+			imap[iid] = newinst
+			I2R[iid] = region
 		}
 	}
 
 	if nextToken != nil {
 		panic("next token != nil ")
 	}
+	fmt.Println("  returning from imap from aws")
 	return imap
 }
 
@@ -145,8 +145,8 @@ func TerminateInstances(region string, iids []string) error {
 	dryrun = &dr
 
 	if cl := GetCloud(region); cl != nil {
-		cl.Instmap = GetInstances(region)
-		for i, inst := range cl.Instmap {
+		cl.imap = GetInstances(region)
+		for i, inst := range cl.imap {
 			if strings.Compare(string(inst.State.Name), "terminated") != 0 {
 				fmt.Printf("terminating %s -> %s\n", inst.InstanceId, inst.State.Name)
 				iids = append(iids, i)

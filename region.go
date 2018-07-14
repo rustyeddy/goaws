@@ -26,7 +26,7 @@ func Regions() (regions []string) {
 		return regions
 	}
 
-	// Fetch from regions
+	// go to the source for regions
 	log.Debugln("  ~> Nothing local, fetch from AWS ...")
 	if regions = fetchRegions(); regions == nil {
 		log.Error("  ## failed to get regions from AWS, host is lost ...")
