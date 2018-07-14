@@ -8,8 +8,8 @@ import (
 // Cache object
 type Cache struct {
 	*store.Store
-	*log.Logger
-	hits int
+	*log.Logger // Our private logger
+	hits        int
 }
 
 var (
@@ -41,6 +41,7 @@ func GetCache() (cache *Cache) {
 // Regions returns the regions from the cache, if we have it
 func (c *Cache) Regions() (regions []string) {
 	log.Debug("  No copy of Regions in memory: checking the cache... ")
+
 	// Check for a local cache of regions
 	if !cache.Exists("regions") {
 		log.Infoln("  -- cache entry was not found ... ")

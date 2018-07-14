@@ -87,7 +87,7 @@ func Execute() {
 // GoaDo runs the root command
 func cmdGoa(cmd *cobra.Command, args []string) {
 	fmt.Println("Welcome to Goa! ")
-	fmt.Println("  ", cache)
+	fmt.Println("  cache ", cache)
 }
 
 // list all regions
