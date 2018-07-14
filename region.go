@@ -14,33 +14,19 @@ import (
 // strings. This function first checks an in-memory copy, then we'll
 // check the store, finaly make the client request if and when
 // necessary.
-func Regions() []string {
+func Regions() (regions []string) {
 	log.Debug("~~> AWS Regions ")
 	defer log.Debugf("<~~ Returning AWS Regions %d", len(regions))
 
+	// If we have an in memory copy send it.
 	if regions != nil {
-		log.Debug("  regions in-memory cache hit ")
+		log.Debug("  returned cached version of regions ")
+	}
+	if regions = cache.Regions(); regions != nil {
 		return regions
 	}
 
-	log.Debug("  No copy of Regions in memory: checking the cache... ")
-	// Check for a local cache of regions
-	if !cache.Exists("regions") {
-		log.Infoln("  -- cache entry was not found ... ")
-	} else {
-		log.Infoln("  ~~> cache object found! Fetching it ...")
-		err := cache.FetchObject("regions", &regions)
-		if err != nil {
-			log.Debugf("  ## error fetching regions %v ..", err)
-		}
-	}
-
-	if regions != nil {
-		log.Debugf("  We have regions! %d of em", len(regions))
-		return regions
-	}
-
-	// go to the source for regions
+	// Fetch from regions
 	log.Debugln("  ~> Nothing local, fetch from AWS ...")
 	if regions = fetchRegions(); regions == nil {
 		log.Error("  ## failed to get regions from AWS, host is lost ...")

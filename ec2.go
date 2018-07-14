@@ -6,30 +6,6 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
-type clientMap map[string]*ec2.EC2
-type cloudMap map[string]*AWSCloud
-type Instmap map[string]*Instance
-type Volmap map[string]*Volume
-type Snapmap map[string]*Snapshot
-
-var (
-	regions      []string
-	awsClients   clientMap
-	awsClouds    cloudMap
-	allInstances Instmap
-	allVolumes   Volmap
-	allSnapshots Snapmap
-)
-
-func init() {
-	awsClients = make(clientMap)
-	awsClouds = make(cloudMap)
-
-	allInstances = make(Instmap)
-	allVolumes = make(Volmap)
-	allSnapshots = make(Snapmap)
-}
-
 // AWSCloud is confined to a single region
 type AWSCloud struct {
 	region string
@@ -38,19 +14,49 @@ type AWSCloud struct {
 	Snapmap
 }
 
+// TODO - Move ec2.EC2 into AWSCloud ??
+type clientmap map[string]*ec2.EC2
+type Cloudmap map[string]*AWSCloud
+type Instmap map[string]*Instance
+type Volmap map[string]*Volume
+type Snapmap map[string]*Snapshot
+
+var (
+	regions []string
+
+	awsClients clientmap
+	AWSClouds  Cloudmap
+
+	allInstances Instmap
+	allVolumes   Volmap
+	allSnapshots Snapmap
+)
+
+func init() {
+	awsClients = make(clientmap)
+	AWSClouds = make(Cloudmap, 20)
+
+	allInstances = make(Instmap)
+	allVolumes = make(Volmap)
+	allSnapshots = make(Snapmap)
+}
+
 // GetCloud returns the cloud for the given region
 func GetCloud(region string) (cl *AWSCloud) {
-	if cl, e := awsClouds[region]; e {
+	if AWSClouds == nil {
+		AWSClouds = make(Cloudmap)
+	} else if cl, e := AWSClouds[region]; e {
 		return cl
 	}
 	return &AWSCloud{
 		region:  region,
-		Instmap: make(Instmap),
-		Volmap:  make(Volmap),
-		Snapmap: make(Snapmap),
+		Instmap: nil,
+		Volmap:  nil,
+		Snapmap: nil,
 	}
 }
 
+// Volumes returns the Volumemap
 func (cl *AWSCloud) Volumes() Volmap {
 	if cl.Volmap == nil {
 		cl.Volmap = GetVolumes(cl.region)
@@ -58,6 +64,7 @@ func (cl *AWSCloud) Volumes() Volmap {
 	return cl.Volmap
 }
 
+// Instances returns the Instmap
 func (cl *AWSCloud) Instances() Instmap {
 	if cl.Instmap == nil {
 		cl.Instmap = GetInstances(cl.region)

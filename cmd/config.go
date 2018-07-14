@@ -27,7 +27,7 @@ var (
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	pflags := RootCmd.PersistentFlags()
+	pflags := GoaCmd.PersistentFlags()
 	pflags.StringVarP(&Config.Basedir, "dir", "d", "/srv/goaws/", "base project directory")
 	pflags.StringVarP(&Config.Region, "region", "r", "", "Select region defaults to all")
 
@@ -35,8 +35,6 @@ func init() {
 	pflags.StringVarP(&Config.Loglevel, "level", "L", "debug", "Select level of logging")
 	pflags.StringVarP(&Config.Logformat, "format", "f", "json", "Select level of logging")
 	pflags.StringVarP(&Config.Logfile, "logfile", "l", "stdout", "Set the logging output")
-
-	//log.SetFlags(0)
 }
 
 // initConfig run everytime the subcmcd Execute() is run

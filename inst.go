@@ -102,35 +102,3 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 	}
 	return imap
 }
-
-// DeleteInstance
-func DeleteInstance(instId string) error {
-	/*
-		var (
-			inst   *Instance
-			exists bool
-		)
-
-		if inst, exists := allInstances[instId]; !exists {
-			return store.ErrNotFound
-		}
-
-		region := inst.Region
-
-		var svc *ec2.EC2
-		if svc = getEC2(region); svc == nil {
-			log.Errorf("  failed to get aws client for %s ", region)
-			return nil
-		}
-
-		log.Debugf("  sending request to delete instance region ", region)
-		req := svc.DeleteInstanceRequest(&ec2.DeleteInstanceInput{VolumeId: aws.String(instId)})
-		result, err := req.Send()
-		if err != nil {
-			return fmt.Errorf("  # failed response to request %v", err)
-		}
-		log.Debugf("  got result %v from region %s ", result, region)
-		log.Fatalf("  result %+v", result)
-	*/
-	return nil
-}

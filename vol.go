@@ -113,7 +113,7 @@ func DeleteVolume(volid string) error {
 	defer log.Debugln("  returning from deleteVolume ")
 
 	vol, ex := allVolumes[volid]
-	if ex {
+	if !ex {
 		return store.ErrNotFound.Append(string(volid))
 	}
 	region := vol.Region
