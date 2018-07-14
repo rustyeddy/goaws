@@ -22,7 +22,7 @@ type Volume struct {
 }
 
 func (v *Volume) String() string {
-	return fmt.Sprintf("%s %s %s %dGb", v.VolumeId, v.InstanceId, v.AvailZone, v.Size)
+	return fmt.Sprintf("%s %s %s %s %dGb", v.VolumeId, v.InstanceId, v.AvailZone, v.State, v.Size)
 }
 
 // GetVolumes will retrieve instances from AWS, convert them to

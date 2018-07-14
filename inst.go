@@ -20,7 +20,8 @@ type Instance struct {
 
 // String returns a single line representing our host
 func (i *Instance) String() string {
-	return fmt.Sprintf("%s %s %s %s", i.InstanceId, i.VolumeId, i.State, i.KeyName)
+	return fmt.Sprintf("%s %s %s %s %s",
+		i.Region, i.InstanceId, i.VolumeId, i.State, i.KeyName)
 }
 
 // FetchInstances will retrieve instances from AWS, it will also store

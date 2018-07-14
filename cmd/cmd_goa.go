@@ -85,8 +85,8 @@ func Execute() {
 
 // GoaDo runs the root command
 func cmdGoa(cmd *cobra.Command, args []string) {
-	log.Println("Welcome to Goa! ")
-	log.Println("  ", cache)
+	fmt.Println("Welcome to Goa! ")
+	fmt.Println("  ", cache)
 }
 
 // list all regions
@@ -102,15 +102,16 @@ func cmdRegions(cmd *cobra.Command, args []string) {
 
 // List the instances
 func cmdInstances(cmd *cobra.Command, args []string) {
-	if regions = goaws.Regions(); regions == nil {
-		log.Fatal("  expected list of regions got ()")
+	var regions []string
+	if regions := goaws.Regions(); regions == nil {
+		log.Fatal("  expected (regions) got ()")
 	}
 
 	for _, region := range regions {
 		cl := goaws.GetCloud(region)
 		cl.Instmap = goaws.GetInstances(region)
-		for iid, _ := range cl.Instmap {
-			fmt.Println(iid)
+		for _, inst := range cl.Instmap {
+			fmt.Println(inst)
 		}
 	}
 }
