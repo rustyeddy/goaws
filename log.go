@@ -8,7 +8,7 @@ import (
 
 func init() {
 	// Set some resonable defaults
-	log.SetFormatter(&log.TextFormatter{}) // JSON formatted output
+	log.SetFormatter(&log.JSONFormatter{}) // JSON formatted output
 	log.SetLevel(log.WarnLevel)            // High default log level
 	log.SetOutput(os.Stdout)               // print to stdout by default
 }

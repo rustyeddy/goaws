@@ -29,7 +29,7 @@ var (
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	pflags := GoaCmd.PersistentFlags()
+	pflags := goaCmd.PersistentFlags()
 	pflags.StringVarP(&Config.Basedir, "dir", "d", "/srv/goaws/", "base project directory")
 	pflags.StringVarP(&Config.Region, "region", "r", "", "Select region defaults to all")
 	pflags.StringVarP(&Config.Cfgfile, "cfgfile", "c", ".config/goa.json", "Specify the configuration file")

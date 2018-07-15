@@ -10,29 +10,31 @@ import (
 
 var (
 	// InstCmd goa instances
-	InstanceCmd = cobra.Command{
-		Use:   "instance",
-		Short: "Manage AWS Instances",
-		Run:   cmdInstances,
+	instanceCmd = cobra.Command{
+		Use:     "instance",
+		Aliases: []string{"inst"},
+		Short:   "Manage AWS Instances",
+		Run:     cmdInstances,
 	}
 
-	DescribeInstanceCmd = cobra.Command{
-		Use:   "describe",
-		Short: "Describe the instance by instance-Id",
-		Run:   cmdDescribeInstance,
+	describeInstanceCmd = cobra.Command{
+		Use:     "describe",
+		Aliases: []string{"desc", "info"},
+		Short:   "Describe the instance by instance-Id",
+		Run:     cmdDescribeInstance,
 	}
 
-	// InstCmd goa instances
-	TerminateInstancesCmd = cobra.Command{
-		Use:   "terminate",
-		Short: "Manage AWS Instances",
-		Run:   cmdTerminateInstances,
+	terminateInstancesCmd = cobra.Command{
+		Use:     "terminate",
+		Aliases: []string{"kill"},
+		Short:   "Manage AWS Instances",
+		Run:     cmdTerminateInstances,
 	}
 )
 
 func init() {
 	// go instance terminate iid iid2 iid3 ...
-	InstanceCmd.AddCommand(&TerminateInstancesCmd)
+	instanceCmd.AddCommand(&terminateInstancesCmd)
 }
 
 // List the instances
@@ -60,13 +62,22 @@ func cmdInstances(cmd *cobra.Command, args []string) {
 
 // Describe Instances
 func cmdDescribeInstance(cmd *cobra.Command, args []string) {
-	inst := goaws.GetInstance(args[0])
+	cl := goaws.GetCloud(Config.Region)
+	inst := cl.Instance(args[0])
 	fmt.Printf("instnace %+v", inst)
 }
 
 // Terminate Instances
 func cmdTerminateInstances(cmd *cobra.Command, args []string) {
-	if err := goaws.TerminateInstances(Config.Region, args); err != nil {
+
+	// Get our cloud
+	cl := goaws.GetCloud(Config.Region)
+	if cl != nil {
+		log.Errorf("expected cloud (%s) got () ", Config.Region)
+	}
+
+	// Request to actually terminate
+	if err := cl.TerminateInstances(args); err != nil {
 		log.Errorf("  problems with Terminate Instances %v", err)
 		return
 	}

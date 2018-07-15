@@ -15,35 +15,21 @@ var (
 	cache *goaws.Cache // store.Store
 
 	// GoaCmd is the root command
-	GoaCmd = cobra.Command{
+	goaCmd = cobra.Command{
 		Use:   "goa",
 		Short: "Manage AWS Instances and Volumes",
 		Run:   cmdGoa,
 	}
 
 	// RegionsCmd list regions
-	RegionCmd = cobra.Command{
+	regionCmd = cobra.Command{
 		Use:   "region",
 		Short: "List AWS Regions",
 		Run:   cmdRegions,
 	}
 
-	// VolCmd list Volumes from all regions (or the -region flag)
-	VolumeCmd = cobra.Command{
-		Use:   "volume",
-		Short: "Manage AWS Volumes",
-		Run:   cmdVolumes,
-	}
-
-	// VolDeleteCmd will delete the given volume
-	VolumeDeleteCmd = cobra.Command{
-		Use:   "delete",
-		Short: "delete the volume by vol-Id",
-		Run:   cmdDeleteVolume,
-	}
-
 	// SnapCmd list snap shots
-	SnapshotCmd = cobra.Command{
+	snapshotCmd = cobra.Command{
 		Use:   "snap",
 		Short: "Manage Host Snaphosts",
 		Run:   cmdSnapshots,
@@ -57,18 +43,18 @@ func init() {
 	cache.Debugf(" cache -> %+v", cache)
 
 	// First level goa sub commands
-	GoaCmd.AddCommand(&RegionCmd)
-	GoaCmd.AddCommand(&InstanceCmd)
-	GoaCmd.AddCommand(&SnapshotCmd)
-	GoaCmd.AddCommand(&VolumeCmd)
+	goaCmd.AddCommand(&regionCmd)
+	goaCmd.AddCommand(&instanceCmd)
+	goaCmd.AddCommand(&snapshotCmd)
+	goaCmd.AddCommand(&volumeCmd)
 
 	// Second level volume commands
-	VolumeCmd.AddCommand(&VolumeDeleteCmd)
+	volumeCmd.AddCommand(&volumeDeleteCmd)
 }
 
 // Execute the RootCommand
 func Execute() {
-	if err := GoaCmd.Execute(); err != nil {
+	if err := goaCmd.Execute(); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -76,7 +62,7 @@ func Execute() {
 // GoaDo runs the root command
 func cmdGoa(cmd *cobra.Command, args []string) {
 	fmt.Println("Welcome to Goa! ")
-	fmt.Println("  cache ", cache)
+	fmt.Println("        cache ", cache)
 }
 
 // List Snapshots

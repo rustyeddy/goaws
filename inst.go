@@ -26,30 +26,24 @@ func (i *Instance) String() string {
 
 // FetchInstances will retrieve instances from AWS, it will also store
 // the results in the Object cache as a JSON file.
-func GetInstances(region string) (imap Instmap) {
-	var e *ec2.EC2
+func (cl *AWSCloud) GetInstances() (imap Instmap) {
 
-	log.Debugln("~~> GetInstances for region ", region)
-	defer log.Debugln("  <~~ return GetInstances ", region)
+	if cl.imap != nil {
+		return cl.imap
+	}
 
 	// 1. Look for a cached version of the object, return if found
-	idxname := region + "-inst"
+	idxname := cl.region + "-inst"
 	err := cache.FetchObject(idxname, &imap)
 	if err == nil && imap != nil {
 		log.Debugf("  found cached version of %s .. ", idxname)
 		return imap
 	}
 
-	// 2. Get the ec2 client for the specified region
-	if e = getEC2(region); e == nil {
-		log.Errorf("  failed to get an EC2 client for ", region)
-		return nil
-	}
-
 	// 3. Prepare and send the AWS request and wait for a response
-	log.Debugf("  fetch instance data from AWS %s ", region)
-
 	// 4. Prepare and send a describe request
+	log.Debugf("  fetch instance data from AWS %s ", cl.region)
+	e := cl.Client()
 	req := e.DescribeInstancesRequest(&ec2.DescribeInstancesInput{})
 	result, err := req.Send()
 	if err != nil {
@@ -58,8 +52,8 @@ func GetInstances(region string) (imap Instmap) {
 	}
 
 	// 4. Parse the response into an instance Map
-	if imap = imapFromAWS(result, region); imap == nil {
-		log.Errorf("  failed to get imap from AWS %v", err)
+	if cl.imap = imapFromAWS(result, cl.region); imap == nil {
+		log.Infoln("  failed to get imap from AWS ")
 		return nil
 	}
 
@@ -76,12 +70,12 @@ func GetInstances(region string) (imap Instmap) {
 	return imap
 }
 
-// GetInstances will get the instances for this cloud
-func (cl *AWSCloud) GetInstances(iids []string) Instmap {
-	if cl.imap == nil {
-		cl.imap = GetInstances(cl.region)
+// Instance will return the instance with the given IID
+func (cl *AWSCloud) Instance(iid string) *Instance {
+	if inst, e := cl.imap[iid]; e {
+		return inst
 	}
-	return cl.imap
+	return nil
 }
 
 // Create an InstanceMap from the AWS EC2 response
@@ -116,53 +110,30 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 	return imap
 }
 
-// GetInstance from InstanceId
-func GetInstance(iid string) *Instance {
-	if inst, e := AllInstances[iid]; e {
-		return inst
-	}
-	return nil
-}
-
 // TerminateInstance will terminate an instance
-func TerminateInstances(region string, iids []string) error {
-	var (
-		e *ec2.EC2
-	)
-	log.Debugln("~~> TerminateInstance instance id %v ", iids)
-	defer log.Debugln("  <~~ return TerminateInstance %v ", iids)
+func (cl *AWSCloud) TerminateInstances(iids []string) error {
+	var e *ec2.EC2
 
-	// 1. Get the ec2 client for the specified region
-	if e = getEC2(region); e == nil {
-		return fmt.Errorf("expected ec2 cli for (%s) got () ", region)
-	}
-
-	// 2. Prepare and send the AWS request and wait for a response
-	log.Debugf("  fetch instance data from AWS %s ", region)
-
-	var dryrun *bool
-	dr := false
-	dryrun = &dr
-
-	if cl := GetCloud(region); cl != nil {
-		cl.imap = GetInstances(region)
-		for i, inst := range cl.imap {
-			if strings.Compare(string(inst.State.Name), "terminated") != 0 {
-				fmt.Printf("terminating %s -> %s\n", inst.InstanceId, inst.State.Name)
-				iids = append(iids, i)
+	for i, inst := range cl.imap {
+		if strings.Compare(string(inst.State.Name), "terminated") != 0 {
+			fmt.Printf("  terminate %s -> %s\n", inst.InstanceId, inst.State.Name)
+			iids = append(iids, i)
+			if len(iids) > 4 {
+				break
 			}
 		}
 	}
+
+	// Create the TerminateInstanceRequest
 	req := e.TerminateInstancesRequest(&ec2.TerminateInstancesInput{
-		DryRun:      dryrun,
 		InstanceIds: iids,
 	})
 
-	// Send the terminate instance request
+	// Send the TIR
 	if result, err := req.Send(); err != nil {
 		return fmt.Errorf("  failed request instances %v ", err)
 	} else {
-		log.Fatalf(" %+v ", result)
+		log.Info("terminate requests %+v", result)
 	}
 	return nil
 }

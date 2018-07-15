@@ -66,7 +66,7 @@ func (cl *AWSCloud) Volumes() Volmap {
 // Instances returns the Instmap
 func (cl *AWSCloud) Instances() Instmap {
 	if cl.imap == nil {
-		cl.imap = GetInstances(cl.region)
+		cl.GetInstances()
 	}
 	return cl.imap
 }
@@ -81,15 +81,11 @@ func (cl *AWSCloud) Snapshots() Snapmap {
 
 // Client get the EC2 Client for this region
 func (cl *AWSCloud) Client() (ec *ec2.EC2) {
-	cfg, err := external.LoadDefaultAWSConfig()
-	if err != nil {
-		log.Fatalf("  Failed to Load Default AWS Config %q -> %v ", cl.region, err)
-		return nil
-	}
 	if cl.ec2Svc == nil {
-		cfg.Region = cl.region
-		if cl.ec2Svc = ec2.New(cfg); cl.ec2Svc == nil {
-			log.Fatalf("  expected EC2 client for %s got %s", cl.region, err)
+		if cfg, err := external.LoadDefaultAWSConfig(); err == nil {
+			cl.ec2Svc = ec2.New(cfg)
+		} else {
+			log.Fatalf(" Error loading config ")
 		}
 	}
 	return cl.ec2Svc
