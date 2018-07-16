@@ -50,14 +50,13 @@ func cmdVolumes(cmd *cobra.Command, args []string) {
 
 // Delete Volume specified by vol-xxxxxx arg[0]
 func cmdDeleteVolume(cmd *cobra.Command, args []string) {
-	var vol *goaws.Volume
-	volid := args[0]
-
-	if vol = goaws.GetVolume(volid); vol == nil {
-		log.Errorf("  failed to find volume of %s", volid)
-		return
-	}
-	if err := goaws.DeleteVolume(vol.VolumeId); err != nil {
+	var (
+		vol   *goaws.Volume
+		cl    *goaws.AWSCloud
+		volid string = args[0]
+	)
+	cl = goaws.GetCloud(Config.Region)
+	if err := cl.DeleteVolume(volid); err != nil {
 		log.Errorf("  failed deleting volume %+v", err)
 		return
 	}

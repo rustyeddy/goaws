@@ -12,7 +12,7 @@ var (
 	// InstCmd goa instances
 	instanceCmd = cobra.Command{
 		Use:     "instance",
-		Aliases: []string{"inst"},
+		Aliases: []string{"inst", "instances"},
 		Short:   "Manage AWS Instances",
 		Run:     cmdInstances,
 	}
@@ -39,19 +39,19 @@ func init() {
 
 // List the instances
 func cmdInstances(cmd *cobra.Command, args []string) {
-	var regions []string
-
+	var regs []string
 	if Config.Region != "" {
-		regions = append(regions, Config.Region)
+		regs = append(regs, Config.Region)
 	} else {
-		if regions = goaws.Regions(); regions == nil {
+		if regs = goaws.Regions(); regs == nil {
 			log.Fatal("  expected (regions) got ()")
 		}
 	}
-	log.Debugln("regions %+v", regions)
+
+	log.Debugf("regions %+v\n", regs)
 
 	// Walk the regions
-	for _, region := range regions {
+	for _, region := range regs {
 		fmt.Printf("Instances for region %s ... \n ", region)
 		cl := goaws.GetCloud(region)
 		for _, inst := range cl.Instances() {
@@ -72,7 +72,7 @@ func cmdTerminateInstances(cmd *cobra.Command, args []string) {
 
 	// Get our cloud
 	cl := goaws.GetCloud(Config.Region)
-	if cl != nil {
+	if cl == nil {
 		log.Errorf("expected cloud (%s) got () ", Config.Region)
 	}
 

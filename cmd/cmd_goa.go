@@ -16,9 +16,10 @@ var (
 
 	// GoaCmd is the root command
 	goaCmd = cobra.Command{
-		Use:   "goa",
-		Short: "Manage AWS Instances and Volumes",
-		Run:   cmdGoa,
+		Use:     "goa",
+		Short:   "Manage AWS Instances and Volumes",
+		Run:     cmdGoa,
+		Version: "2018-07-12",
 	}
 
 	// RegionsCmd list regions
@@ -62,7 +63,8 @@ func Execute() {
 // GoaDo runs the root command
 func cmdGoa(cmd *cobra.Command, args []string) {
 	fmt.Println("Welcome to Goa! ")
-	fmt.Println("        cache ", cache)
+	fmt.Println("\tcache ", cache)
+	fmt.Println("\tversion", cmd.Version)
 }
 
 // List Snapshots

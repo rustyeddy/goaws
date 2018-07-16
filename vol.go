@@ -95,7 +95,6 @@ func vdisksFromAWS(result *ec2.DescribeVolumesOutput, region string) (vmap Volma
 				Region:      region,
 			}
 			vmap[vol.VolumeId] = vol
-			AllVolumes[vol.VolumeId] = vol
 		}
 	}
 	return vmap
@@ -103,38 +102,27 @@ func vdisksFromAWS(result *ec2.DescribeVolumesOutput, region string) (vmap Volma
 
 // GetVolume will update the instance information for vol
 func GetVolume(volid string) *Volume {
-
-	log.Printf("GetVolume %s ", volid)
-	defer log.Printf("  return GetVolume %s ", volid)
-
-	if vol, ex := AllVolumes[volid]; ex {
-		return vol
-	}
+	panic("TODO")
 	return nil
 }
 
 // DeleteVolume will send a request to AWS to delete the given volume
-func DeleteVolume(volid string) error {
+func (cl *AWSCloud) DeleteVolume(volid string) error {
+	var (
+		vol *Volume
+		ex  bool
+	)
 
-	log.Debugln("DeleteVolume %s", volid)
-	defer log.Debugln("  returning from deleteVolume ")
-
-	vol, ex := AllVolumes[volid]
-	if !ex {
+	volumes := cl.Volumes()
+	if vol, ex = volumes[volid]; !ex {
 		return store.ErrNotFound.Append(string(volid))
 	}
-	region := vol.Region
 
-	var svc *ec2.EC2
-	if svc = getEC2(region); svc == nil {
-		return fmt.Errorf("delvol reg %s vol %s: ", region, vol.VolumeId)
-	}
-
-	log.Debugf("  volume state %s", vol.State)
+	cl.Debugf("  volume state %s", vol.State)
 	switch vol.State {
 	case "creating", "in-use":
-		if err := DetachVolume(region, vol); err != nil {
-			return fmt.Errorf("detach failed %s / %s :", region, vol.VolumeId)
+		if err := DetachVolume(cl.region, vol); err != nil {
+			return fmt.Errorf("detach failed %s / %s :", cl.region, vol.VolumeId)
 		}
 	case "deleting", "deleted", "error":
 		log.Debugln("  skipping  volume status ", vol.State)
@@ -142,7 +130,8 @@ func DeleteVolume(volid string) error {
 
 	case "available":
 		// OK, prepare the request to detach volume
-		req := svc.DetachVolumeRequest(&ec2.DetachVolumeInput{
+		e := cl.Client()
+		req := e.DetachVolumeRequest(&ec2.DetachVolumeInput{
 			VolumeId: aws.String(vol.VolumeId),
 		})
 		// Send the request and get a result
@@ -155,8 +144,8 @@ func DeleteVolume(volid string) error {
 		log.Errorf("  whoa do not know about state, continue ", vol.State)
 	}
 
-	log.Debugf("  sending delete for region %s vol %s\n ", region, vol.VolumeId)
-	req := svc.DeleteVolumeRequest(&ec2.DeleteVolumeInput{
+	e := cl.Client()
+	req := e.DeleteVolumeRequest(&ec2.DeleteVolumeInput{
 		VolumeId: aws.String(vol.VolumeId),
 	})
 

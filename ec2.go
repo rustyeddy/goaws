@@ -30,14 +30,11 @@ var (
 
 	AWSClouds Cloudmap
 	I2R       InstRegion
-
-	AllInstances Instmap
-	AllVolumes   Volmap
-	AllSnapshots Snapmap
 )
 
 func init() {
 	AWSClouds = make(Cloudmap, 20)
+	I2R = make(InstRegion, 10)
 }
 
 // GetCloud returns the cloud for the given region
@@ -83,6 +80,7 @@ func (cl *AWSCloud) Snapshots() Snapmap {
 func (cl *AWSCloud) Client() (ec *ec2.EC2) {
 	if cl.ec2Svc == nil {
 		if cfg, err := external.LoadDefaultAWSConfig(); err == nil {
+			cfg.Region = cl.region
 			cl.ec2Svc = ec2.New(cfg)
 		} else {
 			log.Fatalf(" Error loading config ")
@@ -92,9 +90,10 @@ func (cl *AWSCloud) Client() (ec *ec2.EC2) {
 }
 
 // getEC2 returns an ec2 service for the given region ready for use
-func getEC2(region string) (ec2Svc *ec2.EC2) {
-	log.Debugln("Get EC2 for region ", region)
-	defer log.Debugln(" leaving EC2 %v ", ec2Svc)
-
-	return ec2Svc
+func getEC2(region string) (e *ec2.EC2) {
+	if cfg, err := external.LoadDefaultAWSConfig(); err == nil {
+		cfg.Region = region
+		e = ec2.New(cfg)
+	}
+	return e
 }
