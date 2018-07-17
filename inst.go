@@ -97,7 +97,7 @@ func TerminateInstances(region string, iids []string) (err error) {
 
 	for _, tinst := range result.TerminatingInstances {
 		iid := *tinst.InstanceId
-		fmt.Printf(" %s %s -> %s", iid, tinst.CurrentState.Name, tinst.PreviousState.Name)
+		fmt.Printf(" %s %s -> %s\n", iid, tinst.PreviousState.Name, tinst.CurrentState.Name)
 	}
 	return nil
 }
