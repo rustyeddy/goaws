@@ -42,15 +42,13 @@ func cmdInstances(cmd *cobra.Command, args []string) {
 			log.Fatal("  expected (regions) got (%v)", err)
 		}
 	}
-
-	output := ""
 	for _, region := range regs {
-		fmt.Sprintf(output, "Instances for region %s ... \n ", region)
+		fmt.Printf("Instances for region %s ... \n ", region)
 		for _, inst := range goaws.Instances(region) {
-			fmt.Sprintf(output, "  %s %s %s \n", inst.InstanceId, inst.VolumeId, inst.State.Name)
+			fmt.Printf("  %s %s %s \n", inst.InstanceId, inst.VolumeId, inst.State.Name)
 		}
 	}
-	fmt.Println(output)
+	fmt.Println("finished..")
 }
 
 // Describe Instances
@@ -68,9 +66,18 @@ func cmdDescribeInstance(cmd *cobra.Command, args []string) {
 // Terminate Instances
 func cmdTerminateInstances(cmd *cobra.Command, args []string) {
 
+	iids := args
+	if len(args) < 1 {
+		instances := goaws.Instances(Config.Region)
+		for n := range instances {
+			iids = append(iids, n)
+		}
+	}
+
 	// Request to actually terminate
-	if err := goaws.TerminateInstances(Config.Region, args); err != nil {
+	if err := goaws.TerminateInstances(Config.Region, iids); err != nil {
 		log.Errorf("  problems with Terminate Instances %v", err)
 		return
 	}
+
 }

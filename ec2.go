@@ -8,8 +8,6 @@ var (
 )
 
 func init() {
-	instances = make(map[string]*Instance)
-	volumes = make(map[string]*Volume)
 }
 
 // Instances returns the Instmap
