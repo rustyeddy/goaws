@@ -2,7 +2,6 @@ package goaws
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
@@ -27,23 +26,8 @@ func (i *Instance) String() string {
 
 // GetInstances will retrieve instances from AWS, it will also store
 // the results in the Object cache as a JSON file.
-func (cl *AWSCloud) GetInstances() Instmap {
-	if cl.imap != nil && len(cl.imap) > 0 {
-		return cl.imap
-	}
-
-	// 1. Look for a cached version of the object, return if found
-	idxname := cl.region + "-inst"
-	err := cache.FetchObject(idxname, &cl.imap)
-	if err == nil && cl.imap != nil {
-		log.Debugf("  found cached version of %s .. ", idxname)
-		return cl.imap
-	}
-
-	// 3. Prepare and send the AWS request and wait for a response
-	// 4. Prepare and send a describe request
-	log.Debugf("  fetch instance data from AWS %s ", cl.region)
-	e := cl.Client()
+func FetchInstances(region string) (imap map[string]*Instance) {
+	e := Client(region)
 	req := e.DescribeInstancesRequest(&ec2.DescribeInstancesInput{})
 	result, err := req.Send()
 	if err != nil {
@@ -52,38 +36,16 @@ func (cl *AWSCloud) GetInstances() Instmap {
 	}
 
 	// 4. Parse the response into an instance Map
-	if cl.imap = imapFromAWS(result, cl.region); cl.imap == nil {
-		log.Infoln("  failed to get imap from AWS ")
-		return nil
-	}
-
-	// 5. Store the object for later usage
-	go func() {
-		obj, err := cache.StoreObject(idxname, cl.imap)
-		if err != nil {
-			log.Errorf("  failed to store object %s -> err ", idxname, err)
-		}
-		log.Debugf("  object cached at path %s ", obj.Path)
-	}()
-
-	// 6. Give the caller what they want and return
-	return cl.imap
+	imap = imapFromAWS(result)
+	return imap
 }
 
-// Instance will return the instance with the given IID
-func (cl *AWSCloud) Instance(iid string) *Instance {
-	if inst, e := cl.imap[iid]; e {
-		return inst
-	}
-	return nil
-}
-
-// Parse the incoming AWS data extracting the fields most.
-func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instmap) {
+func imapFromAWS(result *ec2.DescribeInstancesOutput) (imap map[string]*Instance) {
 
 	// Nextoken to read more
 	nextToken := result.NextToken
-	imap = make(Instmap)
+	imap = make(map[string]*Instance)
+
 	resvs := result.Reservations
 	for _, resv := range resvs {
 		for _, inst := range resv.Instances {
@@ -95,11 +57,12 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 				Region:     region,
 				data:       inst,
 			}
+
+			// Get to the block device mappings
 			for _, bdm := range inst.BlockDeviceMappings {
 				newinst.VolumeId = *bdm.Ebs.VolumeId
 			}
 			imap[iid] = newinst
-			I2R[iid] = region
 		}
 	}
 	if nextToken != nil {
@@ -109,32 +72,32 @@ func imapFromAWS(result *ec2.DescribeInstancesOutput, region string) (imap Instm
 }
 
 // TerminateInstance will terminate an instance
-func (cl *AWSCloud) TerminateInstances(iids []string) error {
+func TerminateInstances(region string, iids []string) (err error) {
 
 	if iids == nil || len(iids) < 1 {
-		for i, inst := range cl.Instances() {
-			if strings.Compare(string(inst.State.Name), "terminated") != 0 {
-				fmt.Printf("  terminate %s -> %s\n", inst.InstanceId, inst.State.Name)
+		for i, inst := range Instances(region) {
+			switch inst.State.Name {
+			case "terminated":
+				// skip this one
+			default:
 				iids = append(iids, i)
-				if len(iids) > 4 {
-					break
-				}
 			}
 		}
 	}
 
-	// Create the TerminateInstanceRequest
-	e := cl.Client()
+	e := Client(region)
 	req := e.TerminateInstancesRequest(&ec2.TerminateInstancesInput{
 		InstanceIds: iids,
 	})
 
-	// Send the TIR
-	if result, err := req.Send(); err != nil {
-		log.Fatalf("  failed to terminate instaces %v", err)
-		return err
-	} else {
-		log.Info("terminate requests %+v", result)
+	result, err := req.Send()
+	if err != nil {
+		return fmt.Errorf("terminate %v", err)
+	}
+
+	for _, tinst := range result.TerminatingInstances {
+		iid := *tinst.InstanceId
+		fmt.Printf(" %s %s -> %s", iid, tinst.CurrentState.Name, tinst.PreviousState.Name)
 	}
 	return nil
 }

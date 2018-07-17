@@ -31,34 +31,20 @@ func init() {
 
 // List Volumes - TODO: check the regions argument
 func cmdVolumes(cmd *cobra.Command, args []string) {
-	regions := goaws.Regions()
-	if regions == nil {
-		log.Fatal("  failed to get the regions, can't continue ")
+	output := ""
+	volumes := goaws.Volumes(Config.Region)
+	for vid, _ := range volumes {
+		output += vid + "\n"
 	}
-
-	var volumes goaws.Volmap
-	for _, region := range regions {
-		// See if the cache is working
-		if volumes = goaws.GetVolumes(region); volumes == nil {
-			log.Warning("  failed to get volumes from AWS ", region)
-		}
-		for _, vol := range volumes {
-			fmt.Println(vol)
-		}
-	}
+	fmt.Println(output)
 }
 
 // Delete Volume specified by vol-xxxxxx arg[0]
 func cmdDeleteVolume(cmd *cobra.Command, args []string) {
-	var (
-		vol   *goaws.Volume
-		cl    *goaws.AWSCloud
-		volid string = args[0]
-	)
-	cl = goaws.GetCloud(Config.Region)
-	if err := cl.DeleteVolume(volid); err != nil {
+	volid := args[0]
+	if err := goaws.DeleteVolume(Config.Region, volid); err != nil {
 		log.Errorf("  failed deleting volume %+v", err)
 		return
 	}
-	fmt.Printf("  volume: %+v\n", vol)
+	fmt.Printf("  volume: %s\n", volid)
 }

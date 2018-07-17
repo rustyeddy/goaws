@@ -2,8 +2,11 @@ cmd = goa
 
 dirs = cmd srv
 
-goa: main.go
-	go build -o $@ $<
+goa: main.go ../*.go ../cmd/*.go
+	go build -o goa
+
+build:
+	go build -o $(cmd) 
 
 inst: goa
 	go run main.go instances
@@ -11,16 +14,13 @@ inst: goa
 vols: goa
 	go run main.go volumes
 
-build:
-		go build -o $(cmd) 
-
 test:
-		go test 
+	go test 
 
 run: 
-		go run *.go
+	go run *.go
 
 install:
-		go install -o $(cmd)
+	go install -o $(cmd)
 
 .PHONY: build test run install

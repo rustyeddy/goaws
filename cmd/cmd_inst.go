@@ -17,13 +17,6 @@ var (
 		Run:     cmdInstances,
 	}
 
-	describeInstanceCmd = cobra.Command{
-		Use:     "describe",
-		Aliases: []string{"desc", "info"},
-		Short:   "Describe the instance by instance-Id",
-		Run:     cmdDescribeInstance,
-	}
-
 	terminateInstancesCmd = cobra.Command{
 		Use:     "terminate",
 		Aliases: []string{"kill"},
@@ -40,44 +33,43 @@ func init() {
 // List the instances
 func cmdInstances(cmd *cobra.Command, args []string) {
 	var regs []string
+	var err error
+
 	if Config.Region != "" {
 		regs = append(regs, Config.Region)
 	} else {
-		if regs = goaws.Regions(); regs == nil {
-			log.Fatal("  expected (regions) got ()")
+		if regs, err = goaws.Regions(); regs == nil {
+			log.Fatal("  expected (regions) got (%v)", err)
 		}
 	}
 
-	log.Debugf("regions %+v\n", regs)
-
-	// Walk the regions
+	output := ""
 	for _, region := range regs {
-		fmt.Printf("Instances for region %s ... \n ", region)
-		cl := goaws.GetCloud(region)
-		for _, inst := range cl.Instances() {
-			fmt.Printf("    %s %s %s \n", inst.InstanceId, inst.VolumeId, inst.State.Name)
+		fmt.Sprintf(output, "Instances for region %s ... \n ", region)
+		for _, inst := range goaws.Instances(region) {
+			fmt.Sprintf(output, "  %s %s %s \n", inst.InstanceId, inst.VolumeId, inst.State.Name)
 		}
 	}
+	fmt.Println(output)
 }
 
 // Describe Instances
 func cmdDescribeInstance(cmd *cobra.Command, args []string) {
-	cl := goaws.GetCloud(Config.Region)
-	inst := cl.Instance(args[0])
-	fmt.Printf("instnace %+v", inst)
+
+	insts := goaws.Instances(Config.Region)
+	inst, e := insts[args[0]]
+	if e {
+		fmt.Printf("instnace %+v", inst)
+	} else {
+		fmt.Printf("instnace %s not found", args[0])
+	}
 }
 
 // Terminate Instances
 func cmdTerminateInstances(cmd *cobra.Command, args []string) {
 
-	// Get our cloud
-	cl := goaws.GetCloud(Config.Region)
-	if cl == nil {
-		log.Errorf("expected cloud (%s) got () ", Config.Region)
-	}
-
 	// Request to actually terminate
-	if err := cl.TerminateInstances(args); err != nil {
+	if err := goaws.TerminateInstances(Config.Region, args); err != nil {
 		log.Errorf("  problems with Terminate Instances %v", err)
 		return
 	}

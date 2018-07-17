@@ -23,7 +23,7 @@ type Configuration struct {
 }
 
 var (
-	Config, FileConfig Configuration
+	Config, FileConfig, EnvConfig Configuration
 )
 
 func init() {
@@ -65,4 +65,5 @@ func initConfig() {
 		log.Fatal(cfgfile, " ", err)
 	}
 
+	// TODO Merge FileConfig into regular config and read ENV
 }
