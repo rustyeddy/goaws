@@ -1,8 +1,6 @@
 package goaws
 
 import (
-	"fmt"
-
 	"github.com/aws/aws-sdk-go-v2/aws/external"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
@@ -13,13 +11,14 @@ var (
 )
 
 // Names returns the names of all regions
-func Regions() (names []string, err error) {
+func Regions() (names []string) {
 	if regions == nil {
 		if regions = fetchRegions(); regions == nil {
-			return nil, fmt.Errorf("expected (regions) got ()")
+			log.Errorf("expected (regions) got ()")
+			return nil
 		}
 	}
-	return regions, nil
+	return regions
 }
 
 // ClearRegions reset
@@ -51,11 +50,10 @@ func fetchRegions() []string {
 
 // Client get the EC2 Client for this region
 func Client(region string) (ec *ec2.EC2) {
-	if cfg, err := external.LoadDefaultAWSConfig(); err != nil {
+	cfg, err := external.LoadDefaultAWSConfig()
+	if err != nil {
 		log.Fatalf("failed to get ec2 client for region %s ", region)
-	} else {
-		cfg.Region = region
-		return ec2.New(cfg)
 	}
-	return nil
+	cfg.Region = region
+	return ec2.New(cfg)
 }

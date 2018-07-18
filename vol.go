@@ -42,14 +42,19 @@ func FetchVolumes(region string) (vmap map[string]*Volume) {
 		log.Errorf("  failed to get aws client for %s ", region)
 		return nil
 	}
+
 	req := e.DescribeVolumesRequest(&ec2.DescribeVolumesInput{})
 	result, err := req.Send()
 	if err != nil {
-		log.Errorf("  # failed response to request %v", err)
+		log.Warning("  # failed response to request %v", err)
+		return nil
+	}
+	if len(result.Volumes) <= 0 {
+		log.Info("  no volumes found ")
 		return nil
 	}
 	if vmap = vmapFromAWS(result, region); vmap == nil {
-		log.Error("failed to get vdisks from aws ")
+		log.Errorln("  # failed to extract volumes from result")
 		return nil
 	}
 	return vmap
@@ -57,21 +62,23 @@ func FetchVolumes(region string) (vmap map[string]*Volume) {
 
 // parse the response from AWS
 func vmapFromAWS(result *ec2.DescribeVolumesOutput, region string) (vmap map[string]*Volume) {
-	for _, vol := range result.Volumes {
-		for _, att := range vol.Attachments {
-			vol := &Volume{
-				raw:         &vol,
-				VolumeId:    *vol.VolumeId,
-				SnapshotId:  *vol.SnapshotId,
-				Size:        *vol.Size,
-				State:       vol.State,
-				InstanceId:  *att.InstanceId,
-				AttachState: att.State,
-				AvailZone:   *vol.AvailabilityZone,
-				Region:      region,
-			}
-			vmap[vol.VolumeId] = vol
+	vmap = make(map[string]*Volume)
+	for _, awsvol := range result.Volumes {
+		vol := &Volume{
+			raw:        &awsvol,
+			VolumeId:   *awsvol.VolumeId,
+			SnapshotId: *awsvol.SnapshotId,
+			Size:       *awsvol.Size,
+			State:      awsvol.State,
+			AvailZone:  *awsvol.AvailabilityZone,
+			Region:     region,
 		}
+
+		for _, att := range awsvol.Attachments {
+			vol.AttachState = att.State
+			vol.InstanceId = *att.InstanceId
+		}
+		vmap[vol.VolumeId] = vol
 	}
 	return vmap
 }

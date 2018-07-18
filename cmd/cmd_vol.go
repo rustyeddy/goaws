@@ -31,18 +31,33 @@ func init() {
 
 // List Volumes - TODO: check the regions argument
 func cmdVolumes(cmd *cobra.Command, args []string) {
-	output := ""
-	volumes := goaws.Volumes(Config.Region)
-	for vid, _ := range volumes {
-		output += vid + "\n"
+	var regions []string
+	if len(args) > 0 {
+		regions = append(regions, args[0:]...)
+	} else {
+		regions = goaws.Regions()
 	}
-	fmt.Println(output)
+
+	for _, region := range regions {
+		fmt.Printf("Volumes for region %s ", region)
+		volumes := goaws.Volumes(region)
+		if volumes == nil {
+			fmt.Println("[0]")
+			continue
+		}
+		fmt.Println(len(volumes))
+		for vid, vol := range volumes {
+			fmt.Printf("  %s %+v\n", vid, vol.State)
+		}
+	}
+	fmt.Println("done ... ")
 }
 
 // Delete Volume specified by vol-xxxxxx arg[0]
 func cmdDeleteVolume(cmd *cobra.Command, args []string) {
-	volid := args[0]
-	if err := goaws.DeleteVolume(Config.Region, volid); err != nil {
+	region := args[0]
+	volid := args[1]
+	if err := goaws.DeleteVolume(region, volid); err != nil {
 		log.Errorf("  failed deleting volume %+v", err)
 		return
 	}

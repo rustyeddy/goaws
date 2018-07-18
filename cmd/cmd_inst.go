@@ -38,7 +38,7 @@ func cmdInstances(cmd *cobra.Command, args []string) {
 	if Config.Region != "" {
 		regions = []string{Config.Region}
 	} else {
-		if regions, err = goaws.Regions(); regions == nil {
+		if regions = goaws.Regions(); regions == nil {
 			log.Fatal("  expected (regions) got (%v)", err)
 		}
 	}
@@ -68,14 +68,12 @@ func cmdTerminateInstances(cmd *cobra.Command, args []string) {
 
 	var (
 		regions []string
-		err     error
 	)
 
 	if len(args) > 0 {
 		regions = args
 	} else {
-		regions, err = goaws.Regions()
-		if err != nil {
+		if regions = goaws.Regions(); regions == nil {
 			log.Fatalf("  failed to get regions")
 		}
 	}

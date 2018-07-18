@@ -13,7 +13,7 @@ func cmdRegions(cmd *cobra.Command, args []string) {
 
 	var regions []string
 	var err error
-	if regions, err = goaws.Regions(); err != nil {
+	if regions = goaws.Regions(); regions == nil {
 		log.Fatal("expected (regions) got (%v)", err)
 	}
 
