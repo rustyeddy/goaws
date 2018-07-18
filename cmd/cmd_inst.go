@@ -32,17 +32,17 @@ func init() {
 
 // List the instances
 func cmdInstances(cmd *cobra.Command, args []string) {
-	var regs []string
+	var regions []string
 	var err error
 
 	if Config.Region != "" {
-		regs = append(regs, Config.Region)
+		regions = []string{Config.Region}
 	} else {
-		if regs, err = goaws.Regions(); regs == nil {
+		if regions, err = goaws.Regions(); regions == nil {
 			log.Fatal("  expected (regions) got (%v)", err)
 		}
 	}
-	for _, region := range regs {
+	for _, region := range regions {
 		fmt.Printf("Instances for region %s ... \n ", region)
 		for _, inst := range goaws.Instances(region) {
 			fmt.Printf("  %s %s %s \n", inst.InstanceId, inst.VolumeId, inst.State.Name)
@@ -66,18 +66,37 @@ func cmdDescribeInstance(cmd *cobra.Command, args []string) {
 // Terminate Instances
 func cmdTerminateInstances(cmd *cobra.Command, args []string) {
 
-	iids := args
-	if len(args) < 1 {
-		instances := goaws.Instances(Config.Region)
-		for n := range instances {
-			iids = append(iids, n)
+	var (
+		regions []string
+		err     error
+	)
+
+	if len(args) > 0 {
+		regions = args
+	} else {
+		regions, err = goaws.Regions()
+		if err != nil {
+			log.Fatalf("  failed to get regions")
 		}
 	}
 
-	// Request to actually terminate
-	if err := goaws.TerminateInstances(Config.Region, iids); err != nil {
-		log.Errorf("  problems with Terminate Instances %v", err)
-		return
-	}
+	for _, region := range regions {
+		instances := goaws.Instances(region)
+		var iids []string
+		for n := range instances {
+			iids = append(iids, n)
+		}
+		icount := len(iids)
+		if icount > 0 {
+			fmt.Printf("Terminate %d instances in region %s\n", icount, region)
+			fmt.Printf("  terminating %s, n")
+			if err := goaws.TerminateInstances(region, iids); err != nil {
+				log.Errorf("  problems with Terminate Instances %v", err)
+				return
+			}
+		} else {
+			fmt.Println("  no instances to be terminated ...")
+		}
 
+	}
 }

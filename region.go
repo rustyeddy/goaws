@@ -8,6 +8,10 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
+var (
+	regions []string
+)
+
 // Names returns the names of all regions
 func Regions() (names []string, err error) {
 	if regions == nil {

@@ -7,6 +7,10 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
+var (
+	instances map[string]*Instance
+)
+
 // Host is an entity connected to a network
 type Instance struct {
 	InstanceId string
@@ -16,6 +20,11 @@ type Instance struct {
 	AvailZone  string
 	Region     string
 	data       interface{}
+}
+
+// Instances returns the Instmap
+func Instances(region string) map[string]*Instance {
+	return FetchInstances(region)
 }
 
 // String returns a single line representing our host
@@ -36,11 +45,11 @@ func FetchInstances(region string) (imap map[string]*Instance) {
 	}
 
 	// 4. Parse the response into an instance Map
-	imap = imapFromAWS(result)
+	imap = imapFromAWS(region, result)
 	return imap
 }
 
-func imapFromAWS(result *ec2.DescribeInstancesOutput) (imap map[string]*Instance) {
+func imapFromAWS(region string, result *ec2.DescribeInstancesOutput) (imap map[string]*Instance) {
 
 	// Nextoken to read more
 	nextToken := result.NextToken

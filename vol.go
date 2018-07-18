@@ -9,6 +9,10 @@ import (
 	"github.com/rustyeddy/store"
 )
 
+var (
+	volumes map[string]*Volume
+)
+
 type Volume struct {
 	VolumeId    string
 	InstanceId  string
@@ -23,6 +27,11 @@ type Volume struct {
 
 func (v *Volume) String() string {
 	return fmt.Sprintf("%s %s %s %s %dGb", v.VolumeId, v.InstanceId, v.AvailZone, v.State, v.Size)
+}
+
+// Volumes returns the Volumemap
+func Volumes(region string) map[string]*Volume {
+	return FetchVolumes(region)
 }
 
 // GetVolumes will retrieve instances from AWS, convert them to
