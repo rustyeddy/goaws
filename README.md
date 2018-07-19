@@ -1,3 +1,3 @@
-# goaws
+# Go AWS
 
-AWS Library of important functions
+Is a simple library to aid in AWS account monitoring and management. 
