@@ -6,35 +6,65 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
+// Region will capture all infomation about this region
+type Region struct {
+	Name      string
+	Instances map[string]*Instance
+	Volumes   map[string]*Volume
+	Buckets   map[string]*Bucket
+}
+
+// regmap is ready to rool
+type regmap map[string]*Region
+
 var (
-	regions []string
-	region  string
+	RegionMap     regmap
+	RegionNames   []string
+	currentRegion string
 )
+
+// Get region
+func (r regmap) Get(region string) *Region {
+	if r, e := r[region]; e {
+		return r
+	}
+	return nil
+}
+
+// Exists region
+func (r regmap) Exists(region string) bool {
+	_, e := r[region]
+	return e
+}
 
 // SetRegion to the current region
 func SetRegion(r string) {
-	region = r
+	currentRegion = r
 }
 
 // Region returns the region we are currently working in
-func Region() string {
-	return region
+func CurrentRegion() string {
+	return currentRegion
 }
 
 // Names returns the names of all regions
 func Regions() (names []string) {
-	if regions == nil {
-		if regions = fetchRegions(); regions == nil {
+	if RegionNames == nil {
+		if RegionNames = fetchRegions(); RegionNames == nil {
 			log.Errorf("expected (regions) got ()")
 			return nil
 		}
+		for _, name := range RegionNames {
+			RegionMap[name] = &Region{Name: name}
+		}
 	}
-	return regions
+	return RegionNames
 }
 
 // ClearRegions reset
 func ClearRegions() {
-	regions = nil
+	RegionNames = nil
+	RegionMap = nil
 }
 
 // fetchRegionNames from AWS

@@ -33,7 +33,12 @@ func (v *Volume) String() string {
 
 // Volumes returns the "Fetched" Volumes
 func Volumes(region string) map[string]*Volume {
-	return FetchVolumes(region)
+	var reg *Region
+	if reg := RegionMap.Get(region); reg == nil {
+		return nil
+	}
+	reg.Volumes = FetchVolumes(reg.Name)
+	return reg.Volumes
 }
 
 // GetVolumes will retrieve instances from AWS, convert them to

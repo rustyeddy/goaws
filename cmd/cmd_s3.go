@@ -26,37 +26,43 @@ var (
 	}
 )
 
+func init() {
+	s3Cmd.AddCommand(&s3ObjectsCmd)
+}
+
 // s3Cmd for s3 buckets
 func cmdS3(cmd *cobra.Command, args []string) {
+	fmt.Println("CMD S3 ")
 	bkts := goaws.ListBuckets()
 	if bkts == nil {
 		fmt.Println("No buckets found in AWS account")
 		return
 	}
-
 	fmt.Printf("Buckets..[%d]\n", len(bkts))
 	if bkts := goaws.ListBuckets(); bkts != nil {
-		objcount := 0
-		totalsize := 0
-
 		for _, bkt := range bkts {
-			if objects = goaws.GetObjects(); objects != nil {
-				for _, obj := range objects {
-					totalsize += obj.Size()
-					objcount++
-				}
-			}
+			bname := bkt.Name()
+			fmt.Println("Bucket ", bname)
 		}
-		fmt.Printf(" objects %d size %d \n", objcount, totalsize)
+		fmt.Printf("\n")
 	}
 }
 
 // s3ObjectsCmd for s3 objects
 func cmdS3Objects(cmd *cobra.Command, args []string) {
+	fmt.Println("CMD S3 Objects ")
 	if bkts := goaws.ListBuckets(); bkts != nil {
 		for _, bkt := range bkts {
-			if objs := goaws.GetObjects( /*bkt.Name*/ ); objs != nil {
-				fmt.Println(bkt.Name, objs)
+
+			for _, region := range goaws.RegionNames {
+				// Must be in correct region ...
+				if objs, err := goaws.GetObjects(region, bkt.Name()); err == nil {
+					fmt.Println(bkt.Name, objs)
+
+					if reg := goaws.RegionMap.Get(region); reg != nil {
+						reg.Buckets[bkt.Name()] = &bkt
+					}
+				}
 			}
 		}
 	}

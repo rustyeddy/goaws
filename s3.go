@@ -1,7 +1,6 @@
 package goaws
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws/external"
@@ -16,6 +15,18 @@ type Object struct {
 	size int
 }
 
+// Bucket the name of bucket and objects
+type Bucket struct {
+	name    string    // bucket name
+	created time.Time // creation time
+	objects []Object
+	s3.Bucket
+}
+
+var (
+	allBuckets []Bucket
+)
+
 // Name of the object
 func (o *Object) Name() string {
 	return o.name
@@ -29,14 +40,6 @@ func (o *Object) Path() string {
 // Size of the object
 func (o *Object) Size() int {
 	return o.size
-}
-
-// Bucket the name of bucket and objects
-type Bucket struct {
-	name    string    // bucket name
-	created time.Time // creation time
-	objects []Object
-	s3.Bucket
 }
 
 // Name of the bucket
@@ -66,7 +69,8 @@ func s3svc(region string) (ec *s3.S3) {
 
 // ListBuckets
 func ListBuckets() (bkts []Bucket) {
-	svc := s3svc(region)
+
+	svc := s3svc(currentRegion)
 	req := svc.ListBucketsRequest(&s3.ListBucketsInput{})
 	results, err := req.Send()
 	if err != nil {
@@ -78,9 +82,9 @@ func ListBuckets() (bkts []Bucket) {
 		if bkt == nil {
 			log.Errorf("  failed to create object from bucket ")
 		}
-		bkts = append(bkts, *bkt)
+		allBuckets = append(allBuckets, *bkt)
 	}
-	return bkts
+	return allBuckets
 }
 
 // create a bucket from aws
@@ -95,14 +99,24 @@ func bktFromAWS(b s3.Bucket) (bkt *Bucket) {
 }
 
 // GetObjects returns all (up to 1000) objects from a specific bucket
-func GetObjects() []Object {
+func GetObjects(region, bktname string) (olist []Object, err error) {
 	svc := s3svc(region)
-	req := svc.ListObjectsRequest(&s3.ListObjectsInput{})
+	req := svc.ListObjectsRequest(&s3.ListObjectsInput{Bucket: &bktname})
 	resp, err := req.Send()
 	if err != nil {
-		log.Errorf("  failed to get objects")
+		return nil, err
 	}
-	fmt.Println(resp)
-	log.Fatal("Die")
-	return nil
+
+	for _, cont := range resp.Contents {
+		//obj := objFromContent(cont)
+		//olist = append(olist, &obj)
+		log.Fatalf(" %+v ", cont)
+	}
+	return olist, nil
+}
+
+// Objects from Content
+func objFromContent(cont interface{}) (obj *Object) {
+	log.Fatalf("  %+v ", cont)
+	return obj
 }

@@ -7,10 +7,6 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
-var (
-	instances map[string]*Instance
-)
-
 // Host is an entity connected to a network
 type Instance struct {
 	InstanceId string
@@ -24,7 +20,12 @@ type Instance struct {
 
 // Instances returns the Instmap
 func Instances(region string) map[string]*Instance {
-	return FetchInstances(region)
+	var reg *Region
+	if reg := RegionMap.Get(region); reg == nil {
+		return nil
+	}
+	reg.Instances = FetchInstances(reg.Name)
+	return reg.Instances
 }
 
 // String returns a single line representing our host
