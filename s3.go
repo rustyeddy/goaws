@@ -1,6 +1,7 @@
 package goaws
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws/external"
@@ -91,4 +92,17 @@ func bktFromAWS(b s3.Bucket) (bkt *Bucket) {
 		Bucket:  b,
 	}
 	return bkt
+}
+
+// GetObjects returns all (up to 1000) objects from a specific bucket
+func GetObjects() []Object {
+	svc := s3svc(region)
+	req := svc.ListObjectsRequest(&s3.ListObjectsInput{})
+	resp, err := req.Send()
+	if err != nil {
+		log.Errorf("  failed to get objects")
+	}
+	fmt.Println(resp)
+	log.Fatal("Die")
+	return nil
 }
