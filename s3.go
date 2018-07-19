@@ -108,9 +108,11 @@ func GetObjects(region, bktname string) (olist []Object, err error) {
 	}
 
 	for _, cont := range resp.Contents {
+		log.Printf("  cont: %+v \n", cont)
+
 		//obj := objFromContent(cont)
 		//olist = append(olist, &obj)
-		log.Fatalf(" %+v ", cont)
+		//log.Fatalf(" %+v ", cont)
 	}
 	return olist, nil
 }

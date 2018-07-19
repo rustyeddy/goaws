@@ -57,8 +57,7 @@ func cmdS3Objects(cmd *cobra.Command, args []string) {
 			for _, region := range goaws.RegionNames {
 				// Must be in correct region ...
 				if objs, err := goaws.GetObjects(region, bkt.Name()); err == nil {
-					fmt.Println(bkt.Name, objs)
-
+					fmt.Printf("  bucket %s objs %d", bkt.Name, len(objs))
 					if reg := goaws.RegionMap.Get(region); reg != nil {
 						reg.Buckets[bkt.Name()] = &bkt
 					}
