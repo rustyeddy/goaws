@@ -8,7 +8,18 @@ import (
 
 var (
 	regions []string
+	region  string
 )
+
+// SetRegion to the current region
+func SetRegion(r string) {
+	region = r
+}
+
+// Region returns the region we are currently working in
+func Region() string {
+	return region
+}
 
 // Names returns the names of all regions
 func Regions() (names []string) {
@@ -46,14 +57,4 @@ func fetchRegions() []string {
 		names = append(names, *region.RegionName)
 	}
 	return names
-}
-
-// Client get the EC2 Client for this region
-func Client(region string) (ec *ec2.EC2) {
-	cfg, err := external.LoadDefaultAWSConfig()
-	if err != nil {
-		log.Fatalf("failed to get ec2 client for region %s ", region)
-	}
-	cfg.Region = region
-	return ec2.New(cfg)
 }

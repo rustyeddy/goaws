@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/rustyeddy/goaws"
 	log "github.com/rustyeddy/logrus"
 	"github.com/spf13/cobra"
 )
@@ -18,21 +19,17 @@ var (
 		Run:     cmdGoa,
 		Version: "2018-07-12",
 	}
-
-	// RegionsCmd list regions
-	regionCmd = cobra.Command{
-		Use:   "region",
-		Short: "List AWS Regions",
-		Run:   cmdRegions,
-	}
 )
 
 // Get the AWS Cloud structure ready
 func init() {
+	goaws.SetRegion("us-west-2") // just in case
+
 	// First level goa sub commands
 	goaCmd.AddCommand(&regionCmd)
 	goaCmd.AddCommand(&instanceCmd)
 	goaCmd.AddCommand(&volumeCmd)
+	goaCmd.AddCommand(&s3Cmd)
 }
 
 // Execute the RootCommand

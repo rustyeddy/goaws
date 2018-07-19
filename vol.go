@@ -13,6 +13,7 @@ var (
 	volumes map[string]*Volume
 )
 
+// Volume is attached to a CPU
 type Volume struct {
 	VolumeId    string
 	InstanceId  string
@@ -25,11 +26,12 @@ type Volume struct {
 	raw         *ec2.CreateVolumeOutput
 }
 
+// String will print out a representation of the volume
 func (v *Volume) String() string {
 	return fmt.Sprintf("%s %s %s %s %dGb", v.VolumeId, v.InstanceId, v.AvailZone, v.State, v.Size)
 }
 
-// Volumes returns the Volumemap
+// Volumes returns the "Fetched" Volumes
 func Volumes(region string) map[string]*Volume {
 	return FetchVolumes(region)
 }
@@ -38,7 +40,7 @@ func Volumes(region string) map[string]*Volume {
 // Go structures we can use, it also "caches" a version to the filesystem
 func FetchVolumes(region string) (vmap map[string]*Volume) {
 	var e *ec2.EC2
-	if e = Client(region); e == nil {
+	if e = ec2svc(region); e == nil {
 		log.Errorf("  failed to get aws client for %s ", region)
 		return nil
 	}
@@ -126,7 +128,7 @@ func DeleteVolume(region string, volid string) error {
 			log.Errorf("  whoa do not know about state, continue ", vol.State)
 		}
 	*/
-	e := Client(region)
+	e := ec2svc(region)
 	req := e.DeleteVolumeRequest(&ec2.DeleteVolumeInput{
 		VolumeId: aws.String(volid),
 	})
@@ -147,7 +149,7 @@ func DetachVolume(region string, volid string) error {
 	defer log.Debugln("  returning from deleteVolume ")
 
 	var svc *ec2.EC2
-	if svc = Client(region); svc == nil {
+	if svc = ec2svc(region); svc == nil {
 		return fmt.Errorf("detach vol %s %s: ", region, volid)
 	}
 

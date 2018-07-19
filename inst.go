@@ -36,7 +36,7 @@ func (i *Instance) String() string {
 // GetInstances will retrieve instances from AWS, it will also store
 // the results in the Object cache as a JSON file.
 func FetchInstances(region string) (imap map[string]*Instance) {
-	e := Client(region)
+	e := ec2svc(region)
 	req := e.DescribeInstancesRequest(&ec2.DescribeInstancesInput{})
 	result, err := req.Send()
 	if err != nil {
@@ -94,7 +94,7 @@ func TerminateInstances(region string, iids []string) (err error) {
 		}
 	}
 
-	e := Client(region)
+	e := ec2svc(region)
 	req := e.TerminateInstancesRequest(&ec2.TerminateInstancesInput{
 		InstanceIds: iids,
 	})

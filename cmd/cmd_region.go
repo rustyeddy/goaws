@@ -8,6 +8,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	// RegionsCmd list regions
+	regionCmd = cobra.Command{
+		Use:   "region",
+		Short: "List AWS Regions",
+		Run:   cmdRegions,
+	}
+)
+
 // list all regions
 func cmdRegions(cmd *cobra.Command, args []string) {
 
