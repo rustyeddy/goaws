@@ -95,31 +95,37 @@ func DeleteVolume(region string, volid string) error {
 		return store.ErrNotFound.Append(string(volid))
 	}
 
-	switch vol.State {
-	case "creating", "in-use":
-		if err := DetachVolume(region, vol); err != nil {
-			return fmt.Errorf("detach failed %s / %s :", region, vol.VolumeId)
-		}
-	case "deleting", "deleted", "error":
-		log.Debugln("  skipping  volume status ", vol.State)
-		return nil
-
-	case "available":
-		// OK, prepare the request to detach volume
-		e := Client(region)
-		req := e.DetachVolumeRequest(&ec2.DetachVolumeInput{
-			VolumeId: aws.String(vol.VolumeId),
-		})
-		// Send the request and get a result
-		if result, err := req.Send(); err != nil {
-			return fmt.Errorf("volid %s: %v", vol.State, err)
-		} else {
-			log.Debugln("  sent request to detach volume %v ", result)
-		}
-	default:
-		log.Errorf("  whoa do not know about state, continue ", vol.State)
+	if vol.State != "available" {
+		fmt.Printf("  volume state expected (available) got (%s) ", vol.State)
 	}
+	/*
+		switch vol.State {
+		case "creating", "in-use":
+			if err := DetachVolume(region, vol.VolumeId); err != nil {
+				return fmt.Errorf("detach failed %s / %s :", region, vol.VolumeId)
+			}
+		case "deleting", "deleted", "error":
+			log.Debugln("  skipping  volume status ", vol.State)
+			return nil
 
+		case "available":
+			// OK, prepare the request to detach volume
+			e := Client(region)
+			fmt.Printf("  DetachVolume request ")
+			req := e.DetachVolumeRequest(&ec2.DetachVolumeInput{
+				VolumeId: aws.String(vol.VolumeId),
+			})
+			// Send the request and get a result
+			result, err := req.Send()
+			if err != nil {
+				return fmt.Errorf("volid %s: %v", vol.State, err)
+			}
+			fmt.Printf("  result from Detach %v\n", result)
+
+		default:
+			log.Errorf("  whoa do not know about state, continue ", vol.State)
+		}
+	*/
 	e := Client(region)
 	req := e.DeleteVolumeRequest(&ec2.DeleteVolumeInput{
 		VolumeId: aws.String(volid),
@@ -130,29 +136,29 @@ func DeleteVolume(region string, volid string) error {
 	if err != nil {
 		return fmt.Errorf("  # failed response to request %v \n", err)
 	}
-	log.Warning("  result %+v \n", result)
+	log.Infof("  DELETE result %+v \n", result)
 	return nil
 }
 
 // DetachVolume will remove the volume from the instance
-func DetachVolume(region string, vol *Volume) error {
+func DetachVolume(region string, volid string) error {
 
-	log.Debugln("DetatchVolume %s %s ", region, vol.VolumeId)
+	log.Debugln("DetatchVolume %s %s ", region, volid)
 	defer log.Debugln("  returning from deleteVolume ")
 
 	var svc *ec2.EC2
 	if svc = Client(region); svc == nil {
-		return fmt.Errorf("detach vol %s %s: ", region, vol.VolumeId)
+		return fmt.Errorf("detach vol %s %s: ", region, volid)
 	}
 
-	log.Debugf("  sending delete for region %s vol %s\n ", region, vol.VolumeId)
+	log.Debugf("  sending delete for region %s vol %s\n ", region, volid)
 	req := svc.DetachVolumeRequest(&ec2.DetachVolumeInput{
-		VolumeId: aws.String(vol.VolumeId),
+		VolumeId: aws.String(volid),
 	})
 	result, err := req.Send()
 	if err != nil {
 		return fmt.Errorf("detach volume %v: ", err)
 	}
-	log.Infoln("  detached volume %s result %+v \n", vol.VolumeId, result)
+	log.Infoln("  detached volume %s result %+v \n", volid, result)
 	return nil
 }
