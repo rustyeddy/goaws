@@ -1,6 +1,7 @@
 package goaws
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws/external"
@@ -20,6 +21,7 @@ type Bucket struct {
 	name    string    // bucket name
 	created time.Time // creation time
 	objects []Object
+	region  string
 	s3.Bucket
 }
 
@@ -82,9 +84,25 @@ func ListBuckets() (bkts []Bucket) {
 		if bkt == nil {
 			log.Errorf("  failed to create object from bucket ")
 		}
+		// request the location from aws (sheesh)
+		bkt.region = BucketLocation(bkt.name)
+		fmt.Printf(" bkt name %s = reg %s", bkt.name, bkt.region)
 		allBuckets = append(allBuckets, *bkt)
 	}
 	return allBuckets
+}
+
+// BucketLocation will return the region this bucket is in
+func BucketLocation(bname string) string {
+	svc := s3svc("")
+	req := svc.GetBucketLocationRequest(&s3.GetBucketLocationInput{Bucket: &bname})
+	results, err := req.Send()
+	if err != nil {
+		log.Errorf("  failed to determine bucket location \n")
+		return ""
+	}
+	log.Fatal(results)
+	return fmt.Sprintf("%+v", results)
 }
 
 // create a bucket from aws
