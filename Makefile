@@ -1,6 +1,9 @@
-cmd = goa
+cmd = goa/goa
 
 dirs = cmd
+
+goa: *.go goa/*.go cmd/*.go
+	make -C goa
 
 build:
 	go build
