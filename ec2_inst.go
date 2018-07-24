@@ -10,6 +10,7 @@ import (
 // EC2Map
 type EC2Instance struct {
 	*ec2.Instance
+	// TODO updated Time.time // Add the time the item was updated
 }
 
 // Instances returns the Instmap
@@ -29,8 +30,7 @@ func (i *EC2Instance) InstanceID() string {
 
 // String returns a single line representing our host
 func (i *EC2Instance) String() string {
-	return fmt.Sprintf("%s %s %s %s",
-		i.Region(), i.InstanceId, i.VolumeId(), i.State)
+	return fmt.Sprintf("  %s\n    %s %s %s\n", *i.PublicDnsName, *i.InstanceId, i.VolumeId(), i.State.Name)
 }
 
 // Region returns the region the instance is in
@@ -41,12 +41,6 @@ func (i *EC2Instance) Region() string {
 // Id of this type
 func (i *EC2Instance) Id() string {
 	return *(i.InstanceId)
-}
-
-// State returns the State of the Instance
-func (i *EC2Instance) InstState() string {
-	log.Printf(" %+v ", i)
-	return "foo"
 }
 
 // PublicDnsName is self descriptive
@@ -88,7 +82,7 @@ func FetchInstances(region string) (imap map[string]*EC2Instance) {
 	return imap
 }
 
-// Create a map of instances indexed by Index
+// Create an insdex of EC2Instances indexed by InstanceId
 func imapFromAWS(region string, result *ec2.DescribeInstancesOutput) (imap map[string]*EC2Instance) {
 	// Nextoken to read more
 	nextToken := result.NextToken
