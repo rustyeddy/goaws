@@ -39,7 +39,7 @@ func cmdInstances(cmd *cobra.Command, args []string) {
 	for _, region := range regionNames {
 		fmt.Printf("Instances for region %s ... \n ", region)
 		for _, inst := range goaws.Instances(region) {
-			fmt.Printf("  %s %s %v \n", *inst.InstanceId, inst.VolumeId(), inst.State.Name)
+			fmt.Printf("  %s %s %s \n", *inst.InstanceId, inst.VolumeId(), inst.State.Name)
 		}
 	}
 	fmt.Println("finished..")
