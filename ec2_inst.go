@@ -7,19 +7,13 @@ import (
 	log "github.com/rustyeddy/logrus"
 )
 
-// Host is an entity connected to a network
-type Instance struct {
-	InstanceId string
-	VolumeId   string
-	State      ec2.InstanceState
-	KeyName    string
-	AvailZone  string
-	Region     string
-	data       interface{}
+// EC2Map
+type EC2Instance struct {
+	*ec2.Instance
 }
 
 // Instances returns the Instmap
-func Instances(region string) map[string]*Instance {
+func Instances(region string) map[string]*EC2Instance {
 	var reg *Region
 	if reg = RegionMap.Get(region); reg == nil {
 		return nil
@@ -28,15 +22,59 @@ func Instances(region string) map[string]*Instance {
 	return reg.Instances
 }
 
+// InstanceID returns InstanceID
+func (i *EC2Instance) InstanceID() string {
+	return *i.InstanceId
+}
+
 // String returns a single line representing our host
-func (i *Instance) String() string {
-	return fmt.Sprintf("%s %s %s %s %s",
-		i.Region, i.InstanceId, i.VolumeId, i.State, i.KeyName)
+func (i *EC2Instance) String() string {
+	return fmt.Sprintf("%s %s %s %s",
+		i.Region(), i.InstanceId, i.VolumeId(), i.State)
+}
+
+// Region returns the region the instance is in
+func (i *EC2Instance) Region() string {
+	return *(i.Placement.AvailabilityZone)
+}
+
+// Id of this type
+func (i *EC2Instance) Id() string {
+	return *(i.InstanceId)
+}
+
+// State returns the State of the Instance
+func (i *EC2Instance) InstState() string {
+	log.Printf(" %+v ", i)
+	return "foo"
+}
+
+// PublicDnsName is self descriptive
+func (i *EC2Instance) PublicDNSName() string {
+	return *(i.PublicDnsName)
+}
+
+// Volumes returns all VolumeId's used by this instance
+func (i *EC2Instance) Volumes() (volids []string) {
+	for _, bdm := range i.BlockDeviceMappings {
+		volids = append(volids, *bdm.Ebs.VolumeId)
+	}
+	return volids
+}
+
+// VolumeId returns the volume id of the first volume
+func (i *EC2Instance) VolumeId() (volid string) {
+	vols := i.Volumes()
+	if vols != nil {
+		//volid = vols[0].VolumeId
+		volid = vols[0]
+	}
+	return volid
 }
 
 // GetInstances will retrieve instances from AWS, it will also store
 // the results in the Object cache as a JSON file.
-func FetchInstances(region string) (imap map[string]*Instance) {
+func FetchInstances(region string) (imap map[string]*EC2Instance) {
 	e := ec2svc(region)
 	req := e.DescribeInstancesRequest(&ec2.DescribeInstancesInput{})
 	result, err := req.Send()
@@ -50,29 +88,18 @@ func FetchInstances(region string) (imap map[string]*Instance) {
 	return imap
 }
 
-func imapFromAWS(region string, result *ec2.DescribeInstancesOutput) (imap map[string]*Instance) {
-
+// Create a map of instances indexed by Index
+func imapFromAWS(region string, result *ec2.DescribeInstancesOutput) (imap map[string]*EC2Instance) {
 	// Nextoken to read more
 	nextToken := result.NextToken
-	imap = make(map[string]*Instance)
-
+	imap = make(map[string]*EC2Instance)
 	resvs := result.Reservations
 	for _, resv := range resvs {
 		for _, inst := range resv.Instances {
-			iid := *inst.InstanceId
-			var newinst = &Instance{
-				InstanceId: iid,
-				State:      *inst.State,
-				KeyName:    *inst.KeyName,
-				Region:     region,
-				data:       inst,
+			ecinst := &EC2Instance{
+				Instance: &inst,
 			}
-
-			// Get to the block device mappings
-			for _, bdm := range inst.BlockDeviceMappings {
-				newinst.VolumeId = *bdm.Ebs.VolumeId
-			}
-			imap[iid] = newinst
+			imap[*(inst.InstanceId)] = ecinst
 		}
 	}
 	if nextToken != nil {
@@ -81,17 +108,20 @@ func imapFromAWS(region string, result *ec2.DescribeInstancesOutput) (imap map[s
 	return imap
 }
 
-// TerminateInstance will terminate an instance
+// TerminateInstances will terminate an instance
 func TerminateInstances(region string, iids []string) (err error) {
 
 	if iids == nil || len(iids) < 1 {
-		for i, inst := range Instances(region) {
-			switch inst.State.Name {
-			case "terminated":
-				// skip this one
-			default:
-				iids = append(iids, i)
-			}
+		for _, inst := range Instances(region) {
+			log.Fatalf(" %+v ", inst)
+			/*
+				switch *inst.State {
+				case "terminated":
+					// skip this one
+				default:
+					iids = append(iids, i)
+				}
+			*/
 		}
 	}
 

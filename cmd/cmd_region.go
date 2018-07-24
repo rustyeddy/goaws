@@ -40,3 +40,19 @@ func cmdRegions(cmd *cobra.Command, args []string) {
 	fmt.Printf("done.")
 	fmt.Printf("\n")
 }
+
+// GetRegions will return a list of regions the corresponding
+// command will be applied to.  The command will determine how the
+// default region is selected, in general it will be the default
+// region as defined in the aws configuration.
+func GetRegions(cmd *cobra.Command, args []string) (regions []string) {
+
+	if Config.Region != "" {
+		regions = []string{Config.Region}
+	} else {
+		if regions = goaws.Regions(); regions == nil {
+			log.Fatal("  expected (regions) got (nil)")
+		}
+	}
+	return regions
+}

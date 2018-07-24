@@ -9,7 +9,7 @@ import (
 // Region will capture all infomation about this region
 type Region struct {
 	Name      string
-	Instances map[string]*Instance
+	Instances map[string]*EC2Instance
 	Volumes   map[string]*Volume
 	Buckets   map[string]*Bucket
 }

@@ -32,20 +32,14 @@ func init() {
 
 // List the instances
 func cmdInstances(cmd *cobra.Command, args []string) {
-	var regions []string
-	var err error
-
-	if Config.Region != "" {
-		regions = []string{Config.Region}
-	} else {
-		if regions = goaws.Regions(); regions == nil {
-			log.Fatal("  expected (regions) got (%v)", err)
-		}
+	var regionNames []string
+	if regionNames = GetRegions(cmd, args); regionNames == nil {
+		log.Fatal("expected (regions) got () ")
 	}
-	for _, region := range regions {
+	for _, region := range regionNames {
 		fmt.Printf("Instances for region %s ... \n ", region)
 		for _, inst := range goaws.Instances(region) {
-			fmt.Printf("  %s %s %s \n", inst.InstanceId, inst.VolumeId, inst.State.Name)
+			fmt.Printf("  %s %s %v \n", *inst.InstanceId, inst.VolumeId(), inst.State.Name)
 		}
 	}
 	fmt.Println("finished..")
