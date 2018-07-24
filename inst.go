@@ -2,6 +2,7 @@ package goaws
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
@@ -21,7 +22,7 @@ type Instance struct {
 // Instances returns the Instmap
 func Instances(region string) map[string]*Instance {
 	var reg *Region
-	if reg := RegionMap.Get(region); reg == nil {
+	if reg = RegionMap.Get(region); reg == nil {
 		return nil
 	}
 	reg.Instances = FetchInstances(reg.Name)
@@ -60,6 +61,8 @@ func imapFromAWS(region string, result *ec2.DescribeInstancesOutput) (imap map[s
 	for _, resv := range resvs {
 		for _, inst := range resv.Instances {
 			iid := *inst.InstanceId
+			fmt.Printf("inst %+v ", inst)
+			os.Exit(1)
 			var newinst = &Instance{
 				InstanceId: iid,
 				State:      *inst.State,

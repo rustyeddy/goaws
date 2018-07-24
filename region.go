@@ -18,7 +18,7 @@ type Region struct {
 type regmap map[string]*Region
 
 var (
-	RegionMap     regmap
+	RegionMap     regmap = make(regmap, 22) // TODO number of regions?
 	RegionNames   []string
 	currentRegion string
 )
