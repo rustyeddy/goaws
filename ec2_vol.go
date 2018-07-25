@@ -71,7 +71,7 @@ func (v *Volume) InstanceId() string {
 // Volumes returns the "Fetched" Volumes
 func Volumes(region string) map[string]*Volume {
 	var reg *Region
-	if reg := RegionMap.Get(region); reg == nil {
+	if reg = RegionMap.Get(region); reg == nil {
 		return nil
 	}
 	reg.Volumes = FetchVolumes(reg.Name)
