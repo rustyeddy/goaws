@@ -15,20 +15,57 @@ var (
 
 // Volume is attached to a CPU
 type Volume struct {
-	VolumeId    string
-	InstanceId  string
-	SnapshotId  string
-	AvailZone   string
-	Region      string
-	Size        int64
-	State       ec2.VolumeState
-	AttachState ec2.VolumeAttachmentState
-	raw         *ec2.CreateVolumeOutput
+	/*
+		VolumeId    string
+		InstanceId  string
+		SnapshotId  string
+		AvailZone   string
+		Region      string
+		Size        int64
+		State       ec2.VolumeState
+		AttachState ec2.VolumeAttachmentState
+	*/
+	region string
+	ec2.CreateVolumeOutput
 }
 
 // String will print out a representation of the volume
-func (v *Volume) String() string {
+func (v Volume) String() string {
 	return fmt.Sprintf("%s %s %s %s %dGb", v.VolumeId, v.InstanceId, v.AvailZone, v.State, v.Size)
+}
+
+//func (v *Volume) VolumeId() string {
+//	return v.VolumeId
+//}
+
+//func (v *Volume) SnapshotId() string {
+//	return v.SnapshotId
+//}
+
+//func (v *Volume) Size() int {
+//	return v.Size
+//}
+
+func (v *Volume) AvailZone() string {
+	return *v.AvailabilityZone
+}
+
+func (v *Volume) Region() string {
+	return v.region
+}
+
+//func (v *Volume) State() string {
+//	return v.State
+//}
+
+func (v *Volume) AttachmentState() string {
+	log.Fatalf("  %+v ", v.Attachments)
+	return "foo" //v.Attachments[0].State
+}
+
+func (v *Volume) InstanceId() string {
+	log.Fatalf("  %+v ", v.Attachments)
+	return "bar" // v.Attachments[0].InstanceId
 }
 
 // Volumes returns the "Fetched" Volumes
@@ -71,21 +108,9 @@ func FetchVolumes(region string) (vmap map[string]*Volume) {
 func vmapFromAWS(result *ec2.DescribeVolumesOutput, region string) (vmap map[string]*Volume) {
 	vmap = make(map[string]*Volume)
 	for _, awsvol := range result.Volumes {
-		vol := &Volume{
-			raw:        &awsvol,
-			VolumeId:   *awsvol.VolumeId,
-			SnapshotId: *awsvol.SnapshotId,
-			Size:       *awsvol.Size,
-			State:      awsvol.State,
-			AvailZone:  *awsvol.AvailabilityZone,
-			Region:     region,
-		}
-
-		for _, att := range awsvol.Attachments {
-			vol.AttachState = att.State
-			vol.InstanceId = *att.InstanceId
-		}
-		vmap[vol.VolumeId] = vol
+		vol := &Volume{}
+		vol.CreateVolumeOutput = result.Volumes[0]
+		vmap[*awsvol.VolumeId] = vol
 	}
 	return vmap
 }
