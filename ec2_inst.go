@@ -30,7 +30,8 @@ func (i *EC2Instance) InstanceID() string {
 
 // String returns a single line representing our host
 func (i *EC2Instance) String() string {
-	return fmt.Sprintf("  %s\n    %s %s %s\n", *i.PublicDnsName, *i.InstanceId, i.VolumeId(), i.State.Name)
+	//var name, id, volid string
+	return fmt.Sprintf("  %s\n    %s %s %s\n", *(i.PublicDnsName), *i.InstanceId, i.VolumeId(), i.State.Name)
 }
 
 // Region returns the region the instance is in
@@ -82,7 +83,7 @@ func FetchInstances(region string) (imap map[string]*EC2Instance) {
 	return imap
 }
 
-// Create an insdex of EC2Instances indexed by InstanceId
+// Create an index of EC2Instances indexed by InstanceId
 func imapFromAWS(region string, result *ec2.DescribeInstancesOutput) (imap map[string]*EC2Instance) {
 	// Nextoken to read more
 	nextToken := result.NextToken

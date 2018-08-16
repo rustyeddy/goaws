@@ -1,12 +1,12 @@
 package goaws
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	log "github.com/rustyeddy/logrus"
-	"github.com/rustyeddy/store"
 )
 
 var (
@@ -124,7 +124,7 @@ func DeleteVolume(region string, volid string) error {
 
 	volumes := Volumes(region)
 	if vol, ex = volumes[volid]; !ex {
-		return store.ErrNotFound.Append(string(volid))
+		return errors.New("volume not found " + volid)
 	}
 
 	if vol.State != "available" {
