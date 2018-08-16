@@ -130,34 +130,6 @@ func DeleteVolume(region string, volid string) error {
 	if vol.State != "available" {
 		fmt.Printf("  volume state expected (available) got (%s) ", vol.State)
 	}
-	/*
-		switch vol.State {
-		case "creating", "in-use":
-			if err := DetachVolume(region, vol.VolumeId); err != nil {
-				return fmt.Errorf("detach failed %s / %s :", region, vol.VolumeId)
-			}
-		case "deleting", "deleted", "error":
-			log.Debugln("  skipping  volume status ", vol.State)
-			return nil
-
-		case "available":
-			// OK, prepare the request to detach volume
-			e := Client(region)
-			fmt.Printf("  DetachVolume request ")
-			req := e.DetachVolumeRequest(&ec2.DetachVolumeInput{
-				VolumeId: aws.String(vol.VolumeId),
-			})
-			// Send the request and get a result
-			result, err := req.Send()
-			if err != nil {
-				return fmt.Errorf("volid %s: %v", vol.State, err)
-			}
-			fmt.Printf("  result from Detach %v\n", result)
-
-		default:
-			log.Errorf("  whoa do not know about state, continue ", vol.State)
-		}
-	*/
 	e := ec2svc(region)
 	req := e.DeleteVolumeRequest(&ec2.DeleteVolumeInput{
 		VolumeId: aws.String(volid),
